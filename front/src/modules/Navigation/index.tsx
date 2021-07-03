@@ -1,5 +1,6 @@
 import { Router, Switch, Route } from "react-router-dom";
 import { createBrowserHistory } from "history";
+
 import ROUTES from "constants/routes";
 import Game from "modules/Game";
 
