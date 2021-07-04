@@ -24,17 +24,20 @@ const styles = () => ({
     marginBottom: 20,
   },
   password: {
+    marginBottom: 20,
+  },
+  confirmPassword: {
     marginBottom: 24,
   },
-  login: {
+  signUp: {
     marginBottom: 12,
   },
-  registrationContainer: {
+  loginContainer: {
     fontFamily: "NotoSans-Regular",
     fontSize: 13,
     textAlign: "center",
   },
-  registration: {
+  login: {
     cursor: "pointer",
     color: colors.link,
     "&:hover": {

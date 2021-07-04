@@ -1,12 +1,10 @@
-import { Theme } from "@material-ui/core/styles";
-
-const styles = (theme: Theme) => ({
+const styles = () => ({
   root: {
     "& > *": {
-      margin: theme.spacing(1),
-      width: "25ch",
+      width: "100%",
     },
   },
+  input: {},
 });
 
 export default styles;

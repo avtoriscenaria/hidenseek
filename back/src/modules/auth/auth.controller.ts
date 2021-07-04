@@ -1,13 +1,7 @@
-import {
-  Controller,
-  HttpStatus,
-  Get,
-  Query,
-  HttpException,
-  Session,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body } from '@nestjs/common';
 
 import { AuthService } from './auth.service';
+import { SignUpPlayerDto } from './dto/signUpPlayerDto.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -16,5 +10,10 @@ export class AuthController {
   @Get('/')
   getUsers() {
     return this.auth.getAll();
+  }
+
+  @Post('/sign_up')
+  createPlayer(@Body() signUpPlayerDto: SignUpPlayerDto) {
+    return this.auth.createPlayer(signUpPlayerDto);
   }
 }

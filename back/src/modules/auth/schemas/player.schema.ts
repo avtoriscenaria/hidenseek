@@ -6,7 +6,7 @@ export type PlayerDocument = Player & Document;
 @Schema()
 export class Player {
   @Prop()
-  name: string;
+  nickname: string;
 
   @Prop()
   password: string;
