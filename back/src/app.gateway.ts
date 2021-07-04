@@ -23,6 +23,12 @@ export class AppGateway
     this.server.emit('msgToClient', payload);
   }
 
+  @SubscribeMessage('move')
+  movePlayer(client: Socket, payload: string): void {
+    console.log('CLIENT', client.id);
+    console.log('PAYLOAD', payload);
+  }
+
   afterInit(server: Server) {
     this.logger.log('Init');
   }

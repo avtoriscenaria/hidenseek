@@ -4,6 +4,7 @@ import { useEffect } from "react";
 
 import SellComponent from "../components/SellComponent";
 import { SellConfig, SellBorder } from "../interfaces";
+//import socket from "common/hooks/useSocketConnect";
 
 interface SellContainerProps {
   config: SellConfig;
@@ -16,6 +17,7 @@ const SellContainer: React.FC<SellContainerProps> = ({
 }) => {
   const [border, setBorder] = useState({});
   const move = () => {
+    //socket.emit("move", { message: "move" });
     console.log("MOVE");
   };
 
