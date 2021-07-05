@@ -4,9 +4,11 @@ import { Paper } from "@material-ui/core";
 import Input from "common/components/Input";
 import Button from "common/components/Button";
 import useStyles from "common/hooks/useStyles";
+import { LoginData } from "../interfaces";
 import styles from "../styles";
 
 interface LoginComponentProps {
+  loginData: LoginData;
   translations: any;
   onChange: (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void;
   onLogin: () => void;
@@ -14,6 +16,7 @@ interface LoginComponentProps {
 }
 
 const LoginComponent: React.FC<LoginComponentProps> = ({
+  loginData: { nickname, password },
   translations,
   onChange,
   onLogin,
@@ -30,12 +33,14 @@ const LoginComponent: React.FC<LoginComponentProps> = ({
             classes={classes.nickname}
             label={translations.nickname}
             name="nickname"
+            value={nickname}
             onChange={onChange}
           />
           <Input
             classes={classes.password}
             label={translations.password}
             name="password"
+            value={password}
             onChange={onChange}
           />
         </div>

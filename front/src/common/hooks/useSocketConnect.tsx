@@ -1,5 +1,6 @@
 const io = require("socket.io-client");
+const { HOST } = require("constants/api");
 
-const socket = io("http://localhost:3005");
+const socket = io(HOST);
 
 export default socket;

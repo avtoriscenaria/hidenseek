@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body } from '@nestjs/common';
 
 import { AuthService } from './auth.service';
-import { SignUpPlayerDto } from './dto/signUpPlayerDto.dto';
+import { SignUpPlayerDto, LoginPlayerDto } from './dto';
 
 @Controller('auth')
 export class AuthController {
@@ -15,5 +15,10 @@ export class AuthController {
   @Post('/sign_up')
   createPlayer(@Body() signUpPlayerDto: SignUpPlayerDto) {
     return this.auth.createPlayer(signUpPlayerDto);
+  }
+
+  @Post('/login')
+  loginPlayer(@Body() loginPlayerDto: LoginPlayerDto) {
+    return this.auth.loginPlayer(loginPlayerDto);
   }
 }

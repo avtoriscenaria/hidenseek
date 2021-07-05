@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { SignUpPlayerDto } from './dto/signUpPlayerDto.dto';
+import { SignUpPlayerDto, LoginPlayerDto } from './dto';
 
 import { Player, PlayerDocument } from './schemas/player.schema';
 
@@ -18,6 +18,14 @@ export class AuthService {
   async createPlayer(playerDto: SignUpPlayerDto) {
     //const newPlayer = new this.playerModel(playerDto);
 
-    return { message: 'SUCCESS!' }; //newPlayer.save();
+    return { message: 'SIGN_UP' }; //newPlayer.save();
+  }
+
+  async loginPlayer(playerDto: LoginPlayerDto) {
+    console.log(playerDto);
+    const player = await this.playerModel.find(playerDto).exec();
+    console.log(player);
+
+    return { message: 'LOGIN' };
   }
 }
