@@ -1,4 +1,4 @@
-import { Router, Switch, Route } from "react-router-dom";
+import { Router, Switch, Route, Redirect } from "react-router-dom";
 import { createBrowserHistory } from "history";
 
 import ROUTES from "constants/routes";
@@ -11,6 +11,11 @@ const Navigation = () => {
   return (
     <Router history={history}>
       <Switch>
+        <Route
+          exact
+          path={"/"}
+          component={() => <Redirect to={ROUTES.auth.base} />}
+        />
         <Route path={ROUTES.auth.base} component={Auth} />
         <Route path={ROUTES.game.base} component={Game} />
       </Switch>
