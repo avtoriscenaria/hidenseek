@@ -1,2 +1,2 @@
 export const MONGO_URI =
-  'mongodb+srv://worker:hns2341675@cluster0.cjqvi.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+  'mongodb+srv://worker:Cp5DVYB9Ebropwab@cluster0.cjqvi.mongodb.net/HNS?retryWrites=true&w=majority';
