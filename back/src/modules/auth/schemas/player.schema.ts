@@ -5,10 +5,10 @@ export type PlayerDocument = Player & Document;
 
 @Schema()
 export class Player {
-  @Prop()
+  @Prop({ required: true })
   nickname: string;
 
-  @Prop()
+  @Prop({ required: true })
   password: string;
 }
 
