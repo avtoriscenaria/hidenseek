@@ -7,11 +7,6 @@ import { SignUpPlayerDto, LoginPlayerDto } from './dto';
 export class AuthController {
   constructor(private readonly auth: AuthService) {}
 
-  @Get('/')
-  getUsers() {
-    return this.auth.getAll();
-  }
-
   @Post('/sign_up')
   createPlayer(@Body() signUpPlayerDto: SignUpPlayerDto) {
     return this.auth.createPlayer(signUpPlayerDto);

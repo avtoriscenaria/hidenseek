@@ -1,43 +1,55 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import * as bcrypt from 'bcrypt';
+import * as argon2 from 'argon2';
 
 import { SignUpPlayerDto, LoginPlayerDto } from './dto';
 import { Player, PlayerDocument } from './schemas/player.schema';
+import { JWT } from '../common/services/jwt.service';
+import { Responce } from '../common/services/responce.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectModel(Player.name) private playerModel: Model<PlayerDocument>,
+    private jwt: JWT,
+    private responce: Responce,
   ) {}
-
-  async getAll(): Promise<Player[]> {
-    return this.playerModel.find().exec();
-  }
 
   async createPlayer(playerDto: SignUpPlayerDto) {
     const { password, nickname } = playerDto;
-
-    const salt = bcrypt.genSaltSync(11);
-    const hash = bcrypt.hashSync(password, salt);
-    const newPlayer = new this.playerModel({ nickname, password: hash });
-    console.log(newPlayer);
-    return newPlayer.save();
-    //return { message: 'check' };
+    const passwordHashed = await argon2.hash(password);
+    const newPlayer = new this.playerModel({
+      nickname,
+      password: passwordHashed,
+      admin: true,
+    });
+    newPlayer.save();
+    return { nickname };
   }
 
   async loginPlayer(playerDto: LoginPlayerDto) {
     const { nickname, password } = playerDto;
-    console.log(playerDto);
     const player = (await this.playerModel.find({ nickname }).exec())[0];
 
-    if (player) {
-      const confirm = await bcrypt.compare(password, player.password);
+    if (player !== undefined) {
+      const isPasswordCorrect = await argon2.verify(player.password, password);
 
-      console.log(confirm, password, player);
+      if (isPasswordCorrect) {
+        const token = await this.jwt.generateToken(player);
+
+        return this.responce.prepare({ data: { user: { nickname }, token } });
+      } else {
+        return this.responce.prepare({
+          status: 'failure',
+          message: 'Nickname or Password was wrong',
+        });
+      }
     }
 
-    return { message: 'LOGIN' };
+    return this.responce.prepare({
+      status: 'failure',
+      message: 'Nickname or Password was wrong',
+    });
   }
 }

@@ -5,4 +5,7 @@ export const API = {
     signup: { uri: "/auth/sign_up", method: "POST" },
     login: { uri: "/auth/login", method: "POST" },
   },
+  game: {
+    getGame: { uri: "/game", method: "GET" },
+  },
 };

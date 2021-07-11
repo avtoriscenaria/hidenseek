@@ -10,6 +10,9 @@ export class Player {
 
   @Prop({ required: true })
   password: string;
+
+  @Prop()
+  admin?: boolean;
 }
 
 export const PlayerSchema = SchemaFactory.createForClass(Player);

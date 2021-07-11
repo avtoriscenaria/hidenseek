@@ -1,17 +1,41 @@
 import { HOST } from "constants/api";
 
-const useApiRequest = () => {
-  const api = async (uri: string, method: string, data?: any) => {
-    return await fetch(`${HOST}${uri}`, {
+interface ApiRequestProps {
+  (
+    apiData: { uri: string; method: string },
+    actions?: {
+      data?: any;
+      onSuccess?: (data?: any) => void;
+      onFailure?: () => void;
+    }
+  ): { request: (data?: any) => Promise<void> };
+}
+
+const useApiRequest: ApiRequestProps = (
+  { uri, method },
+  { onSuccess = () => {}, onFailure = () => {} } = {}
+) => {
+  const request = async (data?: any) => {
+    const res = await fetch(`${HOST}${uri}`, {
       method,
       headers: {
         "Content-Type": "application/json",
       },
-      body: data ? JSON.stringify(data) : undefined,
-    }).then((res) => res.json());
+      body: data && method === "POST" ? JSON.stringify(data) : undefined,
+    }).then((res) => {
+      const { ok } = res;
+
+      if (ok) {
+        onSuccess(res.json());
+      } else {
+        onFailure();
+      }
+    });
+
+    console.log(res);
   };
 
-  return { api };
+  return { request };
 };
 
 export default useApiRequest;
