@@ -1,4 +1,4 @@
-import { HOST } from "constants/api";
+import { HOST, STATUSES } from "constants/api";
 
 interface ApiRequestProps {
   (
@@ -9,6 +9,12 @@ interface ApiRequestProps {
       onFailure?: () => void;
     }
   ): { request: (data?: any) => Promise<void> };
+}
+
+interface responseActionsProps {
+  status: string;
+  data?: any;
+  message?: any;
 }
 
 const useApiRequest: ApiRequestProps = (
@@ -26,16 +32,37 @@ const useApiRequest: ApiRequestProps = (
       const { ok } = res;
 
       if (ok) {
-        onSuccess(res.json());
+        return res.json();
       } else {
         onFailure();
       }
     });
 
-    console.log(res);
+    if (res !== undefined) {
+      responseActions(res, onSuccess, onFailure);
+    }
   };
 
   return { request };
+};
+
+const responseActions = (
+  res: responseActionsProps,
+  onSuccess: (data?: any) => void,
+  onFailure: (message?: string) => void
+) => {
+  const { status, data, message } = res;
+
+  switch (status) {
+    case STATUSES.success:
+      onSuccess(data);
+      break;
+    case STATUSES.failure:
+      onFailure(message);
+      break;
+    default:
+      break;
+  }
 };
 
 export default useApiRequest;

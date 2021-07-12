@@ -9,3 +9,10 @@ export const API = {
     getGame: { uri: "/game", method: "GET" },
   },
 };
+
+export enum STATUSES {
+  success = "success",
+  failure = "failure",
+  token_expiration = "token_expiration",
+  not_autorized = "not_autorized",
+}

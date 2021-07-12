@@ -12,7 +12,6 @@ export class JWT {
       _id: user._id,
       name: user.nickname,
     };
-    console.log('DATA', data);
     const signature = SECRET;
     const expiration = EXPIRATION_JWT;
 

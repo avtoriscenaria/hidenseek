@@ -6,14 +6,14 @@ import * as argon2 from 'argon2';
 import { SignUpPlayerDto, LoginPlayerDto } from './dto';
 import { Player, PlayerDocument } from './schemas/player.schema';
 import { JWT } from '../common/services/jwt.service';
-import { Responce } from '../common/services/responce.service';
+import { Response } from '../common/services/response.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectModel(Player.name) private playerModel: Model<PlayerDocument>,
     private jwt: JWT,
-    private responce: Responce,
+    private response: Response,
   ) {}
 
   async createPlayer(playerDto: SignUpPlayerDto) {
@@ -38,16 +38,16 @@ export class AuthService {
       if (isPasswordCorrect) {
         const token = await this.jwt.generateToken(player);
 
-        return this.responce.prepare({ data: { user: { nickname }, token } });
+        return this.response.prepare({ data: { user: { nickname }, token } });
       } else {
-        return this.responce.prepare({
+        return this.response.prepare({
           status: 'failure',
           message: 'Nickname or Password was wrong',
         });
       }
     }
 
-    return this.responce.prepare({
+    return this.response.prepare({
       status: 'failure',
       message: 'Nickname or Password was wrong',
     });

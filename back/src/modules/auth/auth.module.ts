@@ -5,13 +5,13 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { Player, PlayerSchema } from './schemas/player.schema';
 import { JWT } from '../common/services/jwt.service';
-import { Responce } from '../common/services/responce.service';
+import { Response } from '../common/services/response.service';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Player.name, schema: PlayerSchema }]),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JWT, Responce],
+  providers: [AuthService, JWT, Response],
 })
 export class AuthModule {}
