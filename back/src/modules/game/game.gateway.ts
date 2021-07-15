@@ -10,13 +10,13 @@ import { Logger } from '@nestjs/common';
 import { Socket, Server } from 'socket.io';
 
 @WebSocketGateway()
-export class AppGateway
+export class GameGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
   @WebSocketServer()
   server: Server;
 
-  private logger: Logger = new Logger('AppGateway');
+  private logger: Logger = new Logger('GameGateway');
 
   @SubscribeMessage('msgToServer')
   handleMessage(client: Socket, payload: string): void {

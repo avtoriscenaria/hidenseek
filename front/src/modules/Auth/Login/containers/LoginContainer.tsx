@@ -24,18 +24,9 @@ const LoginContainer: React.FC = () => {
 
   const onLogin = async () => {
     request(loginData);
-    // console.log("LOGIN");
-
-    // let res = await api(API.auth.login.uri, API.auth.login.method, {
-    //   nickname,
-    //   password,
-    // });
-    // console.log("RESULT", res);
-    // history.push(ROUTES.game.base);
   };
 
   const onSignUp = () => {
-    console.log("SIGN_UP");
     history.push(ROUTES.auth.signUp);
   };
 
