@@ -12,7 +12,7 @@ const LoginContainer: React.FC = () => {
   const history = useHistory();
   const { auth: authTranslations } = useTranslations();
   const { state: loginData, updateState } = useDataStorage();
-  const { request } = useLoginRequest();
+  const { request, error, message } = useLoginRequest();
 
   const onChange = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     const {
@@ -34,6 +34,8 @@ const LoginContainer: React.FC = () => {
     <LoginComponent
       loginData={loginData}
       translations={authTranslations}
+      error={error}
+      message={message}
       onLogin={onLogin}
       onChange={onChange}
       onSignUp={onSignUp}

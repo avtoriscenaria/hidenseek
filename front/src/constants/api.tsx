@@ -1,6 +1,9 @@
 export const HOST = "http://192.168.0.101:3005";
 
 export const API = {
+  app: {
+    varifyJWT: { uri: "/app", method: "GET" },
+  },
   auth: {
     signup: { uri: "/auth/sign_up", method: "POST", disableAuth: true },
     login: { uri: "/auth/login", method: "POST", disableAuth: true },

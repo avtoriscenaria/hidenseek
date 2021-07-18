@@ -24,7 +24,14 @@ const styles = () => ({
     marginBottom: 20,
   },
   password: {
-    marginBottom: 24,
+    marginBottom: 6,
+  },
+  error: {
+    minHeight: 14,
+    marginBottom: 14,
+    fontFamily: "NotoSans-Regular",
+    fontSize: 11,
+    color: colors.error,
   },
   login: {
     marginBottom: 12,

@@ -6,10 +6,13 @@ import Button from "common/components/Button";
 import useStyles from "common/hooks/useStyles";
 import { LoginData } from "../interfaces";
 import styles from "../styles";
+import { isLoginValid } from "../utils";
 
 interface LoginComponentProps {
   loginData: LoginData;
   translations: any;
+  error: boolean;
+  message: string;
   onChange: (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void;
   onLogin: () => void;
   onSignUp: () => void;
@@ -18,6 +21,8 @@ interface LoginComponentProps {
 const LoginComponent: React.FC<LoginComponentProps> = ({
   loginData: { nickname, password },
   translations,
+  error,
+  message,
   onChange,
   onLogin,
   onSignUp,
@@ -34,6 +39,7 @@ const LoginComponent: React.FC<LoginComponentProps> = ({
             label={translations.nickname}
             name="nickname"
             value={nickname}
+            error={error}
             onChange={onChange}
           />
           <Input
@@ -41,12 +47,15 @@ const LoginComponent: React.FC<LoginComponentProps> = ({
             label={translations.password}
             name="password"
             value={password}
+            error={error}
             onChange={onChange}
           />
         </div>
+        <div className={classes.error}>{message}</div>
         <Button
           classes={classes.login}
           label={translations.login}
+          disabled={!isLoginValid(nickname, password)}
           onClick={onLogin}
         />
         <div className={classes.registrationContainer}>

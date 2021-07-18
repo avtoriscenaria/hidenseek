@@ -7,6 +7,7 @@ import { SignUpPlayerDto, LoginPlayerDto } from './dto';
 import { Player, PlayerDocument } from './schemas/player.schema';
 import { JWT } from '../common/services/jwt.service';
 import { Response } from '../common/services/response.service';
+import messages, { STATUSES } from 'src/constants';
 
 @Injectable()
 export class AuthService {
@@ -17,15 +18,30 @@ export class AuthService {
   ) {}
 
   async createPlayer(playerDto: SignUpPlayerDto) {
-    const { password, nickname } = playerDto;
-    const passwordHashed = await argon2.hash(password);
-    const newPlayer = new this.playerModel({
-      nickname,
-      password: passwordHashed,
-      admin: true,
-    });
-    newPlayer.save();
-    return { nickname };
+    const { password, nickname: newNickname } = playerDto;
+    const nickname = newNickname.trim();
+
+    const player = (await this.playerModel.find({ nickname }).exec())[0];
+
+    let response = {};
+
+    if (player) {
+      response = {
+        status: 'failure',
+        message: `Player with this nickname exist`,
+      };
+    } else {
+      const passwordHashed = await argon2.hash(password);
+      const newPlayer = new this.playerModel({
+        nickname,
+        password: passwordHashed,
+        admin: true,
+      });
+      newPlayer.save();
+
+      response = { nickname };
+    }
+    return this.response.prepare(response);
   }
 
   async loginPlayer(playerDto: LoginPlayerDto) {
@@ -41,15 +57,15 @@ export class AuthService {
         return this.response.prepare({ data: { user: { nickname }, token } });
       } else {
         return this.response.prepare({
-          status: 'failure',
-          message: 'Nickname or Password was wrong',
+          status: STATUSES.failure,
+          message: messages.invalid_nickname_or_password,
         });
       }
     }
 
     return this.response.prepare({
-      status: 'failure',
-      message: 'Nickname or Password was wrong',
+      status: STATUSES.failure,
+      message: messages.invalid_nickname_or_password,
     });
   }
 }

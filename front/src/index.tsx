@@ -1,14 +1,15 @@
 import ReactDOM from "react-dom";
 
-import "./index.css";
-import AppLayout from "common/containers/AppLayoutContainer";
+import { AppLayoutContextProvider } from "contexts/AppLayoutContext";
 import Routes from "modules/Navigation";
+
+import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
-  <AppLayout>
-    <Routes />
-  </AppLayout>,
+  // <AppLayoutContextProvider>
+  <Routes />,
+  // </AppLayoutContextProvider>,
   document.getElementById("root")
 );
 

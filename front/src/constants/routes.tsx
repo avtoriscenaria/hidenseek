@@ -6,6 +6,9 @@ const ROUTES = {
   game: {
     base: "/game",
   },
+  account: {
+    base: "/account",
+  },
 };
 
 export default ROUTES;

@@ -8,6 +8,7 @@ interface InputProps {
   label: string;
   name: string;
   value?: string;
+  error?: boolean;
   onChange: (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void;
   classes?: string;
 }
@@ -16,6 +17,7 @@ export default function Input({
   label,
   name,
   value = "",
+  error,
   onChange,
   classes: propClass,
 }: InputProps) {
@@ -34,6 +36,7 @@ export default function Input({
         variant="outlined"
         name={name}
         value={value}
+        error={error}
         onChange={onChange}
       />
     </form>

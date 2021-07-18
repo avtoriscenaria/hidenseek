@@ -9,6 +9,10 @@ const translations = {
     signUp: "Зарегистрироваться",
     accountExistDescription: "Уже есть аккаунт?",
     login: "Войти",
+    nickname_or_password_error: "Nickname или пароль введены не верно",
+  },
+  account: {
+    logout: "Выйти",
   },
 };
 

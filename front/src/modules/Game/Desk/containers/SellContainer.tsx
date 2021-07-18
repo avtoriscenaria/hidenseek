@@ -2,9 +2,11 @@ import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 
+import { useSocketContext } from "contexts/SocketContext";
+
 import SellComponent from "../components/SellComponent";
 import { SellConfig, SellBorder } from "../interfaces";
-//import socket from "common/hooks/useSocketConnect";
+import { constants } from "zlib";
 
 interface SellContainerProps {
   config: SellConfig;
@@ -15,9 +17,11 @@ const SellContainer: React.FC<SellContainerProps> = ({
   config: sell,
   style,
 }) => {
+  const { socket } = useSocketContext();
   const [border, setBorder] = useState({});
+
   const move = () => {
-    //socket.emit("move", { message: "move" });
+    socket.emit("move", { message: "move" });
     console.log("MOVE");
   };
 

@@ -1,15 +1,15 @@
 import React from "react";
 
-//import socket from "common/hooks/useSocketConnect";
 import AppHeader from "../components/AppHeader";
 import useStyles from "common/hooks/useStyles";
 import styles from "../styles/AppLayoutStyles";
 
-export default function AppLayout({ children }: { children: React.ReactNode }) {
+interface AppLayoutProps {
+  children: React.ReactNode;
+}
+
+export default function AppLayout({ children }: AppLayoutProps) {
   const classes = useStyles(styles);
-  // socket.on("connect", () => {
-  //   console.log("CONNECTED!");
-  // });
 
   return (
     <div className={classes.root}>

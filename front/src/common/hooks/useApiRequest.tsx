@@ -1,8 +1,6 @@
-import { useHistory } from "react-router";
 import { HOST, STATUSES } from "constants/api";
 import LSData from "constants/LSData";
-import ROUTES from "constants/routes";
-import { History } from "history";
+import { useAppLayoutContext } from "contexts/AppLayoutContext";
 
 interface ApiRequestProps {
   (
@@ -10,7 +8,7 @@ interface ApiRequestProps {
     actions?: {
       data?: any;
       onSuccess?: (data?: any) => void;
-      onFailure?: () => void;
+      onFailure?: (data?: any) => void;
     }
   ): { request: (data?: any) => Promise<void> };
 }
@@ -25,7 +23,7 @@ const useApiRequest: ApiRequestProps = (
   { uri, method, disableAuth },
   { onSuccess = () => {}, onFailure = () => {} } = {}
 ) => {
-  const history = useHistory();
+  const { logout } = useAppLayoutContext();
   let Authorization: string;
 
   if (!disableAuth) {
@@ -57,7 +55,7 @@ const useApiRequest: ApiRequestProps = (
     });
 
     if (res !== undefined) {
-      responseActions(res, onSuccess, onFailure, history);
+      responseActions(res, onSuccess, onFailure, logout);
     }
   };
 
@@ -68,7 +66,7 @@ const responseActions = (
   res: responseActionsProps,
   onSuccess: (data?: any) => void,
   onFailure: (message?: string) => void,
-  history: History<unknown> | string[]
+  logout: () => void
 ) => {
   const { status, data, message } = res;
 
@@ -80,8 +78,7 @@ const responseActions = (
       onFailure(message);
       break;
     case STATUSES.token_expiration:
-      history.push(ROUTES.auth.base);
-      //onFailure(message);
+      logout();
       break;
     default:
       break;

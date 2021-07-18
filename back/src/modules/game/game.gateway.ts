@@ -27,6 +27,7 @@ export class GameGateway
   movePlayer(client: Socket, payload: string): void {
     console.log('CLIENT', client.id);
     console.log('PAYLOAD', payload);
+    client.broadcast.emit('move', payload);
   }
 
   afterInit(server: Server) {
@@ -37,7 +38,7 @@ export class GameGateway
     this.logger.log(`Client disconnected: ${client.id}`);
   }
 
-  handleConnection(client: Socket, ...args: any[]) {
+  handleConnection(client: Socket) {
     this.logger.log(`Client connected: ${client.id}`);
   }
 }
