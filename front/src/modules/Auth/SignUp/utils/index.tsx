@@ -10,3 +10,13 @@ export const isSignUpValid = (
     password === confirmPassword
   );
 };
+
+export const isPasswordConfirmed = (
+  password?: string,
+  confirmPassword?: string
+) => {
+  return (
+    (confirmPassword || "").trim() == "" ||
+    ((password || "").trim() !== "" && password === confirmPassword)
+  );
+};

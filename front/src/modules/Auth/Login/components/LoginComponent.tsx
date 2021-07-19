@@ -46,6 +46,7 @@ const LoginComponent: React.FC<LoginComponentProps> = ({
             classes={classes.password}
             label={translations.password}
             name="password"
+            type="password"
             value={password}
             error={error}
             onChange={onChange}

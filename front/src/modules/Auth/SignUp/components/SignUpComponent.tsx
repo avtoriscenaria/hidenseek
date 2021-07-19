@@ -5,23 +5,31 @@ import Input from "common/components/Input";
 import Button from "common/components/Button";
 import useStyles from "common/hooks/useStyles";
 import { SignUpData } from "../interfaces";
-import { isSignUpValid } from "../utils";
+import { isSignUpValid, isPasswordConfirmed } from "../utils";
 import styles from "../styles";
 
 interface SignUpComponentProps {
   signUpData: SignUpData;
   translations: any;
+  error: boolean;
+  message: string;
+  isFocusedConfirmPassword: boolean;
   onChange: (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void;
   onLogin: () => void;
   onSignUp: () => void;
+  setIsFocusedConfirmPassword: () => void;
 }
 
 const SignUpComponent: React.FC<SignUpComponentProps> = ({
   signUpData: { nickname, password, confirmPassword },
   translations,
+  error,
+  message,
+  isFocusedConfirmPassword,
   onChange,
   onLogin,
   onSignUp,
+  setIsFocusedConfirmPassword,
 }) => {
   const classes = useStyles(styles);
 
@@ -34,13 +42,16 @@ const SignUpComponent: React.FC<SignUpComponentProps> = ({
             classes={classes.nickname}
             label={translations.nickname}
             name="nickname"
+            error={error}
             value={nickname}
             onChange={onChange}
           />
+          <div className={classes.nicknameError}>{message}</div>
           <Input
             classes={classes.password}
             label={translations.password}
             name="password"
+            type="password"
             value={password}
             onChange={onChange}
           />
@@ -48,8 +59,14 @@ const SignUpComponent: React.FC<SignUpComponentProps> = ({
             classes={classes.confirmPassword}
             label={translations.confirmPassword}
             name="confirmPassword"
+            type="password"
             value={confirmPassword}
+            error={
+              isFocusedConfirmPassword &&
+              !isPasswordConfirmed(password, confirmPassword)
+            }
             onChange={onChange}
+            onFocus={setIsFocusedConfirmPassword}
           />
         </div>
         <Button

@@ -21,7 +21,14 @@ const styles = () => ({
   },
   inputFields: {},
   nickname: {
-    marginBottom: 20,
+    marginBottom: 6,
+  },
+  nicknameError: {
+    marginBottom: 16,
+    fontFamily: "NotoSans-Regular",
+    fontSize: 11,
+    color: colors.error,
+    whiteSpace: "break-spaces",
   },
   password: {
     marginBottom: 20,

@@ -1,5 +1,11 @@
-import { ChangeEvent } from "react";
-import TextField from "@material-ui/core/TextField";
+import { ChangeEvent, useState } from "react";
+import IconButton from "@material-ui/core/IconButton";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
+import InputLabel from "@material-ui/core/InputLabel";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import FormControl from "@material-ui/core/FormControl";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
 
 import useStyles from "../../hooks/useStyles";
 import styles from "./styles";
@@ -8,8 +14,10 @@ interface InputProps {
   label: string;
   name: string;
   value?: string;
+  type?: string;
   error?: boolean;
   onChange: (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void;
+  onFocus?: (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void;
   classes?: string;
 }
 
@@ -17,28 +25,48 @@ export default function Input({
   label,
   name,
   value = "",
+  type,
   error,
   onChange,
+  onFocus = () => {},
   classes: propClass,
 }: InputProps) {
   const classes = useStyles(styles);
+  const [showPassword, setShowPassword] = useState(false);
   const additionalClass = propClass ? ` ${propClass}` : "";
 
   return (
-    <form
+    <FormControl
       className={`${classes.root}${additionalClass}`}
-      noValidate
-      autoComplete="off"
+      variant="outlined"
+      error={error}
     >
-      <TextField
+      <InputLabel htmlFor={`input-${name}`}>{label}</InputLabel>
+      <OutlinedInput
         className={classes.input}
+        id={`input-${name}`}
         label={label}
-        variant="outlined"
-        name={name}
+        type={type === "password" && !showPassword ? "password" : "text"}
+        autoComplete="off"
         value={value}
-        error={error}
+        name={name}
         onChange={onChange}
+        onFocus={onFocus}
+        endAdornment={
+          type !== "password" ? null : (
+            <InputAdornment position="end">
+              <IconButton
+                aria-label="toggle password visibility"
+                onClick={() => setShowPassword(!showPassword)}
+                edge="end"
+              >
+                {showPassword ? <Visibility /> : <VisibilityOff />}
+              </IconButton>
+            </InputAdornment>
+          )
+        }
+        labelWidth={170}
       />
-    </form>
+    </FormControl>
   );
 }

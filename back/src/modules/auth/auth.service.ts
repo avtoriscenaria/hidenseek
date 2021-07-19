@@ -27,8 +27,8 @@ export class AuthService {
 
     if (player) {
       response = {
-        status: 'failure',
-        message: `Player with this nickname exist`,
+        status: STATUSES.failure,
+        message: messages.player_exist_warning,
       };
     } else {
       const passwordHashed = await argon2.hash(password);

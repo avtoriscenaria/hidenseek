@@ -10,6 +10,8 @@ const translations = {
     accountExistDescription: "Уже есть аккаунт?",
     login: "Войти",
     nickname_or_password_error: "Nickname или пароль введены не верно",
+    player_exist_warning:
+      "Игрок с таким nickname'ом уже существует.\nПридумай, пожалуйста, другой.",
   },
   account: {
     logout: "Выйти",
