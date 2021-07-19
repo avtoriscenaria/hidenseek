@@ -18,20 +18,12 @@ export class JWT {
     return jwt.sign({ data }, signature, { expiresIn: expiration });
   }
 
-  private getTokenFromHeader(headers) {
-    if (
-      headers.authorization &&
-      headers.authorization.split(' ')[0] === 'Bearer'
-    ) {
-      return headers.authorization.split(' ')[1];
+  async checkAuthToken({ token }) {
+    try {
+      jwt.verify(token, SECRET);
+      return true;
+    } catch (e) {
+      return false;
     }
-  }
-
-  async checkAuthToken({ headers }) {
-    const token = this.getTokenFromHeader(headers);
-
-    const isVerified = jwt.verify(token, SECRET);
-
-    console.log('isVerified', isVerified);
   }
 }

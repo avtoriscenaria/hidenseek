@@ -23,11 +23,13 @@ const AppLayoutContext = createContext(defaultContext);
 
 export const AppLayoutContextProvider: React.FC = ({ children }) => {
   const history = useHistory();
+  const [isAppLoaded, setIsAppLoaded] = useState(false);
   const [isAuthorized, setIsAuthorized] = useState(defaultContext.isAuthorized);
 
   useEffect(() => {
     verifyJWT((isVerified) => {
       setIsAuthorized(isVerified);
+      setIsAppLoaded(true);
       if (!isVerified) {
         history.push(ROUTES.auth.base);
       }
@@ -48,7 +50,7 @@ export const AppLayoutContextProvider: React.FC = ({ children }) => {
         logout,
       }}
     >
-      <AppLayout>{children}</AppLayout>
+      <AppLayout>{isAppLoaded ? children : <div>LOADER...</div>}</AppLayout>
     </AppLayoutContext.Provider>
   );
 };

@@ -9,14 +9,23 @@ import {
 import { Logger } from '@nestjs/common';
 import { Socket, Server } from 'socket.io';
 
+import { JWT } from '../common/services/jwt.service';
+
 @WebSocketGateway()
 export class GameGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
+  constructor(private jwt: JWT) {}
+
   @WebSocketServer()
   server: Server;
 
   private logger: Logger = new Logger('GameGateway');
+
+  @SubscribeMessage('')
+  middleware(client: Socket, payload: string): void {
+    console.log('MIDDLEWARE', client);
+  }
 
   @SubscribeMessage('msgToServer')
   handleMessage(client: Socket, payload: string): void {
@@ -39,6 +48,15 @@ export class GameGateway
   }
 
   handleConnection(client: Socket) {
+    client.use(async (req, next) => {
+      const isVerified = await this.jwt.checkAuthToken(client.handshake.query);
+
+      if (isVerified) {
+        next();
+      } else {
+        client.emit('logout');
+      }
+    });
     this.logger.log(`Client connected: ${client.id}`);
   }
 }

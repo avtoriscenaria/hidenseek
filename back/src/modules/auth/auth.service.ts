@@ -35,7 +35,6 @@ export class AuthService {
       const newPlayer = new this.playerModel({
         nickname,
         password: passwordHashed,
-        admin: true,
       });
       newPlayer.save();
 
