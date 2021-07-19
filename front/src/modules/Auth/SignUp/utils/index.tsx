@@ -16,7 +16,7 @@ export const isPasswordConfirmed = (
   confirmPassword?: string
 ) => {
   return (
-    (confirmPassword || "").trim() == "" ||
+    (confirmPassword || "").trim() === "" ||
     ((password || "").trim() !== "" && password === confirmPassword)
   );
 };

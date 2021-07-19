@@ -32,7 +32,7 @@ export const AppLayoutContextProvider: React.FC = ({ children }) => {
         history.push(ROUTES.auth.base);
       }
     });
-  }, []);
+  }, [history]);
 
   const logout = () => {
     localStorage.removeItem(LSData.authData);

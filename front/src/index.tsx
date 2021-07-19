@@ -1,17 +1,11 @@
 import ReactDOM from "react-dom";
 
-import { AppLayoutContextProvider } from "contexts/AppLayoutContext";
 import Routes from "modules/Navigation";
 
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 
-ReactDOM.render(
-  // <AppLayoutContextProvider>
-  <Routes />,
-  // </AppLayoutContextProvider>,
-  document.getElementById("root")
-);
+ReactDOM.render(<Routes />, document.getElementById("root"));
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

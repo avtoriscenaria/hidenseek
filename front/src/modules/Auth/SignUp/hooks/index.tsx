@@ -3,7 +3,6 @@ import { useHistory } from "react-router-dom";
 
 import ROUTES from "constants/routes";
 import { API } from "constants/api";
-import LSData from "constants/LSData";
 import useApiRequest from "common/hooks/useApiRequest";
 import messages from "constants/messages";
 import useTranslations from "common/hooks/useTranslations";

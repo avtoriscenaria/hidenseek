@@ -1,7 +1,7 @@
 import { API, HOST, STATUSES } from "constants/api";
 import LSData from "constants/LSData";
 
-export default async (callback: (result: boolean) => void = () => {}) => {
+const verifyJWT = async (callback: (result: boolean) => void = () => {}) => {
   const { uri, method } = API.app.varifyJWT;
 
   let Authorization: string;
@@ -26,3 +26,5 @@ export default async (callback: (result: boolean) => void = () => {}) => {
     callback(false);
   }
 };
+
+export default verifyJWT;
