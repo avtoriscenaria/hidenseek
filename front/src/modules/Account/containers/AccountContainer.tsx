@@ -7,10 +7,10 @@ import { useAppLayoutContext } from "contexts/AppLayoutContext";
 
 const AccountContainer: React.FC = () => {
   const { logout } = useAppLayoutContext();
-  const translations = useTranslations();
+  const { account: accountTranslations } = useTranslations();
 
   return (
-    <AccountComponent translations={translations.account} logout={logout} />
+    <AccountComponent translations={accountTranslations} logout={logout} />
   );
 };
 

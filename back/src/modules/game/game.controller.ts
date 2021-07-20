@@ -10,4 +10,9 @@ export class GameController {
   getUsers() {
     return this.game.getGame();
   }
+
+  @Post('/create')
+  createGame(@Body() createGameDto: any) {
+    return this.game.createGame(createGameDto);
+  }
 }

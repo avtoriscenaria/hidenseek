@@ -1,23 +1,17 @@
 import React from "react";
+import { Route, Switch } from "react-router-dom";
 
-import useStyles from "common/hooks/useStyles";
+import ROUTES from "constants/routes";
 
-import { SocketContextProvider } from "contexts/SocketContext";
-
-import Desk from "./Desk/containers/DeskContainer";
-import Info from "./Info/containers/InfoContainer";
-import styles from "./styles";
+import MenuScreen from "./screens/MenuScreen";
+import GameScreen from "./screens/GameScreen";
 
 const Game: React.FC = () => {
-  const classes = useStyles(styles);
-
   return (
-    <div className={classes.container}>
-      <SocketContextProvider>
-        <Desk />
-        <Info />
-      </SocketContextProvider>
-    </div>
+    <Switch>
+      <Route exact path={ROUTES.game.menu} component={MenuScreen} />
+      <Route exact path={ROUTES.game.base} component={GameScreen} />
+    </Switch>
   );
 };
 

@@ -11,7 +11,7 @@ import useTranslations from "common/hooks/useTranslations";
 
 export const useLoginRequest = () => {
   const history = useHistory();
-  const { auth } = useTranslations();
+  const { auth: authTranslations } = useTranslations();
 
   const [error, setError] = useState(false);
   const [message, setMessage] = useState("");
@@ -32,7 +32,7 @@ export const useLoginRequest = () => {
     onFailure: (resMessage) => {
       if (resMessage === messages.invalid_nickname_or_password) {
         setError(true);
-        setMessage(auth.nickname_or_password_error);
+        setMessage(authTranslations.nickname_or_password_error);
       } else {
         setMessage(resMessage);
       }

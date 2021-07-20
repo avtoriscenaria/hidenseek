@@ -9,7 +9,7 @@ import useTranslations from "common/hooks/useTranslations";
 
 export const useSignUpRequest = () => {
   const history = useHistory();
-  const { auth } = useTranslations();
+  const { auth: authTranslations } = useTranslations();
 
   const [error, setError] = useState(false);
   const [message, setMessage] = useState("");
@@ -21,7 +21,7 @@ export const useSignUpRequest = () => {
     onFailure: (resMessage) => {
       if (resMessage === messages.player_exist_warning) {
         setError(true);
-        setMessage(auth.player_exist_warning);
+        setMessage(authTranslations.player_exist_warning);
       } else {
         setMessage(resMessage);
       }

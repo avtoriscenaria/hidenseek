@@ -1,9 +1,11 @@
-import React, { createContext, useContext } from "react";
+import React, { createContext, useContext, useState } from "react";
 
 import { HOST } from "constants/api";
 import localStorageHelper from "common/utils/localStorageHelper";
 import LSData from "constants/LSData";
+
 import { useAppLayoutContext } from "./AppLayoutContext";
+import { useEffect } from "react";
 
 const io = require("socket.io-client");
 
@@ -18,8 +20,7 @@ const SocketContext = createContext(defaultContext);
 export const SocketContextProvider: React.FC = ({ children }) => {
   const { token } = localStorageHelper("get", LSData.authData) || {};
   const { logout } = useAppLayoutContext();
-  console.log("TOKEN", token);
-  const socket = io(HOST, { query: { token } });
+  const [socket] = useState(io(HOST, { query: { token } }));
 
   socket.on("connect", () => console.log("SOCKET CONNECTED!..."));
   socket.on("logout", logout);

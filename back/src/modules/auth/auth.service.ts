@@ -53,7 +53,9 @@ export class AuthService {
       if (isPasswordCorrect) {
         const token = await this.jwt.generateToken(player);
 
-        return this.response.prepare({ data: { user: { nickname }, token } });
+        return this.response.prepare({
+          data: { user: { nickname, admin: player.admin }, token },
+        });
       } else {
         return this.response.prepare({
           status: STATUSES.failure,

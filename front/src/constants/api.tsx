@@ -9,7 +9,7 @@ export const API = {
     login: { uri: "/auth/login", method: "POST", disableAuth: true },
   },
   game: {
-    getGame: { uri: "/game", method: "GET" },
+    createtGame: { uri: "/game/create", method: "POST" },
   },
 };
 

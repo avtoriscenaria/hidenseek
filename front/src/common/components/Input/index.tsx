@@ -16,6 +16,8 @@ interface InputProps {
   value?: string;
   type?: string;
   error?: boolean;
+  placeholder?: string;
+  multiline?: boolean;
   onChange: (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void;
   onFocus?: (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void;
   classes?: string;
@@ -27,6 +29,8 @@ export default function Input({
   value = "",
   type,
   error,
+  placeholder,
+  multiline,
   onChange,
   onFocus = () => {},
   classes: propClass,
@@ -50,6 +54,8 @@ export default function Input({
         autoComplete="off"
         value={value}
         name={name}
+        placeholder={placeholder}
+        multiline={multiline}
         onChange={onChange}
         onFocus={onFocus}
         endAdornment={
