@@ -8,12 +8,17 @@ import { useAppLayoutContext } from "contexts/AppLayoutContext";
 import useApiRequest from "common/hooks/useApiRequest";
 import { useState } from "react";
 import useTranslations from "common/hooks/useTranslations";
+import { useSocketContext } from "contexts/SocketContext";
 
 export const useGameCreateRequest = () => {
   const history = useHistory();
 
+  const {} = useSocketContext();
+
   const { request } = useApiRequest(API.game.createtGame, {
-    onSuccess: (data) => {},
+    onSuccess: (data) => {
+      console.log(data);
+    },
     onFailure: (resMessage) => {},
   });
 

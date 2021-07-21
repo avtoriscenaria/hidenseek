@@ -69,4 +69,27 @@ export class AuthService {
       message: messages.invalid_nickname_or_password,
     });
   }
+
+  async getPlayer(nickname: string, request: Request) {
+    const { nickname: jwtNickname, _id } = await this.jwt.decodeAuthToken(
+      request,
+    );
+
+    if (jwtNickname === nickname) {
+      const player = (await this.playerModel.find({ nickname }).exec())[0];
+
+      if (player !== undefined && player._id.toString() === _id.toString()) {
+        const { admin, _id } = player;
+
+        return this.response.prepare({
+          status: STATUSES.success,
+          data: { player: { nickname, admin, _id } },
+        });
+      }
+    }
+
+    return this.response.prepare({
+      status: STATUSES.not_authorized,
+    });
+  }
 }

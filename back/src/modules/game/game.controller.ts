@@ -12,7 +12,7 @@ export class GameController {
   }
 
   @Post('/create')
-  createGame(@Body() createGameDto: any) {
-    return this.game.createGame(createGameDto);
+  createGame(@Body() playerCreator: { nickname: string; _id: string }) {
+    return this.game.createGame(playerCreator);
   }
 }

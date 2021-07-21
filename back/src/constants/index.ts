@@ -10,5 +10,12 @@ export enum STATUSES {
   success = 'success',
   failure = 'failure',
   token_expiration = 'token_expiration',
-  not_autorized = 'not_autorized',
+  not_authorized = 'not_autorized',
+}
+
+export enum GAME_STATUSES {
+  start = 'start',
+  in_process = 'in_process',
+  finished = 'finished',
+  delete = 'delete',
 }

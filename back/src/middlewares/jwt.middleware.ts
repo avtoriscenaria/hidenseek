@@ -10,7 +10,6 @@ export class JWTMiddleware implements NestMiddleware {
 
     try {
       jwt.verify(token, SECRET);
-      console.log('JWT success');
       next();
     } catch (e) {
       console.log('JWT failure');

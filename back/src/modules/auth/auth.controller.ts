@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Req } from '@nestjs/common';
 
 import { AuthService } from './auth.service';
 import { SignUpPlayerDto, LoginPlayerDto } from './dto';
@@ -15,5 +15,11 @@ export class AuthController {
   @Post('/login')
   loginPlayer(@Body() loginPlayerDto: LoginPlayerDto) {
     return this.auth.loginPlayer(loginPlayerDto);
+  }
+
+  @Get('/get_player/:nickname')
+  getPlayer(@Req() request, @Param() params: { nickname: string }) {
+    const { nickname } = params;
+    return this.auth.getPlayer(nickname, request);
   }
 }

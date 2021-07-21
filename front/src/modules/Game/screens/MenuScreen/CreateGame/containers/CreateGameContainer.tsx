@@ -4,12 +4,14 @@ import useTranslations from "common/hooks/useTranslations";
 
 import CreateGameComponent from "../components/CreateGameComponent";
 import { useGameCreateRequest } from "../hooks";
+import { useAppLayoutContext } from "contexts/AppLayoutContext";
 
 const CreateGameContainer: React.FC = () => {
   const { game: gameTranslations } = useTranslations();
+  const { player: { nickname, _id } = {} } = useAppLayoutContext();
   const { request } = useGameCreateRequest();
 
-  const onCreateGame = () => request({ playerID: "check" });
+  const onCreateGame = () => request({ nickname, _id });
 
   return (
     <CreateGameComponent

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, memo } from "react";
 
 import { HOST } from "constants/api";
 import localStorageHelper from "common/utils/localStorageHelper";
@@ -13,14 +13,20 @@ interface Socket {
   socket?: any;
 }
 
-const defaultContext: Socket = {};
+const defaultContext: Socket = {
+  socket: { on: (message: string, action: () => void) => {} },
+};
 
 const SocketContext = createContext(defaultContext);
 
-export const SocketContextProvider: React.FC = ({ children }) => {
+export const SocketContextProvider: React.FC = memo(({ children }) => {
   const { token } = localStorageHelper("get", LSData.authData) || {};
   const { logout } = useAppLayoutContext();
-  const [socket] = useState(io(HOST, { query: { token } }));
+  const [socket, setSocket] = useState(defaultContext.socket);
+
+  useEffect(() => {
+    setSocket(io(HOST, { query: { token } }));
+  }, []);
 
   socket.on("connect", () => console.log("SOCKET CONNECTED!..."));
   socket.on("logout", logout);
@@ -35,7 +41,7 @@ export const SocketContextProvider: React.FC = ({ children }) => {
       {children}
     </SocketContext.Provider>
   );
-};
+});
 
 export const useSocketContext = (): Socket => useContext(SocketContext);
 

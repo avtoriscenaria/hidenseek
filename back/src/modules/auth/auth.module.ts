@@ -1,6 +1,7 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
+import { JWTMiddleware } from 'src/middlewares/jwt.middleware';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { Player, PlayerSchema } from './schemas/player.schema';
@@ -14,4 +15,8 @@ import { Response } from '../common/services/response.service';
   controllers: [AuthController],
   providers: [AuthService, JWT, Response],
 })
-export class AuthModule {}
+export class AuthModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(JWTMiddleware).forRoutes('/auth/get_player');
+  }
+}

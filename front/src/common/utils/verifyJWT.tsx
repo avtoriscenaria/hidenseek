@@ -1,19 +1,25 @@
 import { API, HOST, STATUSES } from "constants/api";
 import LSData from "constants/LSData";
+import Player from "common/interfaces/Player";
 
-const verifyJWT = async (callback: (result: boolean) => void = () => {}) => {
-  const { uri, method } = API.app.varifyJWT;
+const verifyJWT = async (
+  callback: (result?: {
+    isVerified: boolean;
+    player?: Player;
+  }) => void = () => {}
+) => {
+  const { uri, method } = API.auth.getPlayer;
 
   let Authorization: string;
 
   const authDataString = localStorage.getItem(LSData.authData);
 
   if (authDataString) {
-    const { token } = JSON.parse(authDataString);
+    const { token, nickname } = JSON.parse(authDataString);
 
     Authorization = `Bearer ${token}`;
 
-    const res = await fetch(`${HOST}${uri}`, {
+    const res = await fetch(`${HOST}${uri}/${nickname}`, {
       method,
       headers: {
         "Content-Type": "application/json",
@@ -21,9 +27,12 @@ const verifyJWT = async (callback: (result: boolean) => void = () => {}) => {
       },
     }).then((res) => res.json());
 
-    callback(res.status === STATUSES.success);
+    callback({
+      isVerified: res.status === STATUSES.success,
+      player: res.data?.player,
+    });
   } else {
-    callback(false);
+    callback();
   }
 };
 

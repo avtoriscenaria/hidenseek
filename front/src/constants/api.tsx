@@ -1,12 +1,10 @@
-export const HOST = "http://192.168.0.101:3005";
+export const HOST = "http://192.168.0.104:3005";
 
 export const API = {
-  app: {
-    varifyJWT: { uri: "/app", method: "GET" },
-  },
   auth: {
     signup: { uri: "/auth/sign_up", method: "POST", disableAuth: true },
     login: { uri: "/auth/login", method: "POST", disableAuth: true },
+    getPlayer: { uri: "/auth/get_player", method: "GET" },
   },
   game: {
     createtGame: { uri: "/game/create", method: "POST" },
