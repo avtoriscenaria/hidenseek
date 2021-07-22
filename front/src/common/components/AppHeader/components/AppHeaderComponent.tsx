@@ -10,12 +10,14 @@ import styles from "../styles";
 
 interface AppHeaderProps {
   isAuthorized: boolean;
+  disableTitleNavigation: boolean;
   handleGame: (event: React.MouseEvent<HTMLElement>) => void;
   handleMenu: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
 export default function AppHeader({
   isAuthorized,
+  disableTitleNavigation,
   handleGame,
   handleMenu,
 }: AppHeaderProps) {
@@ -28,7 +30,11 @@ export default function AppHeader({
           <div className={classes.titleContainer}>
             <Typography
               variant="h6"
-              className={classes.title}
+              className={
+                disableTitleNavigation
+                  ? classes.notAuthorizedTitle
+                  : classes.title
+              }
               onClick={handleGame}
             >
               Hide & Seek

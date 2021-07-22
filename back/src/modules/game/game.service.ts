@@ -17,10 +17,7 @@ export class GameService {
   ) {}
 
   async getGame(_id) {
-    console.log(_id);
     const game = (await this.gameModel.find({ _id }).exec())[0];
-
-    console.log(game);
 
     if (game === undefined) {
       return this.response.prepare({

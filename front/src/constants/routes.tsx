@@ -6,6 +6,7 @@ const ROUTES = {
   game: {
     base: "/game",
     menu: "/game/menu",
+    config: "/game/config",
   },
   account: {
     base: "/account",

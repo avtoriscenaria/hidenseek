@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useRef,
+} from "react";
 
 import { HOST } from "constants/api";
 import { Game } from "common/interfaces/Game";
@@ -17,7 +23,6 @@ interface Socket {
 }
 
 const defaultContext: Socket = {
-  socket: { on: (message: string, action: () => void) => {} },
   setGame: () => {},
 };
 
@@ -26,11 +31,22 @@ const SocketContext = createContext(defaultContext);
 export const SocketContextProvider: React.FC = ({ children }) => {
   const { token } = localStorageHelper("get", LSData.authData) || {};
   const { logout, hasGame } = useAppLayoutContext();
-  const [socket, setSocket] = useState(defaultContext.socket);
   const [game, setGame] = useState<Game | undefined>();
+  const [contextSocket, setContextSocket] = useState();
 
   useEffect(() => {
-    setSocket(io(HOST, { query: { token } }));
+    console.log("MOUNT");
+    const socket = io(HOST, { query: { token } });
+    setContextSocket(socket);
+
+    socket.on("connect", () => console.log("SOCKET CONNECTED!..."));
+    socket.on("logout", logout);
+    socket.on("move", () => console.log("PLAYER MOVE"));
+    socket.on("disconnect", () => console.log("DISCONECTED"));
+
+    return () => {
+      console.log("UNMOUNT");
+    };
   }, []);
 
   useEffect(() => {
@@ -43,14 +59,10 @@ export const SocketContextProvider: React.FC = ({ children }) => {
     }
   }, [hasGame]);
 
-  socket.on("connect", () => console.log("SOCKET CONNECTED!..."));
-  socket.on("logout", logout);
-  socket.on("move", () => console.log("PLAYER MOVE"));
-
   return (
     <SocketContext.Provider
       value={{
-        socket,
+        socket: contextSocket,
         game,
         setGame,
       }}

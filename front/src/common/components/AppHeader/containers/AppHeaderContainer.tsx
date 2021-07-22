@@ -10,8 +10,12 @@ export default function AppHeaderContainer() {
   const history = useHistory();
   const { isAuthorized } = useAppLayoutContext();
 
+  const disableTitleNavigation = !isAuthorized;
+
   const handleGame = (event: React.MouseEvent<HTMLElement>) => {
-    history.push(ROUTES.game.base);
+    if (!disableTitleNavigation) {
+      history.push(ROUTES.game.base);
+    }
   };
 
   const handleMenu = () => {
@@ -21,6 +25,7 @@ export default function AppHeaderContainer() {
   return (
     <AppHeader
       isAuthorized={isAuthorized}
+      disableTitleNavigation={disableTitleNavigation}
       handleGame={handleGame}
       handleMenu={handleMenu}
     />

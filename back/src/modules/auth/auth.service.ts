@@ -52,9 +52,10 @@ export class AuthService {
 
       if (isPasswordCorrect) {
         const token = await this.jwt.generateToken(player);
+        const { admin, _id, game_id } = player;
 
         return this.response.prepare({
-          data: { user: { nickname, admin: player.admin }, token },
+          data: { player: { nickname, admin, _id, game_id }, token },
         });
       } else {
         return this.response.prepare({

@@ -13,6 +13,10 @@ const styles = () => ({
     cursor: "pointer",
     width: "max-content",
   },
+  notAuthorizedTitle: {
+    userSelect: "none",
+    width: "max-content",
+  },
 });
 
 export default styles;
