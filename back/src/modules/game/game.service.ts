@@ -2,21 +2,34 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
-import { GAME_STATUSES } from 'src/constants';
+import messages, { GAME_STATUSES, STATUSES } from 'src/constants';
 
 import { Response } from '../common/services/response.service';
 import { Game, GameDocument } from './schemas/game.schema';
+import { Player, PlayerDocument } from '../auth/schemas/player.schema';
 
 @Injectable()
 export class GameService {
   constructor(
     @InjectModel(Game.name) private gameModel: Model<GameDocument>,
+    @InjectModel(Player.name) private playerModel: Model<PlayerDocument>,
     private response: Response,
   ) {}
 
-  async getGame() {
-    console.log('GET GAME');
-    return { message: 'GET_GAME' };
+  async getGame(_id) {
+    console.log(_id);
+    const game = (await this.gameModel.find({ _id }).exec())[0];
+
+    console.log(game);
+
+    if (game === undefined) {
+      return this.response.prepare({
+        status: STATUSES.failure,
+        message: messages.game_not_exist,
+      });
+    }
+
+    return this.response.prepare({ data: { game } });
   }
 
   async createGame(playerCreator) {
@@ -29,6 +42,11 @@ export class GameService {
     });
     newGame.save();
 
-    return this.response.prepare({ data: newGame });
+    const player = (await this.playerModel.find({ nickname }).exec())[0];
+
+    player.game_id = newGame._id;
+    player.save();
+
+    return this.response.prepare({ data: { game: newGame } });
   }
 }

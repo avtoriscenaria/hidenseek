@@ -12,6 +12,7 @@ import useTranslations from "common/hooks/useTranslations";
 export const useLoginRequest = () => {
   const history = useHistory();
   const { auth: authTranslations } = useTranslations();
+  const { setPlayer } = useAppLayoutContext();
 
   const [error, setError] = useState(false);
   const [message, setMessage] = useState("");
@@ -20,9 +21,10 @@ export const useLoginRequest = () => {
   const { request } = useApiRequest(API.auth.login, {
     onSuccess: (data) => {
       const {
-        user: { nickname },
+        user: { nickname, _id, admin },
         token,
       } = data;
+      setPlayer({ nickname, _id, admin });
       const authData = JSON.stringify({ nickname, token });
       localStorage.setItem(LSData.authData, authData);
       setIsAuthorized(true);

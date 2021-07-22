@@ -79,11 +79,11 @@ export class AuthService {
       const player = (await this.playerModel.find({ nickname }).exec())[0];
 
       if (player !== undefined && player._id.toString() === _id.toString()) {
-        const { admin, _id } = player;
+        const { admin, _id, game_id } = player;
 
         return this.response.prepare({
           status: STATUSES.success,
-          data: { player: { nickname, admin, _id } },
+          data: { player: { nickname, admin, _id, game_id } },
         });
       }
     }

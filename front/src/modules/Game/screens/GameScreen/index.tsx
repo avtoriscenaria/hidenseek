@@ -11,9 +11,9 @@ import styles from "./styles";
 
 const GameScreen: React.FC = () => {
   const classes = useStyles(styles);
-  const { isInGame } = useAppLayoutContext();
+  const { hasGame } = useAppLayoutContext();
 
-  return !isInGame ? (
+  return !hasGame ? (
     <Redirect to={ROUTES.game.menu} />
   ) : (
     <div className={classes.container}>

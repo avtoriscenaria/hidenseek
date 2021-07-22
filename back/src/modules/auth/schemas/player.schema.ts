@@ -13,6 +13,12 @@ export class Player {
 
   @Prop()
   admin?: boolean;
+
+  @Prop()
+  game_id: string;
+
+  @Prop({ default: [] })
+  games_played: [string];
 }
 
 export const PlayerSchema = SchemaFactory.createForClass(Player);

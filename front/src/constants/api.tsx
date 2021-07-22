@@ -8,6 +8,7 @@ export const API = {
   },
   game: {
     createtGame: { uri: "/game/create", method: "POST" },
+    getGame: { uri: "/game", method: "GET" },
   },
 };
 

@@ -1,4 +1,5 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { ObjectId } from 'mongoose';
 
 import { GameService } from './game.service';
 
@@ -6,9 +7,9 @@ import { GameService } from './game.service';
 export class GameController {
   constructor(private readonly game: GameService) {}
 
-  @Get('/')
-  getUsers() {
-    return this.game.getGame();
+  @Get('/:game_id')
+  getUsers(@Param() { game_id }: { game_id: ObjectId }) {
+    return this.game.getGame(game_id);
   }
 
   @Post('/create')

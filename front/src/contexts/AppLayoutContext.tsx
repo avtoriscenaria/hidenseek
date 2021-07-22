@@ -11,18 +11,19 @@ import Player from "common/interfaces/Player";
 
 interface AppLayoutProps {
   isAuthorized: boolean;
-  isInGame: boolean;
+  hasGame?: string;
   player?: Player;
   setIsAuthorized: (value: boolean) => void;
-  setIsInGame: (value: boolean) => void;
+  setHasGame: (value: string) => void;
+  setPlayer: (player: Player) => void;
   logout: () => void;
 }
 
 const defaultContext: AppLayoutProps = {
   isAuthorized: false,
-  isInGame: false,
   setIsAuthorized: () => {},
-  setIsInGame: () => {},
+  setHasGame: () => {},
+  setPlayer: () => {},
   logout: () => {},
 };
 
@@ -32,7 +33,7 @@ export const AppLayoutContextProvider: React.FC = ({ children }) => {
   const history = useHistory();
   const [isAppLoaded, setIsAppLoaded] = useState(false);
   const [isAuthorized, setIsAuthorized] = useState(defaultContext.isAuthorized);
-  const [isInGame, setIsInGame] = useState(defaultContext.isInGame);
+  const [hasGame, setHasGame] = useState<string | undefined>();
   const [player, setPlayer] = useState<Player | undefined>();
 
   useEffect(() => {
@@ -44,6 +45,7 @@ export const AppLayoutContextProvider: React.FC = ({ children }) => {
         history.push(ROUTES.auth.base);
       } else {
         setPlayer(player);
+        setHasGame(player?.game_id);
         history.push(ROUTES.game.base);
       }
     });
@@ -59,10 +61,11 @@ export const AppLayoutContextProvider: React.FC = ({ children }) => {
     <AppLayoutContext.Provider
       value={{
         isAuthorized,
-        isInGame,
+        hasGame,
         player,
         setIsAuthorized,
-        setIsInGame,
+        setHasGame,
+        setPlayer,
         logout,
       }}
     >
