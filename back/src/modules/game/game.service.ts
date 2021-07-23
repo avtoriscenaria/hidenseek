@@ -7,6 +7,7 @@ import messages, { GAME_STATUSES, STATUSES } from 'src/constants';
 import { Response } from '../common/services/response.service';
 import { Game, GameDocument } from './schemas/game.schema';
 import { Player, PlayerDocument } from '../auth/schemas/player.schema';
+import getPlayerStartPlace from '../common/utils/getPlayerStartPlace';
 
 @Injectable()
 export class GameService {
@@ -31,11 +32,12 @@ export class GameService {
 
   async createGame(playerCreator) {
     const { nickname, _id } = playerCreator;
+    const position = getPlayerStartPlace();
 
     const newGame = new this.gameModel({
       status: GAME_STATUSES.start,
       hide: true,
-      players: [{ nickname, _id, creator: true }],
+      players: [{ nickname, _id, creator: true, position }],
     });
     newGame.save();
 

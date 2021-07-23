@@ -17,6 +17,7 @@ const DeskComponent: React.FC = () => {
             <Sell
               key={`cell-${i}`}
               config={s}
+              coordinates={{ x: i + 1, y: 10 - j }}
               style={{
                 borderRadius: borderRadius(
                   i,

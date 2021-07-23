@@ -10,4 +10,6 @@ export interface GamePlayer {
   creator?: boolean;
   hunter?: boolean;
   cached?: boolean;
+  color: string;
+  position: { x: number; y: number };
 }

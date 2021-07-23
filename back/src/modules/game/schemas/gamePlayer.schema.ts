@@ -19,6 +19,9 @@ export class GamePlayer {
 
   @Prop()
   cached: boolean;
+
+  @Prop()
+  position: { x: number; y: number };
 }
 
 export const GameSchema = SchemaFactory.createForClass(GamePlayer);

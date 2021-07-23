@@ -46,6 +46,8 @@ export const SocketContextProvider: React.FC = ({ children }) => {
 
     return () => {
       console.log("UNMOUNT");
+
+      socket.emit("disconnect", () => console.log("DISCONECTED"));
     };
   }, []);
 
