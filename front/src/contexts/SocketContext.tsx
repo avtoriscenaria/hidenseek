@@ -31,31 +31,37 @@ const SocketContext = createContext(defaultContext);
 export const SocketContextProvider: React.FC = ({ children }) => {
   const { token } = localStorageHelper("get", LSData.authData) || {};
   const { logout, hasGame } = useAppLayoutContext();
+  const [connect, setConnected] = useState(false);
   const [game, setGame] = useState<Game | undefined>();
   const [contextSocket, setContextSocket] = useState();
 
   useEffect(() => {
-    console.log("MOUNT");
-    const socket = io(HOST, { query: { token } });
-    setContextSocket(socket);
+    if (connect) {
+      console.log("CONNECT SOCKET GAME", hasGame);
+      const socket = io(HOST, { query: { token } });
+      setContextSocket(socket);
 
-    socket.on("connect", () => console.log("SOCKET CONNECTED!..."));
-    socket.on("logout", logout);
-    socket.on("move", () => console.log("PLAYER MOVE"));
-    socket.on("disconnect", () => console.log("DISCONECTED"));
+      socket.on("connect", (socket: any) =>
+        console.log("SOCKET CONNECTED!...", socket)
+      );
+      socket.on("logout", logout);
+      socket.on("move", () => console.log("PLAYER MOVE"));
+      socket.on("disconnect", () => console.log("DISCONECTED"));
 
-    return () => {
-      console.log("UNMOUNT");
+      return () => {
+        console.log("UNMOUNT");
 
-      socket.emit("disconnect", () => console.log("DISCONECTED"));
-    };
-  }, []);
+        socket.emit("disconnect", () => console.log("DISCONECTED"));
+      };
+    }
+  }, [connect]);
 
   useEffect(() => {
     if (Boolean(hasGame) && game === undefined) {
       getGame(hasGame, (responseGame) => {
         if (Boolean(responseGame)) {
           setGame(responseGame);
+          setConnected(true);
         }
       });
     }
