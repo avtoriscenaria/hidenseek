@@ -22,21 +22,12 @@ export class GameGateway
 
   private logger: Logger = new Logger('GameGateway');
 
-  @SubscribeMessage('')
-  middleware(client: Socket, payload: string): void {
-    console.log('MIDDLEWARE', client);
-  }
-
-  @SubscribeMessage('msgToServer')
-  handleMessage(client: Socket, payload: string): void {
-    this.server.emit('msgToClient', payload);
-  }
-
   @SubscribeMessage('move')
   movePlayer(client: Socket, payload: string): void {
-    console.log('CLIENT', client.id);
+    const { room } = client.handshake.query;
+    console.log('CLIENT', room);
     console.log('PAYLOAD', payload);
-    client.broadcast.emit('move', payload);
+    client.broadcast.to(room).emit('move', payload);
   }
 
   afterInit(server: Server) {
@@ -47,9 +38,10 @@ export class GameGateway
     this.logger.log(`Client disconnected: ${client.id}`);
   }
 
-  handleConnection(client: Socket) {
+  async handleConnection(client: Socket) {
+    const { token, room } = client.handshake.query;
     client.use(async (req, next) => {
-      const isVerified = await this.jwt.checkAuthToken(client.handshake.query);
+      const isVerified = await this.jwt.checkAuthToken(token);
 
       if (isVerified) {
         next();
@@ -57,6 +49,8 @@ export class GameGateway
         client.emit('logout');
       }
     });
+    client.join(room);
+
     this.logger.log(`Client connected: ${client.id}`);
   }
 }

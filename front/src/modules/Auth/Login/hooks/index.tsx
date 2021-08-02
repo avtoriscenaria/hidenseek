@@ -29,7 +29,7 @@ export const useLoginRequest = () => {
       localStorage.setItem(LSData.authData, authData);
       setIsAuthorized(true);
 
-      history.push(ROUTES.game.base);
+      history.push(ROUTES.game.menu);
     },
     onFailure: (resMessage) => {
       if (resMessage === messages.invalid_nickname_or_password) {

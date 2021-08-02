@@ -46,7 +46,7 @@ export const AppLayoutContextProvider: React.FC = ({ children }) => {
       } else {
         setPlayer(player);
         setHasGame(player?.game_id);
-        history.push(ROUTES.game.base);
+        history.push(ROUTES.game.menu);
       }
     });
   }, [history]);

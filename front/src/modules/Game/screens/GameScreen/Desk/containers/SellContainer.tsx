@@ -42,8 +42,8 @@ const SellContainer: React.FC<SellContainerProps> = memo(
     }, [players]);
 
     const move = () => {
-      socket.emit("move", { message: "move" });
-      console.log("MOVE");
+      //socket.emit("move", { message: "move" });
+      console.log("MOVE", { x, y });
     };
 
     return (

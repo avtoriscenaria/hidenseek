@@ -18,7 +18,7 @@ export class JWT {
     return jwt.sign({ data }, signature, { expiresIn: expiration });
   }
 
-  async checkAuthToken({ token }) {
+  async checkAuthToken(token) {
     try {
       jwt.verify(token, SECRET);
       return true;

@@ -1,11 +1,7 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  useRef,
-} from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
+import { useHistory } from "react-router";
 
+import { GAME_STATUSES } from "constants/gameConstants";
 import { HOST } from "constants/api";
 import { Game } from "common/interfaces/Game";
 import localStorageHelper from "common/utils/localStorageHelper";
@@ -13,6 +9,7 @@ import getGame from "common/utils/getGame";
 import LSData from "constants/LSData";
 
 import { useAppLayoutContext } from "./AppLayoutContext";
+import ROUTES from "constants/routes";
 
 const io = require("socket.io-client");
 
@@ -29,6 +26,7 @@ const defaultContext: Socket = {
 const SocketContext = createContext(defaultContext);
 
 export const SocketContextProvider: React.FC = ({ children }) => {
+  const history = useHistory();
   const { token } = localStorageHelper("get", LSData.authData) || {};
   const { logout, hasGame } = useAppLayoutContext();
   const [connect, setConnected] = useState(false);
@@ -38,12 +36,10 @@ export const SocketContextProvider: React.FC = ({ children }) => {
   useEffect(() => {
     if (connect) {
       console.log("CONNECT SOCKET GAME", hasGame);
-      const socket = io(HOST, { query: { token } });
+      const socket = io(HOST, { query: { token, room: hasGame } });
       setContextSocket(socket);
 
-      socket.on("connect", (socket: any) =>
-        console.log("SOCKET CONNECTED!...", socket)
-      );
+      socket.on("connect", () => console.log("SOCKET CONNECTED!..."));
       socket.on("logout", logout);
       socket.on("move", () => console.log("PLAYER MOVE"));
       socket.on("disconnect", () => console.log("DISCONECTED"));
@@ -62,6 +58,13 @@ export const SocketContextProvider: React.FC = ({ children }) => {
         if (Boolean(responseGame)) {
           setGame(responseGame);
           setConnected(true);
+          const { status } = responseGame || {};
+
+          if (status === GAME_STATUSES.start) {
+            history.push(ROUTES.game.config);
+          } else if (status === GAME_STATUSES.in_process) {
+            history.push(ROUTES.game.base);
+          }
         }
       });
     }
