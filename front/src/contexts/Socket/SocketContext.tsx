@@ -7,9 +7,10 @@ import { Game, GamePlayer } from "common/interfaces/Game";
 import localStorageHelper from "common/utils/localStorageHelper";
 import getGame from "common/utils/getGame";
 import LSData from "constants/LSData";
-
-import { useAppLayoutContext } from "./AppLayoutContext";
 import ROUTES from "constants/routes";
+
+import { useAppLayoutContext } from "../AppLayoutContext";
+import { playerConnect, startGame } from "./helpers";
 
 const io = require("socket.io-client");
 
@@ -41,20 +42,14 @@ export const SocketContextProvider: React.FC = ({ children }) => {
       setContextSocket(socket);
 
       socket.on("connect", () => console.log("SOCKET CONNECTED!..."));
-      socket.on("player_connect", (gamePlayer: GamePlayer) => {
-        console.log("NEW PLAYER CONNECT", gamePlayer);
-        if (
-          game !== undefined &&
-          !game.players.some((p) => p._id === gamePlayer._id)
-        ) {
-          console.log("SET GAME");
-          setGame({ ...game, players: [...game.players, gamePlayer] });
-        }
-      });
+      socket.on("player_connect", (gamePlayer: GamePlayer) =>
+        playerConnect(gamePlayer, setGame, game)
+      );
       socket.on("logout", () => {
         console.log("LOGOUT");
         logout();
       });
+      socket.on("start_game", () => startGame(setGame, history, game));
       socket.on("move", () => console.log("PLAYER MOVE"));
       socket.on("disconnect", () => console.log("DISCONECTED"));
 

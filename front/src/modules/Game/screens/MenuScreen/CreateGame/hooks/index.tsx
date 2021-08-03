@@ -4,7 +4,7 @@ import ROUTES from "constants/routes";
 import { API } from "constants/api";
 import { useAppLayoutContext } from "contexts/AppLayoutContext";
 import useApiRequest from "common/hooks/useApiRequest";
-import { useSocketContext } from "contexts/SocketContext";
+import { useSocketContext } from "contexts/Socket/SocketContext";
 
 export const useGameCreateRequest = () => {
   const history = useHistory();

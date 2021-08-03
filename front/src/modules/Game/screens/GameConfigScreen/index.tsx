@@ -12,14 +12,17 @@ import Button from "common/components/Button";
 import GameType from "./views/GameType";
 import PlayersConfig from "./views/PlayersConfig";
 import styles from "./styles";
+import { useSocketContext } from "contexts/Socket/SocketContext";
 
 const GameConfigScreen: React.FC = () => {
   const classes = useStyles(styles);
   const { game: gameTranslations } = useTranslations();
+
   const { hasGame } = useAppLayoutContext();
+  const { socket } = useSocketContext();
 
   const startGame = () => {
-    console.log("START GAME");
+    socket.emit("start_game");
   };
 
   return !hasGame ? (

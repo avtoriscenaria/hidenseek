@@ -1,7 +1,7 @@
 import React from "react";
 
 import copyText from "common/utils/copyText";
-import { useSocketContext } from "contexts/SocketContext";
+import { useSocketContext } from "contexts/Socket/SocketContext";
 
 import PlayersConfigComponent from "../components/PlayersConfigComponent";
 import useTranslations from "common/hooks/useTranslations";

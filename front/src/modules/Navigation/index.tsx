@@ -2,7 +2,7 @@ import { Router, Switch, Route as LibRoute, Redirect } from "react-router-dom";
 import { createBrowserHistory } from "history";
 
 import { AppLayoutContextProvider } from "contexts/AppLayoutContext";
-import { SocketContextProvider } from "contexts/SocketContext";
+import { SocketContextProvider } from "contexts/Socket/SocketContext";
 import ROUTES from "constants/routes";
 import Route from "common/components/Route";
 import Auth from "modules/Auth";

@@ -14,6 +14,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { JWT } from '../common/services/jwt.service';
 import { Game, GameDocument } from './schemas/game.schema';
 import { Player, PlayerDocument } from '../auth/schemas/player.schema';
+import { GAME_STATUSES } from 'src/constants';
 
 @WebSocketGateway()
 export class GameGateway
@@ -29,6 +30,28 @@ export class GameGateway
   server: Server;
 
   private logger: Logger = new Logger('GameGateway');
+
+  @SubscribeMessage('start_game')
+  async startGame(client: Socket, payload: string): Promise<void> {
+    const { room, player: player_id } = client.handshake.query;
+    const game = (await this.gameModel.find({ _id: room }).exec())[0];
+
+    if (game && game.status === GAME_STATUSES.start) {
+      const player = game.players.find(
+        (p) => p._id.toString() === player_id.toString(),
+      );
+
+      if (player && player.creator) {
+        game.status = GAME_STATUSES.in_process;
+        await game.save();
+        this.server.in(room).emit('start_game');
+      } else {
+        console.log('ERROR');
+      }
+    } else {
+      console.log('ERROR');
+    }
+  }
 
   @SubscribeMessage('move')
   movePlayer(client: Socket, payload: string): void {

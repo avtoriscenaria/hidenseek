@@ -4,7 +4,7 @@ import ROUTES from "constants/routes";
 import { API } from "constants/api";
 import { useAppLayoutContext } from "contexts/AppLayoutContext";
 import useApiRequest from "common/hooks/useApiRequest";
-import { useSocketContext } from "contexts/SocketContext";
+import { useSocketContext } from "contexts/Socket/SocketContext";
 import { GAME_STATUSES } from "constants/gameConstants";
 
 export const useFindGameRequest = () => {

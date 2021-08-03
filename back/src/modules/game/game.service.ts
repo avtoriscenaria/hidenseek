@@ -60,14 +60,14 @@ export class GameService {
       if (player.game_id) {
         responseData.status = STATUSES.failure;
         responseData.message = 'GAME_EXIST';
-      } else {
+      } else if (gameKey !== undefined) {
         const game = (await this.gameModel.find({ _id: gameKey }).exec())[0];
 
         if (game) {
           if (game.players.length >= 6) {
             responseData.status = STATUSES.failure;
             responseData.message = 'GAME_PlAYERS_SIZE_OVERATE';
-          } else {
+          } else if (game.status === GAME_STATUSES.start) {
             const position = getPlayerStartPlace(
               game.players.map((p) => p.position),
             );
@@ -90,11 +90,17 @@ export class GameService {
             await player.save();
 
             responseData.data = { game };
+          } else {
+            responseData.status = STATUSES.failure;
+            responseData.message = 'GAME_IN_PROGRESS';
           }
         } else {
           responseData.status = STATUSES.failure;
           responseData.message = 'GAME_NOT_EXIST';
         }
+      } else {
+        responseData.status = STATUSES.failure;
+        responseData.message = 'GAME_KEY_UNDEFINED';
       }
     } else {
       responseData.status = STATUSES.failure;
