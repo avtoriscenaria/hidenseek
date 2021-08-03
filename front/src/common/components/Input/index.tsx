@@ -7,7 +7,8 @@ import FormControl from "@material-ui/core/FormControl";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 
-import useStyles from "../../hooks/useStyles";
+import useStyles from "common/hooks/useStyles";
+
 import styles from "./styles";
 
 interface InputProps {

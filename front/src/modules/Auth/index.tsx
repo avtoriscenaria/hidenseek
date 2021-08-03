@@ -2,8 +2,8 @@ import ROUTES from "constants/routes";
 import React from "react";
 import { Route, Switch } from "react-router-dom";
 
-import Login from "./Login";
-import SignUp from "./SignUp";
+import Login from "./screens/Login";
+import SignUp from "./screens/SignUp";
 
 const Auth: React.FC = () => {
   return (

@@ -18,6 +18,12 @@ const styles = () => ({
   },
   menuActions: {
     display: "flex",
+    marginBottom: 24,
+  },
+  startGame: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
   dividerContainer: {
     padding: "0 24px",
