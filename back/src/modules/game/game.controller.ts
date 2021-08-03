@@ -16,4 +16,9 @@ export class GameController {
   createGame(@Body() playerCreator: { nickname: string; _id: string }) {
     return this.game.createGame(playerCreator);
   }
+
+  @Post('/find')
+  findGame(@Body() findGameData: { gameKey: string; player_id: string }) {
+    return this.game.findGame(findGameData);
+  }
 }

@@ -11,6 +11,12 @@ export class GamePlayer {
   @Prop({ required: true })
   _id: string;
 
+  @Prop({ required: true })
+  color: string;
+
+  @Prop({ required: true })
+  position: { x: number; y: number };
+
   @Prop()
   creator: boolean;
 
@@ -19,9 +25,6 @@ export class GamePlayer {
 
   @Prop()
   cached: boolean;
-
-  @Prop()
-  position: { x: number; y: number };
 }
 
 export const GameSchema = SchemaFactory.createForClass(GamePlayer);

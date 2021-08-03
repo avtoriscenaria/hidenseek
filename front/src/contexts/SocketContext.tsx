@@ -3,7 +3,7 @@ import { useHistory } from "react-router";
 
 import { GAME_STATUSES } from "constants/gameConstants";
 import { HOST } from "constants/api";
-import { Game } from "common/interfaces/Game";
+import { Game, GamePlayer } from "common/interfaces/Game";
 import localStorageHelper from "common/utils/localStorageHelper";
 import getGame from "common/utils/getGame";
 import LSData from "constants/LSData";
@@ -28,19 +28,33 @@ const SocketContext = createContext(defaultContext);
 export const SocketContextProvider: React.FC = ({ children }) => {
   const history = useHistory();
   const { token } = localStorageHelper("get", LSData.authData) || {};
-  const { logout, hasGame } = useAppLayoutContext();
+  const { logout, hasGame, player } = useAppLayoutContext();
   const [connect, setConnected] = useState(false);
   const [game, setGame] = useState<Game | undefined>();
   const [contextSocket, setContextSocket] = useState();
 
   useEffect(() => {
     if (connect) {
-      console.log("CONNECT SOCKET GAME", hasGame);
-      const socket = io(HOST, { query: { token, room: hasGame } });
+      const socket = io(HOST, {
+        query: { token, room: hasGame, player: player?._id },
+      });
       setContextSocket(socket);
 
       socket.on("connect", () => console.log("SOCKET CONNECTED!..."));
-      socket.on("logout", logout);
+      socket.on("player_connect", (gamePlayer: GamePlayer) => {
+        console.log("NEW PLAYER CONNECT", gamePlayer);
+        if (
+          game !== undefined &&
+          !game.players.some((p) => p._id === gamePlayer._id)
+        ) {
+          console.log("SET GAME");
+          setGame({ ...game, players: [...game.players, gamePlayer] });
+        }
+      });
+      socket.on("logout", () => {
+        console.log("LOGOUT");
+        logout();
+      });
       socket.on("move", () => console.log("PLAYER MOVE"));
       socket.on("disconnect", () => console.log("DISCONECTED"));
 
@@ -50,6 +64,7 @@ export const SocketContextProvider: React.FC = ({ children }) => {
         socket.emit("disconnect", () => console.log("DISCONECTED"));
       };
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [connect]);
 
   useEffect(() => {
@@ -68,7 +83,7 @@ export const SocketContextProvider: React.FC = ({ children }) => {
         }
       });
     }
-  }, [hasGame]);
+  }, [game, hasGame, history]);
 
   return (
     <SocketContext.Provider

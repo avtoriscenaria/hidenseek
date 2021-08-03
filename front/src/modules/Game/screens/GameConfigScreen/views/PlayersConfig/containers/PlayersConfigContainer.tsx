@@ -14,8 +14,6 @@ const PlayersConfigContainer: React.FC = () => {
     console.log(value);
   };
 
-  console.log("GAME", game);
-
   return (
     <PlayersConfigComponent
       gameKey={game?._id}

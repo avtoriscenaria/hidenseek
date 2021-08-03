@@ -14,7 +14,7 @@ export class Game {
   hide: boolean;
 
   @Prop({ required: true })
-  players: [GamePlayer];
+  players: GamePlayer[];
 }
 
 export const GameSchema = SchemaFactory.createForClass(Game);

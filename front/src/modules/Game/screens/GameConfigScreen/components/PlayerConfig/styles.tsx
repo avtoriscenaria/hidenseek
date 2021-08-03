@@ -1,6 +1,6 @@
 const styles = () => ({
   container: {
-    margin: "3px 0",
+    margin: "6px 0",
     "&:last-child": {
       marginBottom: 12,
     },

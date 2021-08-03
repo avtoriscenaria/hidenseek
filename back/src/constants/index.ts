@@ -6,6 +6,8 @@ export const MONGO_URI =
 export const SECRET = 'BlAGo_y31L0w_Br1cK';
 export const EXPIRATION_JWT = '6h';
 
+export const COLORS = ['red', 'yellow', 'green', 'blue', 'purple', 'black'];
+
 export enum STATUSES {
   success = 'success',
   failure = 'failure',

@@ -3,13 +3,22 @@ import React, { useState, ChangeEvent } from "react";
 import useTranslations from "common/hooks/useTranslations";
 
 import FindGameComponent from "../components/FindGameComponent";
+import { useFindGameRequest } from "../hooks";
+import { useAppLayoutContext } from "contexts/AppLayoutContext";
 
 const FindGameContainer: React.FC = () => {
   const { game: gameTranslations } = useTranslations();
+  const { player } = useAppLayoutContext();
   const [isFindByKey, setIsFindByKey] = useState(false);
   const [gameKey, setGameKey] = useState("");
+  const { request } = useFindGameRequest();
 
-  const onFind = () => {};
+  const onFind = () => {
+    request({
+      gameKey,
+      player_id: player?._id,
+    });
+  };
   const onChangeGameKey = ({
     target: { value },
   }: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {

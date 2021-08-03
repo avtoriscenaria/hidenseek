@@ -21,7 +21,7 @@ const styles = () => ({
   header: {
     display: "flex",
     alignItems: "center",
-    marginBottom: 9,
+    marginBottom: 6,
   },
   playerColor: {
     width: 70,

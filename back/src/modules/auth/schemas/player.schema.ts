@@ -18,7 +18,7 @@ export class Player {
   game_id: string;
 
   @Prop({ default: [] })
-  games_played: [string];
+  games_played: string[];
 }
 
 export const PlayerSchema = SchemaFactory.createForClass(Player);
