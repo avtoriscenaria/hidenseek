@@ -27,3 +27,23 @@ export const startGame = (
     history.push(ROUTES.game.base);
   }
 };
+
+export const movePlayer = (
+  payload: {
+    player_id: string;
+    coordinates: { x: number; y: number };
+  },
+  setGame: (game: Game) => void,
+  game?: Game
+) => {
+  if (game !== undefined) {
+    setGame({
+      ...game,
+      players: game?.players.map((p) =>
+        p._id === payload.player_id
+          ? { ...p, position: payload.coordinates }
+          : p
+      ),
+    });
+  }
+};

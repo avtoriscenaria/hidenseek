@@ -7,12 +7,14 @@ import styles from "../styles/SellStyles";
 interface SellComponentProps {
   borderConfig: SellBorder;
   style: Object;
+  canMoveStyles?: Object;
   onClick: () => void;
 }
 
 const SellComponent: React.FC<SellComponentProps> = ({
   borderConfig,
   style: additionalStyle,
+  canMoveStyles = {},
   onClick,
 }) => {
   const classes = useStyles(styles);
@@ -22,7 +24,9 @@ const SellComponent: React.FC<SellComponentProps> = ({
       className={classes.cell}
       style={{ ...borderConfig, ...additionalStyle }}
       onClick={onClick}
-    ></div>
+    >
+      <div style={canMoveStyles} />
+    </div>
   );
 };
 

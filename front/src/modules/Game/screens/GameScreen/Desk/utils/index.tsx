@@ -5,10 +5,10 @@ export const configurateSell = (
   players: GamePlayer[],
   coordinates: { x: number; y: number },
   sell: { x?: number; y?: number },
-  canMove: boolean,
+  canMoveColor: string,
   playerPosition: string,
   setPlayerPosition: (position: string) => void,
-  setCanMove: (value: boolean) => void
+  setCanMoveColor: (value: string) => void
 ) => {
   const { x, y } = coordinates;
   const { x: xBlock, y: yBlock } = sell;
@@ -44,9 +44,9 @@ export const configurateSell = (
         ((Y === y + 1 && yBlock !== 1 && yBlock !== 2) ||
           (Y === y - 1 && yBlock !== 0 && yBlock !== 2)))
     ) {
-      setCanMove(true);
+      setCanMoveColor(myPlayer.color);
     } else {
-      setCanMove(false);
+      setCanMoveColor("");
     }
   }
 };

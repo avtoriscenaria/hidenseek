@@ -24,7 +24,7 @@ const SellContainer: React.FC<SellContainerProps> = memo(
     const { player: { _id } = { _id: "" } } = useAppLayoutContext();
     const { socket, game = defaultGame } = useSocketContext();
     const [playerPosition, setPlayerPosition] = useState("");
-    const [canMove, setCanMove] = useState(false);
+    const [canMoveColor, setCanMoveColor] = useState("");
     const { border } = useBorderConfig(sell);
     const { players } = game;
 
@@ -34,16 +34,18 @@ const SellContainer: React.FC<SellContainerProps> = memo(
         players,
         coordinates,
         sell,
-        canMove,
+        canMoveColor,
         playerPosition,
         setPlayerPosition,
-        setCanMove
+        setCanMoveColor
       );
-    }, [_id, canMove, coordinates, playerPosition, players, sell]);
+    }, [_id, canMoveColor, coordinates, playerPosition, players, sell]);
 
     const move = () => {
-      //socket.emit("move", { message: "move" });
-      console.log("MOVE", coordinates);
+      if (Boolean(canMoveColor)) {
+        console.log("MOVE", coordinates);
+        socket.emit("move", { coordinates });
+      }
     };
 
     return (
@@ -52,8 +54,18 @@ const SellContainer: React.FC<SellContainerProps> = memo(
         onClick={move}
         style={{
           ...style,
-          backgroundColor: playerPosition || (canMove && "grey"),
+          cursor: Boolean(canMoveColor) ? "pointer" : undefined,
+          backgroundColor: playerPosition,
         }}
+        canMoveStyles={
+          !Boolean(canMoveColor)
+            ? undefined
+            : {
+                backgroundColor: canMoveColor,
+                opacity: 0.1,
+                height: "100%",
+              }
+        }
       />
     );
   }

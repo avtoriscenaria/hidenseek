@@ -10,7 +10,7 @@ import LSData from "constants/LSData";
 import ROUTES from "constants/routes";
 
 import { useAppLayoutContext } from "../AppLayoutContext";
-import { playerConnect, startGame } from "./helpers";
+import { playerConnect, startGame, movePlayer } from "./helpers";
 
 const io = require("socket.io-client");
 
@@ -50,7 +50,13 @@ export const SocketContextProvider: React.FC = ({ children }) => {
         logout();
       });
       socket.on("start_game", () => startGame(setGame, history, game));
-      socket.on("move", () => console.log("PLAYER MOVE"));
+      socket.on(
+        "move",
+        (payload: {
+          player_id: string;
+          coordinates: { x: number; y: number };
+        }) => movePlayer(payload, setGame, game)
+      );
       socket.on("disconnect", () => console.log("DISCONECTED"));
 
       return () => {

@@ -54,11 +54,28 @@ export class GameGateway
   }
 
   @SubscribeMessage('move')
-  movePlayer(client: Socket, payload: string): void {
-    const { room } = client.handshake.query;
-    console.log('CLIENT', room);
-    console.log('PAYLOAD', payload);
-    client.broadcast.to(room).emit('move', payload);
+  async movePlayer(client: Socket, payload: any): Promise<void> {
+    const { room, player } = client.handshake.query;
+    const { coordinates } = payload;
+    console.log('CLIENT', player);
+    console.log('PAYLOAD', coordinates);
+    const game = (await this.gameModel.find({ _id: room }).exec())[0];
+
+    if (game) {
+      const gamePlayer = game.players.find(
+        (p) => p._id.toString() === player.toString(),
+      );
+
+      if (gamePlayer && coordinates.x && coordinates.y) {
+        game.players = game.players.map((p) =>
+          p._id.toString() === player.toString()
+            ? { ...p, position: coordinates }
+            : p,
+        );
+        await game.save();
+        this.server.in(room).emit('move', { player_id: player, coordinates });
+      }
+    }
   }
 
   @SubscribeMessage('logout')
