@@ -92,7 +92,7 @@ export class GameGateway
   }
 
   async handleConnection(client: Socket) {
-    const { token, room, player } = client.handshake.query;
+    const { token, room, player_id } = client.handshake.query;
     client.use(async (req, next) => {
       const isVerified = await this.jwt.checkAuthToken(token);
 
@@ -104,16 +104,15 @@ export class GameGateway
     });
     client.join(room);
 
-    console.log('CLIENT CONNECT');
-
-    if (room && player) {
+    if (room && player_id) {
       const game = (await this.gameModel.find({ _id: room }).exec())[0];
+
       if (game) {
         const gamePlayer = game.players.find(
-          (p) => p._id.toString() === player.toString(),
+          (p) => p._id.toString() === player_id.toString(),
         );
+
         if (gamePlayer) {
-          console.log('BORDCAST CONNECT');
           client.broadcast.to(room).emit('player_connect', gamePlayer);
         }
       }
