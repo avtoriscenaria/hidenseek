@@ -65,20 +65,21 @@ export const onNewPlayerConnect = (
   game?: Game
 ) => {
   if (socket) {
-    socket.on("player_connect", (gamePlayer: GamePlayer) =>
+    socket.once("player_connect", (gamePlayer: GamePlayer) =>
       playerConnect(gamePlayer, setGame, game)
     );
   }
 };
 
-// socket.on("connect", () => console.log("SOCKET CONNECTED!..."));
-// socket.on("player_connect", (gamePlayer: GamePlayer) =>
-//   playerConnect(gamePlayer, setGame, game)
-// );
-// socket.on("logout", () => {
-//   console.log("LOGOUT");
-//   logout();
-// });
+export const onLogout = (logoutCB: () => void) => {
+  if (socket) {
+    socket.once("logout", () => {
+      console.log("LOGOUT");
+      logoutCB();
+    });
+  }
+};
+
 // socket.on("start_game", () => startGame(setGame, history, game));
 // socket.on(
 //   "move",

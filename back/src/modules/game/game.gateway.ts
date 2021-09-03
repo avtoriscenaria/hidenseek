@@ -95,13 +95,14 @@ export class GameGateway
     const { token, room, player_id } = client.handshake.query;
     client.use(async (req, next) => {
       const isVerified = await this.jwt.checkAuthToken(token);
-
+      console.log('isVerified', isVerified);
       if (isVerified) {
         next();
       } else {
         client.emit('logout');
       }
     });
+
     client.join(room);
 
     if (room && player_id) {

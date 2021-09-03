@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect } from "react";
+import React, { memo, useState, useEffect, useCallback } from "react";
 
 import { GamePlayer } from "common/interfaces/Game";
 import { useAppLayoutContext } from "contexts/AppLayoutContext";
@@ -27,6 +27,7 @@ const SellContainer: React.FC<SellContainerProps> = memo(
     const { game = defaultGame } = useSocketContext();
     const [playerPosition, setPlayerPosition] = useState("");
     const [canMoveColor, setCanMoveColor] = useState("");
+    const [canCatch, setCanCatch] = useState(false);
     const { border } = useBorderConfig(sell);
     const { players } = game;
 
@@ -38,10 +39,20 @@ const SellContainer: React.FC<SellContainerProps> = memo(
         sell,
         canMoveColor,
         playerPosition,
+        canCatch,
         setPlayerPosition,
-        setCanMoveColor
+        setCanMoveColor,
+        setCanCatch
       );
-    }, [_id, canMoveColor, coordinates, playerPosition, players, sell]);
+    }, [
+      _id,
+      canCatch,
+      canMoveColor,
+      coordinates,
+      playerPosition,
+      players,
+      sell,
+    ]);
 
     const move = () => {
       if (Boolean(canMoveColor)) {
@@ -59,7 +70,7 @@ const SellContainer: React.FC<SellContainerProps> = memo(
           backgroundColor: playerPosition,
         }}
         canMoveStyles={
-          !Boolean(canMoveColor)
+          !Boolean(canMoveColor) || canCatch
             ? undefined
             : {
                 backgroundColor: canMoveColor,
@@ -67,6 +78,7 @@ const SellContainer: React.FC<SellContainerProps> = memo(
                 height: "100%",
               }
         }
+        crossColor={canCatch ? canMoveColor : undefined}
       />
     );
   }

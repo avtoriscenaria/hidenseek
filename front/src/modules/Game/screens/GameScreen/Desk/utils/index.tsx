@@ -7,8 +7,10 @@ export const configurateSell = (
   sell: { x?: number; y?: number },
   canMoveColor: string,
   playerPosition: string,
+  canCatch: boolean,
   setPlayerPosition: (position: string) => void,
-  setCanMoveColor: (value: string) => void
+  setCanMoveColor: (value: string) => void,
+  setCanCatch: (value: boolean) => void
 ) => {
   const { x, y } = coordinates;
   const { x: xBlock, y: yBlock } = sell;
@@ -41,12 +43,18 @@ export const configurateSell = (
         ((X === x + 1 && xBlock !== 1 && xBlock !== 2) ||
           (X === x - 1 && xBlock !== 0 && xBlock !== 2))) ||
       (X === x &&
-        ((Y === y + 1 && yBlock !== 1 && yBlock !== 2) ||
-          (Y === y - 1 && yBlock !== 0 && yBlock !== 2)))
+        ((Y === y + 1 && yBlock !== 0 && yBlock !== 2) ||
+          (Y === y - 1 && yBlock !== 1 && yBlock !== 2)))
     ) {
+      if (!myPlayer.hunter && !canCatch) {
+        setCanCatch(true);
+      }
+
+      console.log("myPlayer", myPlayer);
       setCanMoveColor(myPlayer.color);
     } else {
       setCanMoveColor("");
+      setCanCatch(false);
     }
   }
 };

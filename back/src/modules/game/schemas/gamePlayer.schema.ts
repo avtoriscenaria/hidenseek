@@ -24,7 +24,7 @@ export class GamePlayer {
   hunter: boolean;
 
   @Prop()
-  cached: boolean;
+  caught: boolean;
 }
 
 export const GameSchema = SchemaFactory.createForClass(GamePlayer);

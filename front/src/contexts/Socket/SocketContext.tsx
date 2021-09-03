@@ -17,6 +17,7 @@ import {
   disconnectSocket,
   onMovePlayerSocket,
   onNewPlayerConnect,
+  onLogout,
 } from "./helpers/SocketIo";
 
 interface Socket {
@@ -56,6 +57,10 @@ export const SocketContextProvider: React.FC = ({ children }) => {
     onMovePlayerSocket(setGame, game);
     onNewPlayerConnect(setGame, game);
   }, [game]);
+
+  useEffect(() => {
+    onLogout(logout);
+  }, [logout]);
 
   // useEffect(() => {
   //   if (connect) {

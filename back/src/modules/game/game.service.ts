@@ -80,7 +80,7 @@ export class GameService {
               position,
               creator: false,
               hunter: false,
-              cached: false,
+              caught: false,
             };
 
             game.players = [...game.players, gamePlayer];
