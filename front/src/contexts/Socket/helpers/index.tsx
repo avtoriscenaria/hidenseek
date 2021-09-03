@@ -36,14 +36,17 @@ export const movePlayer = (
   setGame: (game: Game) => void,
   game?: Game
 ) => {
+  console.log("GAME", game);
   if (game !== undefined) {
+    console.log("PLAYERS", game.players);
+    // console.log("PLAYER", payload.player_id);
+    const newPlayers = game?.players.map((p) =>
+      p._id === payload.player_id ? { ...p, position: payload.coordinates } : p
+    );
+    //console.log("NEW PLAYERS", newPlayers);
     setGame({
       ...game,
-      players: game?.players.map((p) =>
-        p._id === payload.player_id
-          ? { ...p, position: payload.coordinates }
-          : p
-      ),
+      players: newPlayers,
     });
   }
 };

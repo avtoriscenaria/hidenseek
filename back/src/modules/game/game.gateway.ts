@@ -55,25 +55,25 @@ export class GameGateway
 
   @SubscribeMessage('move')
   async movePlayer(client: Socket, payload: any): Promise<void> {
-    const { room, player } = client.handshake.query;
+    const { room, player_id } = client.handshake.query;
     const { coordinates } = payload;
-    console.log('CLIENT', player);
+    console.log('CLIENT', player_id);
     console.log('PAYLOAD', coordinates);
     const game = (await this.gameModel.find({ _id: room }).exec())[0];
 
     if (game) {
       const gamePlayer = game.players.find(
-        (p) => p._id.toString() === player.toString(),
+        (p) => p._id.toString() === player_id.toString(),
       );
 
       if (gamePlayer && coordinates.x && coordinates.y) {
         game.players = game.players.map((p) =>
-          p._id.toString() === player.toString()
+          p._id.toString() === player_id.toString()
             ? { ...p, position: coordinates }
             : p,
         );
         await game.save();
-        this.server.in(room).emit('move', { player_id: player, coordinates });
+        this.server.in(room).emit('move', { player_id, coordinates });
       }
     }
   }
@@ -103,6 +103,8 @@ export class GameGateway
       }
     });
     client.join(room);
+
+    console.log('CLIENT CONNECT');
 
     if (room && player) {
       const game = (await this.gameModel.find({ _id: room }).exec())[0];

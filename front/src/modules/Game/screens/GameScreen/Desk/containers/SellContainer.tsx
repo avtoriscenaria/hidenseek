@@ -9,6 +9,8 @@ import { SellConfig } from "../interfaces";
 import { useBorderConfig } from "../hooks";
 import { configurateSell } from "../utils";
 
+import { movePlayerSocket } from "contexts/Socket/helpers/SocketIo";
+
 const defaultGame = {
   players: [],
 };
@@ -22,7 +24,7 @@ interface SellContainerProps {
 const SellContainer: React.FC<SellContainerProps> = memo(
   ({ config: sell, coordinates, style }) => {
     const { player: { _id } = { _id: "" } } = useAppLayoutContext();
-    const { socket, game = defaultGame } = useSocketContext();
+    const { game = defaultGame } = useSocketContext();
     const [playerPosition, setPlayerPosition] = useState("");
     const [canMoveColor, setCanMoveColor] = useState("");
     const { border } = useBorderConfig(sell);
@@ -43,8 +45,7 @@ const SellContainer: React.FC<SellContainerProps> = memo(
 
     const move = () => {
       if (Boolean(canMoveColor)) {
-        console.log("MOVE", coordinates);
-        socket.emit("move", { coordinates });
+        movePlayerSocket("move", coordinates);
       }
     };
 

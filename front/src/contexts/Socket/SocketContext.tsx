@@ -5,14 +5,19 @@ import { GAME_STATUSES } from "constants/gameConstants";
 import { HOST } from "constants/api";
 import { Game, GamePlayer } from "common/interfaces/Game";
 import localStorageHelper from "common/utils/localStorageHelper";
-import getGame from "common/utils/getGame";
+import getGameRequest from "common/utils/getGame";
 import LSData from "constants/LSData";
 import ROUTES from "constants/routes";
 
 import { useAppLayoutContext } from "../AppLayoutContext";
 import { playerConnect, startGame, movePlayer } from "./helpers";
 
-const io = require("socket.io-client");
+import {
+  initiateSocket,
+  disconnectSocket,
+  onMovePlayerSocket,
+  onNewPlayerConnect,
+} from "./helpers/SocketIo";
 
 interface Socket {
   socket?: any;
@@ -32,48 +37,67 @@ export const SocketContextProvider: React.FC = ({ children }) => {
   const { logout, hasGame, player } = useAppLayoutContext();
   const [connect, setConnected] = useState(false);
   const [game, setGame] = useState<Game | undefined>();
-  const [contextSocket, setContextSocket] = useState();
+
+  // const setPayload = useCallback(
+  //   (payload?: any) => {
+  //     console.log("setPayload");
+  //     movePlayer(payload, setGame, game);
+  //   },
+  //   [game]
+  // );
 
   useEffect(() => {
-    if (connect) {
-      const socket = io(HOST, {
-        query: { token, room: hasGame, player: player?._id },
-      });
-      setContextSocket(socket);
-
-      socket.on("connect", () => console.log("SOCKET CONNECTED!..."));
-      socket.on("player_connect", (gamePlayer: GamePlayer) =>
-        playerConnect(gamePlayer, setGame, game)
-      );
-      socket.on("logout", () => {
-        console.log("LOGOUT");
-        logout();
-      });
-      socket.on("start_game", () => startGame(setGame, history, game));
-      socket.on(
-        "move",
-        (payload: {
-          player_id: string;
-          coordinates: { x: number; y: number };
-        }) => movePlayer(payload, setGame, game)
-      );
-      socket.on("disconnect", () => console.log("DISCONECTED"));
-
-      return () => {
-        console.log("UNMOUNT");
-
-        socket.emit("disconnect", () => console.log("DISCONECTED"));
-      };
+    if (!connect) {
+      initiateSocket(setConnected, token, hasGame, player?._id);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [connect]);
+  }, [connect, token, hasGame, player?._id, game]);
+
+  useEffect(() => {
+    onMovePlayerSocket(setGame, game);
+    onNewPlayerConnect(setGame, game);
+  }, [game]);
+
+  // useEffect(() => {
+  //   if (connect) {
+  //     const socket = io(HOST, {
+  //       query: { token, room: hasGame, player: player?._id },
+  //     });
+  //     setContextSocket(socket);
+
+  //     socket.on("connect", () => console.log("SOCKET CONNECTED!..."));
+  //     socket.on("player_connect", (gamePlayer: GamePlayer) =>
+  //       playerConnect(gamePlayer, setGame, game)
+  //     );
+  //     socket.on("logout", () => {
+  //       console.log("LOGOUT");
+  //       logout();
+  //     });
+  //     socket.on("start_game", () => startGame(setGame, history, game));
+  //     socket.on(
+  //       "move",
+  //       (payload: {
+  //         player_id: string;
+  //         coordinates: { x: number; y: number };
+  //       }) => movePlayer(payload, setGame, game)
+  //     );
+  //     socket.on("disconnect", () => console.log("DISCONECTED"));
+
+  //     setConnected(false);
+
+  //     return () => {
+  //       console.log("UNMOUNT");
+
+  //       socket.emit("disconnect", () => console.log("DISCONECTED"));
+  //     };
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [connect, game]);
 
   useEffect(() => {
     if (Boolean(hasGame) && game === undefined) {
-      getGame(hasGame, (responseGame) => {
+      getGameRequest(hasGame, (responseGame) => {
         if (Boolean(responseGame)) {
           setGame(responseGame);
-          setConnected(true);
           const { status } = responseGame || {};
 
           if (status === GAME_STATUSES.start) {
@@ -89,7 +113,6 @@ export const SocketContextProvider: React.FC = ({ children }) => {
   return (
     <SocketContext.Provider
       value={{
-        socket: contextSocket,
         game,
         setGame,
       }}
