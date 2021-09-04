@@ -22,10 +22,6 @@ const SellComponent: React.FC<SellComponentProps> = ({
 }) => {
   const classes = useStyles(styles, { color: crossColor });
 
-  if (crossColor) {
-    console.log(crossColor, canMoveStyles);
-  }
-
   return (
     <div
       className={classes.cell}

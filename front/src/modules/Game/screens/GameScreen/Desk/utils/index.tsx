@@ -46,12 +46,14 @@ export const configurateSell = (
         ((Y === y + 1 && yBlock !== 0 && yBlock !== 2) ||
           (Y === y - 1 && yBlock !== 1 && yBlock !== 2)))
     ) {
-      if (!myPlayer.hunter && !canCatch) {
-        setCanCatch(true);
+      if (players.some((p) => p.position.y === y && p.position.x === x)) {
+        if (myPlayer.hunter && !canCatch) {
+          setCanCatch(true);
+          setCanMoveColor(myPlayer.color);
+        }
+      } else {
+        setCanMoveColor(myPlayer.color);
       }
-
-      console.log("myPlayer", myPlayer);
-      setCanMoveColor(myPlayer.color);
     } else {
       setCanMoveColor("");
       setCanCatch(false);

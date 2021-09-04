@@ -35,9 +35,8 @@ export const movePlayerSocket = (
   type: string,
   coordinates: { x: number; y: number }
 ) => {
-  console.log("movePlayerSocket", socket);
   if (socket) {
-    console.log("MOVE PLAYER", socket);
+    console.log("MOVE PLAYER");
     socket.emit("move", { coordinates });
   }
 };

@@ -67,11 +67,19 @@ export class GameGateway
       );
 
       if (gamePlayer && coordinates.x && coordinates.y) {
-        game.players = game.players.map((p) =>
-          p._id.toString() === player_id.toString()
-            ? { ...p, position: coordinates }
-            : p,
+        const isPlayerOnPosition = game.players.some(
+          (p) =>
+            p.position.x === coordinates.x && p.position.y === coordinates.y,
         );
+
+        if (!isPlayerOnPosition || gamePlayer.hunter) {
+          game.players = game.players.map((p) =>
+            p._id.toString() === player_id.toString()
+              ? { ...p, position: coordinates }
+              : p,
+          );
+        }
+
         await game.save();
         this.server.in(room).emit('move', { player_id, coordinates });
       }
