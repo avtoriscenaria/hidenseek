@@ -28,6 +28,7 @@ const translations = {
     nickname: "Nickname",
     hunter: "Ловец",
     startGame: "Начать игру",
+    caught: "Вы пойманы",
   },
   account: {
     logout: "Выйти",

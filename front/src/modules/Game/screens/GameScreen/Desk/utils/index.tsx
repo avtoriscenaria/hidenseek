@@ -20,7 +20,8 @@ export const configurateSell = (
       color: string;
       position: { x?: number; y?: number };
       hunter?: boolean;
-    }) => player.position.x === x && player.position.y === y
+      caught?: boolean;
+    }) => !player.caught && player.position.x === x && player.position.y === y
   );
 
   if (player && player.color !== playerPosition) {
@@ -33,7 +34,7 @@ export const configurateSell = (
     (player: { _id: string }) => player._id === _id
   );
 
-  if (myPlayer) {
+  if (myPlayer && !myPlayer.caught) {
     const {
       position: { x: X, y: Y },
     } = myPlayer;
@@ -46,7 +47,11 @@ export const configurateSell = (
         ((Y === y + 1 && yBlock !== 0 && yBlock !== 2) ||
           (Y === y - 1 && yBlock !== 1 && yBlock !== 2)))
     ) {
-      if (players.some((p) => p.position.y === y && p.position.x === x)) {
+      if (
+        players.some(
+          (p) => !p.caught && p.position.y === y && p.position.x === x
+        )
+      ) {
         if (myPlayer.hunter && !canCatch) {
           setCanCatch(true);
           setCanMoveColor(myPlayer.color);

@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
 import { useHistory } from "react-router";
 
 import { GAME_STATUSES } from "constants/gameConstants";
@@ -21,7 +27,7 @@ import {
 } from "./helpers/SocketIo";
 
 interface Socket {
-  socket?: any;
+  myGamePlayer?: GamePlayer;
   game?: Game;
   setGame: (game: Game) => void;
 }
@@ -39,14 +45,6 @@ export const SocketContextProvider: React.FC = ({ children }) => {
   const [connect, setConnected] = useState(false);
   const [game, setGame] = useState<Game | undefined>();
 
-  // const setPayload = useCallback(
-  //   (payload?: any) => {
-  //     console.log("setPayload");
-  //     movePlayer(payload, setGame, game);
-  //   },
-  //   [game]
-  // );
-
   useEffect(() => {
     if (!connect) {
       initiateSocket(setConnected, token, hasGame, player?._id);
@@ -61,6 +59,28 @@ export const SocketContextProvider: React.FC = ({ children }) => {
   useEffect(() => {
     onLogout(logout);
   }, [logout]);
+
+  useEffect(() => {
+    if (Boolean(hasGame) && game === undefined) {
+      getGameRequest(hasGame, (responseGame) => {
+        if (Boolean(responseGame)) {
+          setGame(responseGame);
+          const { status } = responseGame || {};
+
+          if (status === GAME_STATUSES.start) {
+            history.push(ROUTES.game.config);
+          } else if (status === GAME_STATUSES.in_process) {
+            history.push(ROUTES.game.base);
+          }
+        }
+      });
+    }
+  }, [game, hasGame, history]);
+
+  const getMyGamePlayer = useCallback(() => {
+    console.log("getMyGamePlayer");
+    return game?.players.find((p) => p._id === player?._id);
+  }, [game?.players, player?._id]);
 
   // useEffect(() => {
   //   if (connect) {
@@ -98,26 +118,10 @@ export const SocketContextProvider: React.FC = ({ children }) => {
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [connect, game]);
 
-  useEffect(() => {
-    if (Boolean(hasGame) && game === undefined) {
-      getGameRequest(hasGame, (responseGame) => {
-        if (Boolean(responseGame)) {
-          setGame(responseGame);
-          const { status } = responseGame || {};
-
-          if (status === GAME_STATUSES.start) {
-            history.push(ROUTES.game.config);
-          } else if (status === GAME_STATUSES.in_process) {
-            history.push(ROUTES.game.base);
-          }
-        }
-      });
-    }
-  }, [game, hasGame, history]);
-
   return (
     <SocketContext.Provider
       value={{
+        myGamePlayer: getMyGamePlayer(),
         game,
         setGame,
       }}

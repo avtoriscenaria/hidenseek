@@ -76,12 +76,16 @@ export class GameGateway
           game.players = game.players.map((p) =>
             p._id.toString() === player_id.toString()
               ? { ...p, position: coordinates }
+              : gamePlayer.hunter &&
+                p.position.x === coordinates.x &&
+                p.position.y === coordinates.y
+              ? { ...p, caught: true }
               : p,
           );
-        }
 
-        await game.save();
-        this.server.in(room).emit('move', { player_id, coordinates });
+          await game.save();
+          this.server.in(room).emit('move', { players: game.players });
+        }
       }
     }
   }

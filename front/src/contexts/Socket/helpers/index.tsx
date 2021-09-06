@@ -29,19 +29,20 @@ export const startGame = (
 
 export const movePlayer = (
   payload: {
-    player_id: string;
-    coordinates: { x: number; y: number };
+    players: GamePlayer[];
+    // player_id: string;
+    // coordinates: { x: number; y: number };
   },
   setGame: (game: Game) => void,
   game?: Game
 ) => {
   if (game !== undefined) {
-    const newPlayers = game?.players.map((p) =>
-      p._id === payload.player_id ? { ...p, position: payload.coordinates } : p
-    );
+    // const newPlayers = game?.players.map((p) =>
+    //   p._id === payload.player_id ? { ...p, position: payload.coordinates } : p
+    // );
     setGame({
       ...game,
-      players: newPlayers,
+      players: payload.players,
     });
   }
 };

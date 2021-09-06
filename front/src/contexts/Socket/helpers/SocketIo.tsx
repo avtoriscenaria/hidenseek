@@ -49,8 +49,9 @@ export const onMovePlayerSocket = (
     socket.once(
       "move",
       (payload: {
-        player_id: string;
-        coordinates: { x: number; y: number };
+        players: GamePlayer[];
+        // player_id: string;
+        // coordinates: { x: number; y: number };
       }) => {
         console.log("OTHER MOVE", payload);
         movePlayer(payload, setGame, game);
