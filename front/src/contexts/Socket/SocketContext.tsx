@@ -21,9 +21,11 @@ import { playerConnect, startGame, movePlayer } from "./helpers";
 import {
   initiateSocket,
   disconnectSocket,
+  onStartGame,
   onMovePlayerSocket,
   onNewPlayerConnect,
   onLogout,
+  onTimer,
 } from "./helpers/SocketIo";
 
 interface Socket {
@@ -57,6 +59,14 @@ export const SocketContextProvider: React.FC = ({ children }) => {
   }, [game]);
 
   useEffect(() => {
+    onStartGame(setGame, history, game);
+  }, [game, history]);
+
+  useEffect(() => {
+    onTimer();
+  }, []);
+
+  useEffect(() => {
     onLogout(logout);
   }, [logout]);
 
@@ -81,42 +91,6 @@ export const SocketContextProvider: React.FC = ({ children }) => {
     console.log("getMyGamePlayer");
     return game?.players.find((p) => p._id === player?._id);
   }, [game?.players, player?._id]);
-
-  // useEffect(() => {
-  //   if (connect) {
-  //     const socket = io(HOST, {
-  //       query: { token, room: hasGame, player: player?._id },
-  //     });
-  //     setContextSocket(socket);
-
-  //     socket.on("connect", () => console.log("SOCKET CONNECTED!..."));
-  //     socket.on("player_connect", (gamePlayer: GamePlayer) =>
-  //       playerConnect(gamePlayer, setGame, game)
-  //     );
-  //     socket.on("logout", () => {
-  //       console.log("LOGOUT");
-  //       logout();
-  //     });
-  //     socket.on("start_game", () => startGame(setGame, history, game));
-  //     socket.on(
-  //       "move",
-  //       (payload: {
-  //         player_id: string;
-  //         coordinates: { x: number; y: number };
-  //       }) => movePlayer(payload, setGame, game)
-  //     );
-  //     socket.on("disconnect", () => console.log("DISCONECTED"));
-
-  //     setConnected(false);
-
-  //     return () => {
-  //       console.log("UNMOUNT");
-
-  //       socket.emit("disconnect", () => console.log("DISCONECTED"));
-  //     };
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [connect, game]);
 
   return (
     <SocketContext.Provider

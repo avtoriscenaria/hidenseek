@@ -1,7 +1,7 @@
 import io from "socket.io-client";
 
 import { HOST } from "constants/api";
-import { movePlayer, playerConnect } from "./index";
+import { movePlayer, playerConnect, startGame } from "./index";
 import { Game, GamePlayer } from "common/interfaces/Game";
 
 let socket: any;
@@ -28,6 +28,24 @@ export const disconnectSocket = () => {
   console.log("Disconnecting socket...");
   if (socket) {
     socket.disconnect();
+  }
+};
+
+export const onStartGameEmit = () => {
+  if (socket) {
+    console.log("onStartGameEmit");
+    socket.emit("start_game");
+  }
+};
+
+export const onStartGame = (
+  setGame: (game: Game) => void,
+  history: any,
+  game?: Game
+) => {
+  if (socket) {
+    console.log("onStartGame");
+    socket.on("start_game", () => startGame(setGame, history, game));
   }
 };
 
@@ -68,6 +86,14 @@ export const onNewPlayerConnect = (
     socket.once("player_connect", (gamePlayer: GamePlayer) =>
       playerConnect(gamePlayer, setGame, game)
     );
+  }
+};
+
+export const onTimer = () => {
+  if (socket) {
+    socket.on("timer", ({ nowTime }: { nowTime: number }) => {
+      console.log("TIMER", nowTime);
+    });
   }
 };
 

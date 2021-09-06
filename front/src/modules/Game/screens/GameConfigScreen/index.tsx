@@ -5,6 +5,7 @@ import Divider from "@material-ui/core/Divider";
 
 import useTranslations from "common/hooks/useTranslations";
 import { useAppLayoutContext } from "contexts/AppLayoutContext";
+import { onStartGameEmit } from "contexts/Socket/helpers/SocketIo";
 import ROUTES from "constants/routes";
 import useStyles from "common/hooks/useStyles";
 import Button from "common/components/Button";
@@ -21,7 +22,7 @@ const GameConfigScreen: React.FC = () => {
 
   const startGame = () => {
     console.log("startGame");
-    //socket.emit("start_game");
+    onStartGameEmit();
   };
 
   return !hasGame ? (

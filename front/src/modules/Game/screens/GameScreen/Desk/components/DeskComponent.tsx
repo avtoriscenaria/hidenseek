@@ -19,35 +19,37 @@ const DeskComponent: React.FC<IDeskComponent> = ({
 
   return (
     <Paper className={classes.container}>
-      {caught ? (
-        <div>{caughtDescription}</div>
-      ) : (
-        desk.map((l, j, rows) => (
-          <div key={`line-${j}`} className={classes.deskLine}>
-            {l.map((s, i, columns) => (
-              <Sell
-                key={`cell-${i}`}
-                config={s}
-                coordinates={{ x: i + 1, y: 10 - j }}
-                style={{
-                  borderRadius: borderRadius(
-                    i,
-                    columns.length - 1,
-                    j,
-                    rows.length - 1
-                  ),
-                  // backgroundColor: this.makeColor(player, not_you, {
-                  //   x: _i,
-                  //   y: i,
-                  // }),
-                  // width: this.makeSellSize(),
-                  // height: this.makeSellSize(),
-                }}
-              />
-            ))}
-          </div>
-        ))
+      {caught && (
+        <div className={classes.caughtBackdrop}>
+          <div className={classes.caughtBackdropLabel}>{caughtDescription}</div>
+          <div className={classes.backdrop} />
+        </div>
       )}
+      {desk.map((l, j, rows) => (
+        <div key={`line-${j}`} className={classes.deskLine}>
+          {l.map((s, i, columns) => (
+            <Sell
+              key={`cell-${i}`}
+              config={s}
+              coordinates={{ x: i + 1, y: 10 - j }}
+              style={{
+                borderRadius: borderRadius(
+                  i,
+                  columns.length - 1,
+                  j,
+                  rows.length - 1
+                ),
+                // backgroundColor: this.makeColor(player, not_you, {
+                //   x: _i,
+                //   y: i,
+                // }),
+                // width: this.makeSellSize(),
+                // height: this.makeSellSize(),
+              }}
+            />
+          ))}
+        </div>
+      ))}
     </Paper>
   );
 };

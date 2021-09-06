@@ -16,6 +16,7 @@ import { Game, GameDocument } from './schemas/game.schema';
 import { Player, PlayerDocument } from '../auth/schemas/player.schema';
 import { GAME_STATUSES } from 'src/constants';
 
+let timerIntervel;
 @WebSocketGateway()
 export class GameGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
@@ -51,6 +52,11 @@ export class GameGateway
     } else {
       console.log('ERROR');
     }
+  }
+
+  @SubscribeMessage('run_timer')
+  runTimer(client: Socket, payload: string): void {
+    console.log('LOGOUT');
   }
 
   @SubscribeMessage('move')
@@ -117,6 +123,8 @@ export class GameGateway
 
     client.join(room);
 
+    console.log('CONNECT');
+
     if (room && player_id) {
       const game = (await this.gameModel.find({ _id: room }).exec())[0];
 
@@ -128,6 +136,14 @@ export class GameGateway
         if (gamePlayer) {
           client.broadcast.to(room).emit('player_connect', gamePlayer);
         }
+
+        // if (!game.timer) {
+        //   timerIntervel = setInterval(() => {
+        //     console.log('TIK');
+        //     const nowTime = new Date().getTime();
+        //     this.server.in(room).emit('timer', { nowTime });
+        //   }, 10000);
+        // }
       }
     }
 
