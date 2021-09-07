@@ -13,8 +13,8 @@ export class Game {
   @Prop({ required: true })
   hide: boolean;
 
-  @Prop({ required: true })
-  timer: boolean;
+  // @Prop({ required: true })
+  // timer: boolean;
 
   @Prop({ required: true })
   players: GamePlayer[];

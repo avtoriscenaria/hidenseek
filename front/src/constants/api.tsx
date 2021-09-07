@@ -13,6 +13,8 @@ export const API = {
   },
 };
 
+export const STEP_INTERVAL = 10_000;
+
 export enum STATUSES {
   success = "success",
   failure = "failure",

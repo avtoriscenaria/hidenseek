@@ -22,6 +22,7 @@ export const startGame = (
   game?: Game
 ) => {
   if (game !== undefined) {
+    console.log("onStartGame");
     setGame({ ...game, status: GAME_STATUSES.in_process });
     history.push(ROUTES.game.base);
   }

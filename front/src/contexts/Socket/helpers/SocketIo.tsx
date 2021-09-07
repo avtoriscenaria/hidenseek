@@ -1,6 +1,6 @@
 import io from "socket.io-client";
 
-import { HOST } from "constants/api";
+import { HOST, STEP_INTERVAL } from "constants/api";
 import { movePlayer, playerConnect, startGame } from "./index";
 import { Game, GamePlayer } from "common/interfaces/Game";
 
@@ -21,6 +21,7 @@ export const initiateSocket = (
     if (socket && room) {
       console.log(`Connected!`);
       setConnected(true);
+      startTimer();
     }
   }
 };
@@ -44,8 +45,7 @@ export const onStartGame = (
   game?: Game
 ) => {
   if (socket) {
-    console.log("onStartGame");
-    socket.on("start_game", () => startGame(setGame, history, game));
+    socket.once("start_game", () => startGame(setGame, history, game));
   }
 };
 
@@ -89,10 +89,25 @@ export const onNewPlayerConnect = (
   }
 };
 
-export const onTimer = () => {
+export const startTimer = () => {
   if (socket) {
-    socket.on("timer", ({ nowTime }: { nowTime: number }) => {
-      console.log("TIMER", nowTime);
+    console.log("run_timer");
+    socket.emit("run_timer", STEP_INTERVAL);
+  }
+};
+
+export const subscribeOnTimer = (
+  setGame: (game: Game) => void,
+  setTimer: (time: number) => void,
+  game?: Game
+) => {
+  if (socket) {
+    socket.once("timer", (payload: { time: number; hide: boolean }) => {
+      console.log(payload);
+      setTimer(payload.time);
+      if (game !== undefined) {
+        setGame({ ...game, hide: payload.hide });
+      }
     });
   }
 };

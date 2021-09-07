@@ -16,7 +16,6 @@ import { Game, GameDocument } from './schemas/game.schema';
 import { Player, PlayerDocument } from '../auth/schemas/player.schema';
 import { GAME_STATUSES } from 'src/constants';
 
-let timerIntervel;
 @WebSocketGateway()
 export class GameGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
@@ -31,6 +30,7 @@ export class GameGateway
   server: Server;
 
   private logger: Logger = new Logger('GameGateway');
+  private TIMER_RUN = false;
 
   @SubscribeMessage('start_game')
   async startGame(client: Socket, payload: string): Promise<void> {
@@ -55,8 +55,22 @@ export class GameGateway
   }
 
   @SubscribeMessage('run_timer')
-  runTimer(client: Socket, payload: string): void {
-    console.log('LOGOUT');
+  runTimer(client: Socket, timeStep: number): void {
+    const { room } = client.handshake.query;
+
+    if (!this.TIMER_RUN) {
+      this.TIMER_RUN = true;
+      console.log('runTimer');
+      // client.on('subscribeToTimer', (interval) => {
+      console.log('client is subscribing to timer with interval ', timeStep);
+      setInterval(() => {
+        console.log('SET INTERVAL');
+        this.server
+          .in(room)
+          .emit('timer', { time: new Date().getTime(), hide: true });
+      }, timeStep);
+      // });
+    }
   }
 
   @SubscribeMessage('move')
@@ -113,7 +127,7 @@ export class GameGateway
     const { token, room, player_id } = client.handshake.query;
     client.use(async (req, next) => {
       const isVerified = await this.jwt.checkAuthToken(token);
-      console.log('isVerified', isVerified);
+
       if (isVerified) {
         next();
       } else {
@@ -133,17 +147,9 @@ export class GameGateway
           (p) => p._id.toString() === player_id.toString(),
         );
 
-        if (gamePlayer) {
+        if (gamePlayer && !this.TIMER_RUN) {
           client.broadcast.to(room).emit('player_connect', gamePlayer);
         }
-
-        // if (!game.timer) {
-        //   timerIntervel = setInterval(() => {
-        //     console.log('TIK');
-        //     const nowTime = new Date().getTime();
-        //     this.server.in(room).emit('timer', { nowTime });
-        //   }, 10000);
-        // }
       }
     }
 
