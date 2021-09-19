@@ -16,16 +16,14 @@ import LSData from "constants/LSData";
 import ROUTES from "constants/routes";
 
 import { useAppLayoutContext } from "../AppLayoutContext";
-import { playerConnect, startGame, movePlayer } from "./helpers";
+// import { playerConnect, startGame, movePlayer } from "./helpers";
 
 import {
   initiateSocket,
   disconnectSocket,
   onStartGame,
-  onMovePlayerSocket,
-  onNewPlayerConnect,
+  updateGame,
   onLogout,
-  startTimer,
   subscribeOnTimer,
 } from "./helpers/SocketIo";
 
@@ -58,14 +56,18 @@ export const SocketContextProvider: React.FC = ({ children }) => {
   }, [connect, token, hasGame, player?._id, game]);
 
   useEffect(() => {
-    // subscribeOnTimer(setGame, setTimer, game);
-    onMovePlayerSocket(setGame, game);
-    onNewPlayerConnect(setGame, game);
+    updateGame(setGame);
   }, [game]);
 
   useEffect(() => {
     onStartGame(setGame, history, game);
   }, [game, history]);
+
+  useEffect(() => {
+    if (connect) {
+      subscribeOnTimer(setTimer);
+    }
+  }, [connect, timer]);
 
   useEffect(() => {
     onLogout(logout);

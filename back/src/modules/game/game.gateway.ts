@@ -30,7 +30,8 @@ export class GameGateway
   server: Server;
 
   private logger: Logger = new Logger('GameGateway');
-  private TIMER_RUN = false;
+  private TIMER_RUN = undefined;
+  private TIME_INTERVAL = undefined;
 
   @SubscribeMessage('start_game')
   async startGame(client: Socket, payload: string): Promise<void> {
@@ -58,19 +59,49 @@ export class GameGateway
   runTimer(client: Socket, timeStep: number): void {
     const { room } = client.handshake.query;
 
-    if (!this.TIMER_RUN) {
-      this.TIMER_RUN = true;
+    if (this.TIMER_RUN === undefined) {
+      this.TIMER_RUN = new Date().getTime();
       console.log('runTimer');
-      // client.on('subscribeToTimer', (interval) => {
+      client.emit('timer', {
+        startTime: 0,
+      });
+
       console.log('client is subscribing to timer with interval ', timeStep);
-      setInterval(() => {
+      this.TIME_INTERVAL = setInterval(async () => {
         console.log('SET INTERVAL');
-        this.server
-          .in(room)
-          .emit('timer', { time: new Date().getTime(), hide: true });
+        this.TIMER_RUN = new Date().getTime();
+        // const { room } = client.handshake.query;
+
+        // const game = (await this.gameModel.find({ _id: room }).exec())[0];
+        // game.hide = !game.hide;
+        // await game.save();
+
+        this.server.in(room).emit('timer', { time: new Date().getTime() });
+        // this.server.in(room).emit('update_game', { game });
       }, timeStep);
-      // });
     }
+  }
+
+  @SubscribeMessage('end_turn')
+  endTurn(client: Socket): void {
+    const { room } = client.handshake.query;
+
+    console.log('END_TURN');
+
+    clearInterval(this.TIME_INTERVAL);
+    this.server.in(room).emit('timer', { time: new Date().getTime() });
+    this.TIME_INTERVAL = setInterval(async () => {
+      console.log('SET INTERVAL 2');
+      this.TIMER_RUN = new Date().getTime();
+      // const { room } = client.handshake.query;
+
+      // const game = (await this.gameModel.find({ _id: room }).exec())[0];
+      // game.hide = !game.hide;
+      // await game.save();
+
+      this.server.in(room).emit('timer', { time: new Date().getTime() });
+      // this.server.in(room).emit('update_game', { game });
+    }, 20_000);
   }
 
   @SubscribeMessage('move')
@@ -104,7 +135,9 @@ export class GameGateway
           );
 
           await game.save();
-          this.server.in(room).emit('move', { players: game.players });
+          console.log('UPDATE GAME', 'MOVE');
+          this.server.in(room).emit('update_game', { game });
+          // this.server.in(room).emit('move', { players: game.players });
         }
       }
     }
@@ -137,7 +170,16 @@ export class GameGateway
 
     client.join(room);
 
-    console.log('CONNECT');
+    console.log('CONNECT', this.TIMER_RUN);
+    if (this.TIMER_RUN) {
+      const startTime = Math.round(
+        (new Date().getTime() - this.TIMER_RUN) / 1000,
+      );
+      console.log('startTime', startTime);
+      client.emit('timer', {
+        startTime,
+      });
+    }
 
     if (room && player_id) {
       const game = (await this.gameModel.find({ _id: room }).exec())[0];

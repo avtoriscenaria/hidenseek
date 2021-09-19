@@ -1,4 +1,4 @@
-export const HOST = "http://192.168.0.105:3005";
+export const HOST = "http://192.168.0.102:3005";
 
 export const API = {
   auth: {
@@ -13,7 +13,7 @@ export const API = {
   },
 };
 
-export const STEP_INTERVAL = 10_000;
+export const STEP_INTERVAL = 20_000;
 
 export enum STATUSES {
   success = "success",

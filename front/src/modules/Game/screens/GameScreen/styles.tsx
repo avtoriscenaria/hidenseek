@@ -1,5 +1,15 @@
 const styles = () => ({
-  container: {
+  header: {
+    display: "flex",
+    marginBottom: 16,
+  },
+  timerContainer: {
+    width: 520,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  body: {
     display: "flex",
 
     "& > div:nth-child(2)": {

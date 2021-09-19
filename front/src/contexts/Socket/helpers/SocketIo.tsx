@@ -39,6 +39,15 @@ export const onStartGameEmit = () => {
   }
 };
 
+export const updateGame = (updateGame: (game: Game) => void) => {
+  if (socket) {
+    socket.once("update_game", ({ game }: { game: Game }) => {
+      console.log("update_game", game);
+      updateGame(game);
+    });
+  }
+};
+
 export const onStartGame = (
   setGame: (game: Game) => void,
   history: any,
@@ -59,56 +68,58 @@ export const movePlayerSocket = (
   }
 };
 
-export const onMovePlayerSocket = (
-  setGame: (game: Game) => void,
-  game?: Game
-) => {
+export const endTurn = () => {
   if (socket) {
-    socket.once(
-      "move",
-      (payload: {
-        players: GamePlayer[];
-        // player_id: string;
-        // coordinates: { x: number; y: number };
-      }) => {
-        console.log("OTHER MOVE", payload);
-        movePlayer(payload, setGame, game);
-      }
-    );
+    console.log("END TURN");
+    socket.emit("end_turn");
   }
 };
 
-export const onNewPlayerConnect = (
-  setGame: (game: Game) => void,
-  game?: Game
-) => {
-  if (socket) {
-    socket.once("player_connect", (gamePlayer: GamePlayer) =>
-      playerConnect(gamePlayer, setGame, game)
-    );
-  }
-};
+// export const onMovePlayerSocket = (
+//   setGame: (game: Game) => void,
+//   game?: Game
+// ) => {
+//   if (socket) {
+//     socket.once(
+//       "move",
+//       (payload: {
+//         players: GamePlayer[];
+//         // player_id: string;
+//         // coordinates: { x: number; y: number };
+//       }) => {
+//         console.log("OTHER MOVE", payload);
+//         movePlayer(payload, setGame, game);
+//       }
+//     );
+//   }
+// };
+
+// export const onNewPlayerConnect = (
+//   setGame: (game: Game) => void,
+//   game?: Game
+// ) => {
+//   if (socket) {
+//     socket.once("player_connect", (gamePlayer: GamePlayer) =>
+//       playerConnect(gamePlayer, setGame, game)
+//     );
+//   }
+// };
 
 export const startTimer = () => {
   if (socket) {
-    console.log("run_timer");
+    console.log("!!!run_timer");
     socket.emit("run_timer", STEP_INTERVAL);
   }
 };
 
-export const subscribeOnTimer = (
-  setGame: (game: Game) => void,
-  setTimer: (time: number) => void,
-  game?: Game
-) => {
+export const subscribeOnTimer = (setTimer: (time: number) => void) => {
   if (socket) {
-    socket.once("timer", (payload: { time: number; hide: boolean }) => {
-      console.log(payload);
-      setTimer(payload.time);
-      if (game !== undefined) {
-        setGame({ ...game, hide: payload.hide });
+    socket.once(
+      "timer",
+      ({ time, startTime }: { time: number; startTime: number }) => {
+        setTimer(time !== undefined ? time : startTime);
       }
-    });
+    );
   }
 };
 
