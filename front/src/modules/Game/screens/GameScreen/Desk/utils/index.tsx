@@ -5,12 +5,13 @@ export const configurateSell = (
   players: GamePlayer[],
   coordinates: { x: number; y: number },
   sell: { x?: number; y?: number },
-  canMoveColor: string,
   playerPosition: string,
   canCatch: boolean,
+  isHideCell: boolean,
   setPlayerPosition: (position: string) => void,
   setCanMoveColor: (value: string) => void,
-  setCanCatch: (value: boolean) => void
+  setCanCatch: (value: boolean) => void,
+  setIsHideCell: (value: boolean) => void
 ) => {
   const { x, y } = coordinates;
   const { x: xBlock, y: yBlock } = sell;
@@ -37,6 +38,7 @@ export const configurateSell = (
   if (myPlayer && !myPlayer.caught) {
     const {
       position: { x: X, y: Y },
+      hunter,
     } = myPlayer;
 
     if (
@@ -52,7 +54,7 @@ export const configurateSell = (
           (p) => !p.caught && p.position.y === y && p.position.x === x
         )
       ) {
-        if (myPlayer.hunter && !canCatch) {
+        if (hunter && !canCatch) {
           setCanCatch(true);
           setCanMoveColor(myPlayer.color);
         }
@@ -63,5 +65,37 @@ export const configurateSell = (
       setCanMoveColor("");
       setCanCatch(false);
     }
+    // console.log(X, Y);
+
+    // const hide =
+    //   Boolean(hunter) &&
+    //   ((y === Y && (x === X - 1 || x === X + 1)) ||
+    //     (x === X && (y === Y + 1 || y === Y - 1)) ||
+    //     (x === X - 1 && y === Y + 1) ||
+    //     (x === X + 1 && y === Y + 1) ||
+    //     (x === X + 1 && y === Y - 1) ||
+    //     (x === X - 1 && y === Y - 1) ||
+    //     (x === X && y === Y));
+
+    // if (hide !== isHideCell) {
+    //   console.log(x, y);
+    //   setIsHideCell(hide);
+    //   // console.log(x, y);
+    // }
+
+    // if (
+    //   Boolean(hunter) &&
+    //   isHideCell &&
+    //   ((y === Y && (x === X - 1 || x === X + 1)) ||
+    //     (x === X && (y === Y + 1 || y === Y - 1)) ||
+    //     (x === X - 1 && y === Y + 1) ||
+    //     (x === X + 1 && y === Y + 1) ||
+    //     (x === X + 1 && y === Y - 1) ||
+    //     (x === X - 1 && y === Y - 1) ||
+    //     (x === X && y === Y))
+    // ) {
+    //   // setIsHideCell(false);
+    //   console.log(x, y);
+    // }
   }
 };

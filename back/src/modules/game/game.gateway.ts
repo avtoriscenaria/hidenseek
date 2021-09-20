@@ -60,25 +60,22 @@ export class GameGateway
     const { room } = client.handshake.query;
 
     if (this.TIMER_RUN === undefined) {
-      this.TIMER_RUN = new Date().getTime();
-      console.log('runTimer');
-      client.emit('timer', {
-        startTime: 0,
-      });
-
-      console.log('client is subscribing to timer with interval ', timeStep);
-      this.TIME_INTERVAL = setInterval(async () => {
-        console.log('SET INTERVAL');
-        this.TIMER_RUN = new Date().getTime();
-        // const { room } = client.handshake.query;
-
-        // const game = (await this.gameModel.find({ _id: room }).exec())[0];
-        // game.hide = !game.hide;
-        // await game.save();
-
-        this.server.in(room).emit('timer', { time: new Date().getTime() });
-        // this.server.in(room).emit('update_game', { game });
-      }, timeStep);
+      // this.TIMER_RUN = new Date().getTime();
+      // console.log('runTimer');
+      // client.emit('timer', {
+      //   startTime: 0,
+      // });
+      // console.log('client is subscribing to timer with interval ', timeStep);
+      // this.TIME_INTERVAL = setInterval(async () => {
+      //   console.log('SET INTERVAL');
+      //   this.TIMER_RUN = new Date().getTime();
+      //   // const { room } = client.handshake.query;
+      //   // const game = (await this.gameModel.find({ _id: room }).exec())[0];
+      //   // game.hide = !game.hide;
+      //   // await game.save();
+      //   this.server.in(room).emit('timer', { time: new Date().getTime() });
+      //   // this.server.in(room).emit('update_game', { game });
+      // }, timeStep);
     }
   }
 

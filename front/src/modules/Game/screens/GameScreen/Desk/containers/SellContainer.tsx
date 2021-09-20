@@ -28,6 +28,7 @@ const SellContainer: React.FC<SellContainerProps> = memo(
     const [playerPosition, setPlayerPosition] = useState("");
     const [canMoveColor, setCanMoveColor] = useState("");
     const [canCatch, setCanCatch] = useState(false);
+    const [isHideCell, setIsHideCell] = useState(true);
     const { border } = useBorderConfig(sell);
     const { players } = game;
 
@@ -37,22 +38,15 @@ const SellContainer: React.FC<SellContainerProps> = memo(
         players,
         coordinates,
         sell,
-        canMoveColor,
         playerPosition,
         canCatch,
+        isHideCell,
         setPlayerPosition,
         setCanMoveColor,
-        setCanCatch
+        setCanCatch,
+        setIsHideCell
       );
-    }, [
-      _id,
-      canCatch,
-      canMoveColor,
-      coordinates,
-      playerPosition,
-      players,
-      sell,
-    ]);
+    }, [_id, canCatch, coordinates, isHideCell, playerPosition, players, sell]);
 
     const move = () => {
       if (Boolean(canMoveColor)) {
@@ -67,10 +61,10 @@ const SellContainer: React.FC<SellContainerProps> = memo(
         style={{
           ...style,
           cursor: Boolean(canMoveColor) ? "pointer" : undefined,
-          backgroundColor: playerPosition,
+          backgroundColor: isHideCell ? "grey" : playerPosition,
         }}
         canMoveStyles={
-          !Boolean(canMoveColor) || canCatch
+          !Boolean(canMoveColor) || canCatch || isHideCell
             ? undefined
             : {
                 backgroundColor: canMoveColor,
