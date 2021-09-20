@@ -30,8 +30,8 @@ export class GameGateway
   server: Server;
 
   private logger: Logger = new Logger('GameGateway');
-  private TIMER_RUN = undefined;
-  private TIME_INTERVAL = undefined;
+  private TIMER_RUN = {};
+  private TIME_INTERVAL = {};
 
   @SubscribeMessage('start_game')
   async startGame(client: Socket, payload: string): Promise<void> {
@@ -59,16 +59,16 @@ export class GameGateway
   runTimer(client: Socket, timeStep: number): void {
     const { room } = client.handshake.query;
 
-    if (this.TIMER_RUN === undefined) {
-      // this.TIMER_RUN = new Date().getTime();
-      // console.log('runTimer');
+    if (this.TIMER_RUN[room] === undefined) {
+      // this.TIMER_RUN[room] = new Date().getTime();
+      console.log('runTimer');
       // client.emit('timer', {
       //   startTime: 0,
       // });
       // console.log('client is subscribing to timer with interval ', timeStep);
-      // this.TIME_INTERVAL = setInterval(async () => {
+      // this.TIME_INTERVAL[room] = setInterval(async () => {
       //   console.log('SET INTERVAL');
-      //   this.TIMER_RUN = new Date().getTime();
+      //   this.TIMER_RUN[room] = new Date().getTime();
       //   // const { room } = client.handshake.query;
       //   // const game = (await this.gameModel.find({ _id: room }).exec())[0];
       //   // game.hide = !game.hide;
@@ -85,20 +85,20 @@ export class GameGateway
 
     console.log('END_TURN');
 
-    clearInterval(this.TIME_INTERVAL);
-    this.server.in(room).emit('timer', { time: new Date().getTime() });
-    this.TIME_INTERVAL = setInterval(async () => {
-      console.log('SET INTERVAL 2');
-      this.TIMER_RUN = new Date().getTime();
-      // const { room } = client.handshake.query;
+    // clearInterval(this.TIME_INTERVAL[room]);
+    // this.server.in(room).emit('timer', { time: new Date().getTime() });
+    // this.TIME_INTERVAL[room] = setInterval(async () => {
+    //   console.log('SET INTERVAL 2');
+    //   this.TIMER_RUN[room] = new Date().getTime();
+    //   // const { room } = client.handshake.query;
 
-      // const game = (await this.gameModel.find({ _id: room }).exec())[0];
-      // game.hide = !game.hide;
-      // await game.save();
+    //   // const game = (await this.gameModel.find({ _id: room }).exec())[0];
+    //   // game.hide = !game.hide;
+    //   // await game.save();
 
-      this.server.in(room).emit('timer', { time: new Date().getTime() });
-      // this.server.in(room).emit('update_game', { game });
-    }, 20_000);
+    //   this.server.in(room).emit('timer', { time: new Date().getTime() });
+    //   // this.server.in(room).emit('update_game', { game });
+    // }, 20_000);
   }
 
   @SubscribeMessage('move')
@@ -167,10 +167,10 @@ export class GameGateway
 
     client.join(room);
 
-    console.log('CONNECT', this.TIMER_RUN);
-    if (this.TIMER_RUN) {
+    console.log('CONNECT', this.TIMER_RUN[room]);
+    if (this.TIMER_RUN[room]) {
       const startTime = Math.round(
-        (new Date().getTime() - this.TIMER_RUN) / 1000,
+        (new Date().getTime() - this.TIMER_RUN[room]) / 1000,
       );
       console.log('startTime', startTime);
       client.emit('timer', {
@@ -186,7 +186,7 @@ export class GameGateway
           (p) => p._id.toString() === player_id.toString(),
         );
 
-        if (gamePlayer && !this.TIMER_RUN) {
+        if (gamePlayer && !Boolean(this.TIMER_RUN[room])) {
           client.broadcast.to(room).emit('player_connect', gamePlayer);
         }
       }

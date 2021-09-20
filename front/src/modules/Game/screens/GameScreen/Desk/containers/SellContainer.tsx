@@ -24,11 +24,11 @@ interface SellContainerProps {
 const SellContainer: React.FC<SellContainerProps> = memo(
   ({ config: sell, coordinates, style }) => {
     const { player: { _id } = { _id: "" } } = useAppLayoutContext();
-    const { game = defaultGame } = useSocketContext();
+    const { game = defaultGame, myGamePlayer } = useSocketContext();
     const [playerPosition, setPlayerPosition] = useState("");
     const [canMoveColor, setCanMoveColor] = useState("");
     const [canCatch, setCanCatch] = useState(false);
-    const [isHideCell, setIsHideCell] = useState(true);
+    const [isHideCell, setIsHideCell] = useState(Boolean(myGamePlayer?.hunter));
     const { border } = useBorderConfig(sell);
     const { players } = game;
 
@@ -39,6 +39,7 @@ const SellContainer: React.FC<SellContainerProps> = memo(
         coordinates,
         sell,
         playerPosition,
+        canMoveColor,
         canCatch,
         isHideCell,
         setPlayerPosition,
@@ -46,7 +47,16 @@ const SellContainer: React.FC<SellContainerProps> = memo(
         setCanCatch,
         setIsHideCell
       );
-    }, [_id, canCatch, coordinates, isHideCell, playerPosition, players, sell]);
+    }, [
+      _id,
+      canCatch,
+      canMoveColor,
+      coordinates,
+      isHideCell,
+      playerPosition,
+      players,
+      sell,
+    ]);
 
     const move = () => {
       if (Boolean(canMoveColor)) {

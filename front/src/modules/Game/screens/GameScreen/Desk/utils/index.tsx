@@ -6,6 +6,7 @@ export const configurateSell = (
   coordinates: { x: number; y: number },
   sell: { x?: number; y?: number },
   playerPosition: string,
+  canMoveColor: string,
   canCatch: boolean,
   isHideCell: boolean,
   setPlayerPosition: (position: string) => void,
@@ -57,45 +58,33 @@ export const configurateSell = (
         if (hunter && !canCatch) {
           setCanCatch(true);
           setCanMoveColor(myPlayer.color);
+        } else if (!hunter && canMoveColor) {
+          setCanMoveColor("");
         }
       } else {
         setCanMoveColor(myPlayer.color);
+        if (canCatch) {
+          setCanCatch(false);
+        }
       }
     } else {
       setCanMoveColor("");
       setCanCatch(false);
     }
-    // console.log(X, Y);
 
-    // const hide =
-    //   Boolean(hunter) &&
-    //   ((y === Y && (x === X - 1 || x === X + 1)) ||
-    //     (x === X && (y === Y + 1 || y === Y - 1)) ||
-    //     (x === X - 1 && y === Y + 1) ||
-    //     (x === X + 1 && y === Y + 1) ||
-    //     (x === X + 1 && y === Y - 1) ||
-    //     (x === X - 1 && y === Y - 1) ||
-    //     (x === X && y === Y));
+    if (Boolean(hunter)) {
+      const show =
+        (y === Y && (x === X - 1 || x === X + 1)) ||
+        (x === X && (y === Y + 1 || y === Y - 1)) ||
+        (x === X - 1 && y === Y + 1) ||
+        (x === X + 1 && y === Y + 1) ||
+        (x === X + 1 && y === Y - 1) ||
+        (x === X - 1 && y === Y - 1) ||
+        (x === X && y === Y);
 
-    // if (hide !== isHideCell) {
-    //   console.log(x, y);
-    //   setIsHideCell(hide);
-    //   // console.log(x, y);
-    // }
-
-    // if (
-    //   Boolean(hunter) &&
-    //   isHideCell &&
-    //   ((y === Y && (x === X - 1 || x === X + 1)) ||
-    //     (x === X && (y === Y + 1 || y === Y - 1)) ||
-    //     (x === X - 1 && y === Y + 1) ||
-    //     (x === X + 1 && y === Y + 1) ||
-    //     (x === X + 1 && y === Y - 1) ||
-    //     (x === X - 1 && y === Y - 1) ||
-    //     (x === X && y === Y))
-    // ) {
-    //   // setIsHideCell(false);
-    //   console.log(x, y);
-    // }
+      if (show === isHideCell) {
+        setIsHideCell(!show);
+      }
+    }
   }
 };

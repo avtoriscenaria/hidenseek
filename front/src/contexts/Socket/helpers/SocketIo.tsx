@@ -42,7 +42,6 @@ export const onStartGameEmit = () => {
 export const updateGame = (updateGame: (game: Game) => void) => {
   if (socket) {
     socket.once("update_game", ({ game }: { game: Game }) => {
-      console.log("update_game", game);
       updateGame(game);
     });
   }
