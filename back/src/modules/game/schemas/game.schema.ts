@@ -5,18 +5,23 @@ import { GamePlayer } from './gamePlayer.schema';
 
 export type GameDocument = Game & Document;
 
+class SettingsProps {
+  hunterStep: number;
+  preyStep: number;
+}
+
 @Schema()
 export class Game {
-  @Prop({ required: true })
+  @Prop()
   status: string;
 
-  @Prop({ required: true })
+  @Prop()
   hide: boolean;
 
-  // @Prop({ required: true })
-  // timer: boolean;
+  @Prop(SettingsProps)
+  settings: SettingsProps;
 
-  @Prop({ required: true })
+  @Prop()
   players: GamePlayer[];
 }
 

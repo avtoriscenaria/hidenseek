@@ -5,17 +5,20 @@ export type GamePlayerDocument = GamePlayer & Document;
 
 @Schema()
 export class GamePlayer {
-  @Prop({ required: true })
+  @Prop()
   nickname: string;
 
-  @Prop({ required: true })
+  @Prop()
   _id: string;
 
-  @Prop({ required: true })
+  @Prop()
   color: string;
 
-  @Prop({ required: true })
+  @Prop()
   position: { x: number; y: number };
+
+  @Prop()
+  step: number;
 
   @Prop()
   creator: boolean;

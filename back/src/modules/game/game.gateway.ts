@@ -114,7 +114,17 @@ export class GameGateway
         (p) => p._id.toString() === player_id.toString(),
       );
 
-      if (gamePlayer && coordinates.x && coordinates.y) {
+      console.log('game', game);
+
+      if (
+        false &&
+        gamePlayer &&
+        Boolean(gamePlayer.hunter) !== Boolean(game.hide) &&
+        // Boolean(gamePlayer.step) &&
+        coordinates.x &&
+        coordinates.y
+      ) {
+        console.log('YES MOVE');
         const isPlayerOnPosition = game.players.some(
           (p) =>
             p.position.x === coordinates.x && p.position.y === coordinates.y,
@@ -123,7 +133,11 @@ export class GameGateway
         if (!isPlayerOnPosition || gamePlayer.hunter) {
           game.players = game.players.map((p) =>
             p._id.toString() === player_id.toString()
-              ? { ...p, position: coordinates }
+              ? {
+                  ...p,
+                  position: coordinates,
+                  step: 3, //p.step - 1 >= 0 ? p.step - 1 : 0,
+                }
               : gamePlayer.hunter &&
                 p.position.x === coordinates.x &&
                 p.position.y === coordinates.y

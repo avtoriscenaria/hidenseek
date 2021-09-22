@@ -1,4 +1,4 @@
-import { IsBoolean, IsString, IsArray } from 'class-validator';
+import { IsBoolean, IsString, IsArray, IsObject } from 'class-validator';
 
 import { GamePlayerDto } from './gamePlayerDto.dto';
 
@@ -8,6 +8,9 @@ export class GameDto {
 
   @IsBoolean()
   hide: boolean;
+
+  @IsObject()
+  settings: { hunterStep: number; preyStep: number };
 
   @IsArray()
   players: GamePlayerDto[];

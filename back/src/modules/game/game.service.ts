@@ -78,6 +78,7 @@ export class GameService {
               nickname: player.nickname,
               color,
               position,
+              step: 0,
               creator: false,
               hunter: false,
               caught: false,

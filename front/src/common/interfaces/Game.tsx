@@ -11,6 +11,7 @@ export interface GamePlayer {
   creator?: boolean;
   hunter?: boolean;
   caught?: boolean;
+  step: number;
   color: string;
   position: { x: number; y: number };
 }

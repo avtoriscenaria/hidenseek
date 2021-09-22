@@ -9,6 +9,7 @@ export const configurateSell = (
   canMoveColor: string,
   canCatch: boolean,
   isHideCell: boolean,
+  canPlayerMove: boolean,
   setPlayerPosition: (position: string) => void,
   setCanMoveColor: (value: string) => void,
   setCanCatch: (value: boolean) => void,
@@ -43,12 +44,13 @@ export const configurateSell = (
     } = myPlayer;
 
     if (
-      (Y === y &&
+      canPlayerMove &&
+      ((Y === y &&
         ((X === x + 1 && xBlock !== 1 && xBlock !== 2) ||
           (X === x - 1 && xBlock !== 0 && xBlock !== 2))) ||
-      (X === x &&
-        ((Y === y + 1 && yBlock !== 0 && yBlock !== 2) ||
-          (Y === y - 1 && yBlock !== 1 && yBlock !== 2)))
+        (X === x &&
+          ((Y === y + 1 && yBlock !== 0 && yBlock !== 2) ||
+            (Y === y - 1 && yBlock !== 1 && yBlock !== 2))))
     ) {
       if (
         players.some(
