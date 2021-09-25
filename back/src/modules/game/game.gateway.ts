@@ -61,20 +61,34 @@ export class GameGateway
 
     if (this.TIMER_RUN[room] === undefined) {
       // this.TIMER_RUN[room] = new Date().getTime();
-      console.log('runTimer');
+      // console.log('runTimer');
       // client.emit('timer', {
       //   startTime: 0,
       // });
-      // console.log('client is subscribing to timer with interval ', timeStep);
+      console.log('client is subscribing to timer with interval ', timeStep);
+
       // this.TIME_INTERVAL[room] = setInterval(async () => {
       //   console.log('SET INTERVAL');
+      //   const { room } = client.handshake.query;
       //   this.TIMER_RUN[room] = new Date().getTime();
-      //   // const { room } = client.handshake.query;
-      //   // const game = (await this.gameModel.find({ _id: room }).exec())[0];
-      //   // game.hide = !game.hide;
-      //   // await game.save();
+      //   const game = (await this.gameModel.find({ _id: room }).exec())[0];
+
+      //   game.hide = !game.hide;
+      //   game.players = game.players.map((p) => ({
+      //     ...p,
+      //     step:
+      //       Boolean(p.hunter) && !game.hide
+      //         ? game.settings.hunterStep
+      //         : !Boolean(p.hunter) && game.hide
+      //         ? game.settings.preyStep
+      //         : 0,
+      //   }));
+
+      //   console.log('GAME', game);
+
+      //   await game.save();
       //   this.server.in(room).emit('timer', { time: new Date().getTime() });
-      //   // this.server.in(room).emit('update_game', { game });
+      //   this.server.in(room).emit('update_game', { game });
       // }, timeStep);
     }
   }
@@ -120,7 +134,7 @@ export class GameGateway
         false &&
         gamePlayer &&
         Boolean(gamePlayer.hunter) !== Boolean(game.hide) &&
-        // Boolean(gamePlayer.step) &&
+        Boolean(gamePlayer.step) &&
         coordinates.x &&
         coordinates.y
       ) {
@@ -136,7 +150,7 @@ export class GameGateway
               ? {
                   ...p,
                   position: coordinates,
-                  step: 3, //p.step - 1 >= 0 ? p.step - 1 : 0,
+                  step: p.step - 1 >= 0 ? p.step - 1 : 0,
                 }
               : gamePlayer.hunter &&
                 p.position.x === coordinates.x &&

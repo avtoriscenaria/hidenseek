@@ -4,7 +4,12 @@ import { STEP_INTERVAL } from "constants/api";
 
 const SECONDS_INTERVAL = STEP_INTERVAL / 1000;
 
-const Timer: React.FC<{ timer?: number }> = memo(({ timer }) => {
+interface ITimer {
+  timer?: number;
+  className?: string;
+}
+
+const Timer: React.FC<ITimer> = memo(({ timer, className }) => {
   const [timeLeft, setTimeLeft] = useState<number | undefined>();
 
   useEffect(() => {
@@ -32,7 +37,7 @@ const Timer: React.FC<{ timer?: number }> = memo(({ timer }) => {
     }
   }, [timer]);
 
-  return <div>{timeLeft}</div>;
+  return <div className={className}>{timeLeft || 12}</div>;
 });
 
 export default Timer;
