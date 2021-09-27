@@ -20,6 +20,7 @@ const MenuScreen: React.FC = () => {
         <div className={classes.title}>{gameTranslations.menu}</div>
         <div className={classes.menuActions}>
           <FindGame />
+
           <div className={classes.dividerContainer}>
             <Divider className={classes.divider} orientation="vertical" />
           </div>

@@ -67,6 +67,13 @@ export const movePlayerSocket = (
   }
 };
 
+export const setHunterRoleSocket = () => {
+  if (socket) {
+    console.log("setHunterRoleSocket");
+    socket.emit("hunter_role");
+  }
+};
+
 export const endTurn = () => {
   if (socket) {
     console.log("END TURN");

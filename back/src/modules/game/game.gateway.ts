@@ -35,7 +35,7 @@ export class GameGateway
 
   @SubscribeMessage('start_game')
   async startGame(client: Socket, payload: string): Promise<void> {
-    const { room, player: player_id } = client.handshake.query;
+    const { room, player_id } = client.handshake.query;
     const game = (await this.gameModel.find({ _id: room }).exec())[0];
 
     if (game && game.status === GAME_STATUSES.start) {
@@ -113,6 +113,28 @@ export class GameGateway
     //   this.server.in(room).emit('timer', { time: new Date().getTime() });
     //   // this.server.in(room).emit('update_game', { game });
     // }, 20_000);
+  }
+
+  @SubscribeMessage('hunter_role')
+  async setHunterRole(client: Socket): Promise<void> {
+    const { room, player_id } = client.handshake.query;
+
+    const game = (await this.gameModel.find({ _id: room }).exec())[0];
+
+    if (Boolean(game)) {
+      const updatedPlayers = game.players.map((p) => ({
+        ...p,
+        hunter: p._id.toString() === player_id.toString() || undefined,
+      }));
+
+      game.players = updatedPlayers;
+
+      await game.save();
+
+      console.log('game', game);
+
+      this.server.in(room).emit('update_game', { game });
+    }
   }
 
   @SubscribeMessage('move')

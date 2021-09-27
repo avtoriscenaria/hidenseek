@@ -32,7 +32,7 @@ interface Socket {
   game?: Game;
   timer?: number;
   isHideStep?: boolean;
-  setGame: (game: Game) => void;
+  setGame: (game?: Game) => void;
 }
 
 const defaultContext: Socket = {
@@ -75,7 +75,9 @@ export const SocketContextProvider: React.FC = ({ children }) => {
 
   useEffect(() => {
     if (Boolean(hasGame) && game === undefined) {
-      getGameRequest(hasGame, (responseGame) => {
+      console.log("CHECK");
+      getGameRequest(hasGame, player?._id, (responseGame) => {
+        console.log("RES", responseGame);
         if (Boolean(responseGame)) {
           setGame(responseGame);
           const { status } = responseGame || {};
@@ -85,10 +87,12 @@ export const SocketContextProvider: React.FC = ({ children }) => {
           } else if (status === GAME_STATUSES.in_process) {
             history.push(ROUTES.game.base);
           }
+        } else {
+          history.push(ROUTES.game.menu);
         }
       });
     }
-  }, [game, hasGame, history]);
+  }, [game, hasGame, history, player?._id]);
 
   const getMyGamePlayer = useCallback(() => {
     return game?.players.find((p) => p._id === player?._id);

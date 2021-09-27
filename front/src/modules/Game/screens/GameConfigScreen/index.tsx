@@ -32,6 +32,7 @@ const GameConfigScreen: React.FC = () => {
       <Paper className={classes.wrapper}>
         <div className={classes.menuActions}>
           <GameType />
+
           <div className={classes.dividerContainer}>
             <Divider className={classes.divider} orientation="vertical" />
           </div>

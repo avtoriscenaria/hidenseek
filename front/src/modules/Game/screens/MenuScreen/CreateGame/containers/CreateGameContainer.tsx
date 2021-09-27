@@ -11,7 +11,9 @@ const CreateGameContainer: React.FC = () => {
   const { player: { nickname, _id } = {} } = useAppLayoutContext();
   const { request } = useGameCreateRequest();
 
-  const onCreateGame = () => request({ nickname, _id });
+  const onCreateGame = () => {
+    request({ nickname, _id });
+  };
 
   return (
     <CreateGameComponent

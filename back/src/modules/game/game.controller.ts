@@ -7,9 +7,16 @@ import { GameService } from './game.service';
 export class GameController {
   constructor(private readonly game: GameService) {}
 
-  @Get('/:game_id')
-  getUsers(@Param() { game_id }: { game_id: ObjectId }) {
-    return this.game.getGame(game_id);
+  @Get('/exit/:player_id')
+  exitGame(@Param() { player_id }: { player_id: ObjectId }) {
+    return this.game.exitGame(player_id);
+  }
+
+  @Get('/:game_id/:player_id')
+  getUsers(
+    @Param() { game_id, player_id }: { game_id: ObjectId; player_id: ObjectId },
+  ) {
+    return this.game.getGame(game_id, player_id);
   }
 
   @Post('/create')

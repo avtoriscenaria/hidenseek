@@ -5,7 +5,11 @@ import localStorageHelper from "common/utils/localStorageHelper";
 
 interface ApiRequestProps {
   (
-    apiData: { uri: string; method: string; disableAuth?: boolean },
+    apiData: {
+      uri: string;
+      method: string;
+      disableAuth?: boolean;
+    },
     actions?: {
       data?: any;
       onSuccess?: (data?: any) => void;

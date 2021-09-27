@@ -22,6 +22,9 @@ export class Game {
   settings: SettingsProps;
 
   @Prop()
+  gameKey: string;
+
+  @Prop()
   players: GamePlayer[];
 }
 

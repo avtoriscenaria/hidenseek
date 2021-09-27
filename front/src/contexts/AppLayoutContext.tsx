@@ -14,7 +14,7 @@ interface AppLayoutProps {
   hasGame?: string;
   player?: Player;
   setIsAuthorized: (value: boolean) => void;
-  setHasGame: (value: string) => void;
+  setHasGame: (value?: string) => void;
   setPlayer: (player: Player) => void;
   logout: () => void;
 }
@@ -39,14 +39,20 @@ export const AppLayoutContextProvider: React.FC = ({ children }) => {
   useEffect(() => {
     verifyJWT(({ isVerified, player } = { isVerified: false }) => {
       setIsAuthorized(isVerified);
-      setIsAppLoaded(true);
       if (!isVerified) {
+        setIsAppLoaded(true);
         localStorageHelper("remove", LSData.authData);
         history.push(ROUTES.auth.base);
       } else {
         setPlayer(player);
         setHasGame(player?.game_id);
-        history.push(ROUTES.game.menu);
+        setIsAppLoaded(true);
+
+        if (Boolean(player?.game_id)) {
+          history.push(ROUTES.game.base);
+        } else {
+          history.push(ROUTES.game.menu);
+        }
       }
     });
   }, [history]);

@@ -16,7 +16,7 @@ export const useGameCreateRequest = () => {
     onSuccess: ({ game }) => {
       setGame(game);
       setHasGame(game._id);
-      history.push(ROUTES.game.base);
+      history.push(ROUTES.game.config);
     },
     onFailure: (resMessage) => {
       console.log("SOMETHING GOES WRONG", resMessage);

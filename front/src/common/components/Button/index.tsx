@@ -8,6 +8,7 @@ interface ButtonProps {
   onClick: () => void;
   disabled?: boolean;
   classes?: string;
+  type?: "inherit" | "default" | "primary" | "secondary";
 }
 
 export default function ContainedButtons({
@@ -15,6 +16,7 @@ export default function ContainedButtons({
   onClick,
   disabled,
   classes: propClass,
+  type = "primary",
 }: ButtonProps) {
   const classes = useStyles(styles);
   const additionalClass = propClass ? ` ${propClass}` : "";
@@ -23,7 +25,7 @@ export default function ContainedButtons({
     <Button
       className={`${classes.button}${additionalClass}`}
       variant="contained"
-      color="primary"
+      color={type}
       disabled={disabled}
       onClick={onClick}
     >

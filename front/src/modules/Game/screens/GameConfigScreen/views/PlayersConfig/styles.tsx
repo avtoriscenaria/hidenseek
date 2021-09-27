@@ -17,6 +17,7 @@ const styles = () => ({
   },
   gameKey: {
     fontFamily: "NotoSans-Italic",
+    fontSize: 10,
   },
   header: {
     display: "flex",

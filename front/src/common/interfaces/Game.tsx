@@ -1,6 +1,7 @@
 export interface Game {
   hide: boolean;
   status: string;
+  gameKey: string;
   players: GamePlayer[];
   _id: string;
 }

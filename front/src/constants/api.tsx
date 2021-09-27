@@ -10,6 +10,7 @@ export const API = {
     createtGame: { uri: "/game/create", method: "POST" },
     findGame: { uri: "/game/find", method: "POST" },
     getGame: { uri: "/game", method: "GET" },
+    exitGame: { uri: "/game/exit", method: "GET" },
   },
 };
 

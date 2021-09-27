@@ -4,6 +4,7 @@ import LSData from "constants/LSData";
 
 const getGame = async (
   game_id?: string,
+  player_id?: string,
   callback: (game?: Game) => void = () => {}
 ) => {
   const { uri, method } = API.game.getGame;
@@ -17,17 +18,20 @@ const getGame = async (
 
     Authorization = `Bearer ${token}`;
 
-    const res = await fetch(`${HOST}${uri}/${game_id}`, {
+    console.log("PLAYER_ID", player_id);
+
+    const res = await fetch(`${HOST}${uri}/${game_id}/${player_id}`, {
       method,
       headers: {
         "Content-Type": "application/json",
         Authorization,
       },
     }).then((res) => res.json());
-
+    console.log("RESPONSE", res);
     if (res.status === STATUSES.success) {
       callback(res.data.game);
     } else {
+      callback();
     }
   } else {
     callback();
