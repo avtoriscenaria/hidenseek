@@ -60,59 +60,91 @@ export class GameGateway
     const { room } = client.handshake.query;
 
     if (this.TIMER_RUN[room] === undefined) {
-      // this.TIMER_RUN[room] = new Date().getTime();
-      // console.log('runTimer');
-      // client.emit('timer', {
-      //   startTime: 0,
-      // });
+      this.TIMER_RUN[room] = new Date().getTime();
+      client.emit('timer', {
+        startTime: 0,
+      });
+
       console.log('client is subscribing to timer with interval ', timeStep);
 
-      // this.TIME_INTERVAL[room] = setInterval(async () => {
-      //   console.log('SET INTERVAL');
-      //   const { room } = client.handshake.query;
-      //   this.TIMER_RUN[room] = new Date().getTime();
-      //   const game = (await this.gameModel.find({ _id: room }).exec())[0];
+      this.TIME_INTERVAL[room] = setInterval(async () => {
+        console.log('SET INTERVAL');
+        const { room } = client.handshake.query;
+        this.TIMER_RUN[room] = new Date().getTime();
+        const game = (await this.gameModel.find({ _id: room }).exec())[0];
 
-      //   game.hide = !game.hide;
-      //   game.players = game.players.map((p) => ({
-      //     ...p,
-      //     step:
-      //       Boolean(p.hunter) && !game.hide
-      //         ? game.settings.hunterStep
-      //         : !Boolean(p.hunter) && game.hide
-      //         ? game.settings.preyStep
-      //         : 0,
-      //   }));
+        game.hide = !game.hide;
+        game.players = game.players.map((p) => ({
+          ...p,
+          step:
+            Boolean(p.hunter) && !game.hide
+              ? game.settings.hunterStep
+              : !Boolean(p.hunter) && game.hide
+              ? game.settings.preyStep
+              : 0,
+        }));
 
-      //   console.log('GAME', game);
-
-      //   await game.save();
-      //   this.server.in(room).emit('timer', { time: new Date().getTime() });
-      //   this.server.in(room).emit('update_game', { game });
-      // }, timeStep);
+        await game.save();
+        this.server.in(room).emit('timer', { time: new Date().getTime() });
+        this.server.in(room).emit('update_game', { game });
+      }, timeStep);
     }
   }
 
   @SubscribeMessage('end_turn')
-  endTurn(client: Socket): void {
-    const { room } = client.handshake.query;
+  async endTurn(client: Socket): Promise<void> {
+    const { room, player_id } = client.handshake.query;
 
     console.log('END_TURN');
 
-    // clearInterval(this.TIME_INTERVAL[room]);
-    // this.server.in(room).emit('timer', { time: new Date().getTime() });
-    // this.TIME_INTERVAL[room] = setInterval(async () => {
-    //   console.log('SET INTERVAL 2');
-    //   this.TIMER_RUN[room] = new Date().getTime();
-    //   // const { room } = client.handshake.query;
+    const game = (await this.gameModel.find({ _id: room }).exec())[0];
+    const gamePlayers = game.players.map((p) => ({
+      ...p,
+      step: p._id.toString() === player_id.toString() ? 0 : p.step,
+    }));
+    game.players = gamePlayers;
 
-    //   // const game = (await this.gameModel.find({ _id: room }).exec())[0];
-    //   // game.hide = !game.hide;
-    //   // await game.save();
+    if (
+      game.players.some(
+        (p) => Boolean(p.hunter) !== Boolean(game.hide) && p.step === 0,
+      )
+    ) {
+      game.hide = !game.hide;
 
-    //   this.server.in(room).emit('timer', { time: new Date().getTime() });
-    //   // this.server.in(room).emit('update_game', { game });
-    // }, 20_000);
+      await game.save();
+
+      clearInterval(this.TIME_INTERVAL[room]);
+      this.TIMER_RUN[room] = new Date().getTime();
+
+      this.server.in(room).emit('update_game', { game });
+      this.server.in(room).emit('timer', { time: new Date().getTime() });
+
+      this.TIME_INTERVAL[room] = setInterval(async () => {
+        console.log('SET INTERVAL 2');
+        this.TIMER_RUN[room] = new Date().getTime();
+
+        const game = (await this.gameModel.find({ _id: room }).exec())[0];
+        game.hide = !game.hide;
+        game.players = game.players.map((p) => ({
+          ...p,
+          step:
+            Boolean(p.hunter) && !game.hide
+              ? game.settings.hunterStep
+              : !Boolean(p.hunter) && game.hide
+              ? game.settings.preyStep
+              : 0,
+        }));
+
+        await game.save();
+
+        this.server.in(room).emit('timer', { time: new Date().getTime() });
+        this.server.in(room).emit('update_game', { game });
+      }, 20_000);
+    } else {
+      await game.save();
+
+      this.server.in(room).emit('update_game', { game });
+    }
   }
 
   @SubscribeMessage('hunter_role')
@@ -153,7 +185,6 @@ export class GameGateway
       console.log('game', game);
 
       if (
-        false &&
         gamePlayer &&
         Boolean(gamePlayer.hunter) !== Boolean(game.hide) &&
         Boolean(gamePlayer.step) &&

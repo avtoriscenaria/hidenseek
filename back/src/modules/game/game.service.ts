@@ -104,13 +104,21 @@ export class GameService {
           game = games.find(
             (g) => g.status === GAME_STATUSES.start && g.players.length < 6,
           );
-          console.log('_GAMES', game);
         } else {
           game = (await this.gameModel.find({ gameKey }).exec())[0];
         }
 
         if (game) {
-          if (game.players.length >= 6) {
+          const exitPlayer = game.players.some(
+            (p) => p._id.toString() === player_id.toString(),
+          );
+
+          if (Boolean(exitPlayer)) {
+            player.game_id = game._id;
+            await player.save();
+
+            responseData.data = { game };
+          } else if (game.players.length >= 6) {
             responseData.status = STATUSES.failure;
             responseData.message = 'GAME_PlAYERS_SIZE_OVERATE';
           } else if (game.status === GAME_STATUSES.start) {

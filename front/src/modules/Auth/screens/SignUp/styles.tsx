@@ -8,7 +8,7 @@ const styles = () => ({
     justifyContent: "center",
   },
   paper: {
-    width: 320,
+    width: 360,
     padding: 24,
     display: "flex",
     flexDirection: "column",

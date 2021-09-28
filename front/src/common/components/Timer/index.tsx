@@ -37,7 +37,7 @@ const Timer: React.FC<ITimer> = memo(({ timer, className }) => {
     }
   }, [timer]);
 
-  return <div className={className}>{timeLeft || 12}</div>;
+  return <div className={className}>{timeLeft}</div>;
 });
 
 export default Timer;

@@ -4,7 +4,7 @@ const styles = () => ({
     marginBottom: 16,
   },
   leftWrapper: {
-    width: 520,
+    width: 500,
     display: "flex",
     justifyContent: "flex-end",
     alignItems: "center",
