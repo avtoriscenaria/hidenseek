@@ -29,7 +29,7 @@ const InfoComponent: React.FC<InfoComponentProps> = ({
         <Player key={p._id} player={p} translations={translations} />
       ))}
       <div className={classeses.buttonsWrapper}>
-        <Button label={translations.toMenu} onClick={onMenu} />
+        {/* <Button label={translations.toMenu} onClick={onMenu} /> */}
         <Button
           label={translations.exitGame}
           type="secondary"

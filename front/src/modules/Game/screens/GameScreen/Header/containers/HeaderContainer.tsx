@@ -10,9 +10,11 @@ const HeaderContainer: React.FC = () => {
   const {
     timer,
     myGamePlayer,
-    game: { hide } = { hide: false },
+    game: { hide, players } = { hide: false, players: [] },
   } = useSocketContext();
-  const isDisabled = Boolean(myGamePlayer?.hunter) === hide;
+
+  const isDisabled =
+    players.some((p) => p.won) || Boolean(myGamePlayer?.hunter) === hide;
 
   return (
     <HeaderComponent

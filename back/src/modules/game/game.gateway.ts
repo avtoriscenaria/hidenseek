@@ -34,19 +34,48 @@ export class GameGateway
   private TIME_INTERVAL = {};
 
   @SubscribeMessage('start_game')
-  async startGame(client: Socket, payload: string): Promise<void> {
+  async startGame(client: Socket): Promise<void> {
     const { room, player_id } = client.handshake.query;
     const game = (await this.gameModel.find({ _id: room }).exec())[0];
 
-    if (game && game.status === GAME_STATUSES.start) {
+    if (Boolean(game) && game.status === GAME_STATUSES.start) {
       const player = game.players.find(
         (p) => p._id.toString() === player_id.toString(),
       );
 
-      if (player && player.creator) {
+      if (Boolean(player) && player.creator) {
         game.status = GAME_STATUSES.in_process;
         await game.save();
         this.server.in(room).emit('start_game');
+
+        this.TIMER_RUN[room] = new Date().getTime();
+        this.server.in(room).emit('timer', {
+          startTime: 0,
+        });
+
+        console.log('client is subscribing to timer with interval ', 20_000);
+
+        this.TIME_INTERVAL[room] = setInterval(async () => {
+          console.log('SET INTERVAL');
+          const { room } = client.handshake.query;
+          this.TIMER_RUN[room] = new Date().getTime();
+          const game = (await this.gameModel.find({ _id: room }).exec())[0];
+
+          game.hide = !game.hide;
+          game.players = game.players.map((p) => ({
+            ...p,
+            step:
+              Boolean(p.hunter) && !game.hide
+                ? game.settings.hunterStep
+                : !Boolean(p.hunter) && game.hide
+                ? game.settings.preyStep
+                : 0,
+          }));
+
+          await game.save();
+          this.server.in(room).emit('timer', { time: new Date().getTime() });
+          this.server.in(room).emit('update_game', { game });
+        }, 20_000);
       } else {
         console.log('ERROR');
       }
@@ -56,10 +85,17 @@ export class GameGateway
   }
 
   @SubscribeMessage('run_timer')
-  runTimer(client: Socket, timeStep: number): void {
+  async runTimer(client: Socket, timeStep: number): Promise<void> {
     const { room } = client.handshake.query;
 
-    if (this.TIMER_RUN[room] === undefined) {
+    const game = (await this.gameModel.find({ _id: room }).exec())[0];
+
+    const dontRunTimer =
+      !Boolean(game) ||
+      game.status !== GAME_STATUSES.in_process ||
+      game.players.some((p) => p.won);
+
+    if (!dontRunTimer && this.TIMER_RUN[room] === undefined) {
       this.TIMER_RUN[room] = new Date().getTime();
       client.emit('timer', {
         startTime: 0,
@@ -103,7 +139,7 @@ export class GameGateway
       step: p._id.toString() === player_id.toString() ? 0 : p.step,
     }));
     game.players = gamePlayers;
-
+    console.log('GAME_PLAYERS', game.players);
     if (
       game.players.some(
         (p) => Boolean(p.hunter) !== Boolean(game.hide) && p.step === 0,
@@ -137,6 +173,8 @@ export class GameGateway
 
         await game.save();
 
+        console.log('GAME');
+
         this.server.in(room).emit('timer', { time: new Date().getTime() });
         this.server.in(room).emit('update_game', { game });
       }, 20_000);
@@ -148,15 +186,15 @@ export class GameGateway
   }
 
   @SubscribeMessage('hunter_role')
-  async setHunterRole(client: Socket): Promise<void> {
+  async setHunterRole(client: Socket, { selectedPlayer }): Promise<void> {
     const { room, player_id } = client.handshake.query;
 
     const game = (await this.gameModel.find({ _id: room }).exec())[0];
-
+    console.log('selectedPlayer', selectedPlayer);
     if (Boolean(game)) {
       const updatedPlayers = game.players.map((p) => ({
         ...p,
-        hunter: p._id.toString() === player_id.toString() || undefined,
+        hunter: p._id.toString() === selectedPlayer.toString() || undefined,
       }));
 
       game.players = updatedPlayers;
@@ -191,7 +229,6 @@ export class GameGateway
         coordinates.x &&
         coordinates.y
       ) {
-        console.log('YES MOVE');
         const isPlayerOnPosition = game.players.some(
           (p) =>
             p.position.x === coordinates.x && p.position.y === coordinates.y,
@@ -212,10 +249,22 @@ export class GameGateway
               : p,
           );
 
+          if (
+            gamePlayer.hunter &&
+            !game.players.some((p) => !Boolean(p.hunter) && !Boolean(p.caught))
+          ) {
+            game.players = game.players.map((p) =>
+              p.hunter ? { ...p, won: true } : p,
+            );
+            game.status = GAME_STATUSES.finished;
+
+            clearInterval(this.TIME_INTERVAL[room]);
+            this.TIMER_RUN[room] = undefined;
+            this.TIME_INTERVAL[room] = undefined;
+          }
           await game.save();
-          console.log('UPDATE GAME', 'MOVE');
+
           this.server.in(room).emit('update_game', { game });
-          // this.server.in(room).emit('move', { players: game.players });
         }
       }
     }

@@ -14,7 +14,7 @@ const DeskContainer: React.FC = () => {
   const { request } = useExitGameRequest();
 
   const exitGame = () => request();
-  const onMenu = () => history.push(ROUTES.game.menu);
+  const onMenu = () => {}; //history.push(ROUTES.game.menu);
 
   return (
     <InfoComponent

@@ -1,4 +1,4 @@
-export const HOST = "http://192.168.0.102:3005";
+export const HOST = "http://192.168.0.101:3005";
 
 export const API = {
   auth: {

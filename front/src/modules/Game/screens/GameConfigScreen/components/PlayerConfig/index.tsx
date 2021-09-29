@@ -4,12 +4,20 @@ import PlayerConfig from "./PlayerConfig";
 
 interface PlayerConfigProps {
   player: GamePlayer;
-  setHunter: (value: boolean) => void;
+  isMyPlayerCreator: boolean;
+  setHunter: (value: boolean, id: string) => void;
 }
 
 export default function PlayerConfigContainer({
   player,
+  isMyPlayerCreator,
   setHunter,
 }: PlayerConfigProps) {
-  return <PlayerConfig player={player} setHunter={setHunter} />;
+  return (
+    <PlayerConfig
+      player={player}
+      setHunter={setHunter}
+      isMyPlayerCreator={isMyPlayerCreator}
+    />
+  );
 }

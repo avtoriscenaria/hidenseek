@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState } from "react";
 import { useHistory } from "react-router-dom";
 
+import MainLoader from "common/components/MainLoader";
 import AppLayout from "common/containers/AppLayoutContainer";
 import verifyJWT from "common/utils/verifyJWT";
 import LSData from "constants/LSData";
@@ -75,7 +76,7 @@ export const AppLayoutContextProvider: React.FC = ({ children }) => {
         logout,
       }}
     >
-      <AppLayout>{isAppLoaded ? children : <div>LOADER...</div>}</AppLayout>
+      <AppLayout>{isAppLoaded ? children : <MainLoader />}</AppLayout>
     </AppLayoutContext.Provider>
   );
 };

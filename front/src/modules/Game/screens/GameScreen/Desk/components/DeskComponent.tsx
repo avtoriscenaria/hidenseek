@@ -8,20 +8,23 @@ import styles from "../styles/DeskStyles";
 
 interface IDeskComponent {
   caught?: boolean;
-  caughtDescription: string;
+  won?: boolean;
+  modalDescription: string;
 }
 
 const DeskComponent: React.FC<IDeskComponent> = ({
   caught,
-  caughtDescription,
+  won,
+  modalDescription,
 }) => {
-  const classes = useStyles(styles);
+  const classes = useStyles((theme) => styles(theme, { won }));
+  const showBackDrop = caught || won;
 
   return (
     <Paper className={classes.container}>
-      {caught && (
+      {showBackDrop && (
         <div className={classes.caughtBackdrop}>
-          <div className={classes.caughtBackdropLabel}>{caughtDescription}</div>
+          <div className={classes.caughtBackdropLabel}>{modalDescription}</div>
           <div className={classes.backdrop} />
         </div>
       )}

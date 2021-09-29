@@ -13,7 +13,7 @@ export default function AppHeaderContainer() {
   const disableTitleNavigation = !isAuthorized;
 
   const handleGame = (event: React.MouseEvent<HTMLElement>) => {
-    if (!disableTitleNavigation) {
+    if (isAuthorized) {
       history.push(ROUTES.game.base);
     }
   };

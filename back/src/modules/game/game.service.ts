@@ -22,13 +22,21 @@ export class GameService {
   async getGame(game_id, player_id) {
     const game = (await this.gameModel.find({ _id: game_id }).exec())[0];
 
-    if (game === undefined) {
+    if (
+      !Boolean(game) ||
+      game.status === GAME_STATUSES.finished ||
+      game.status === GAME_STATUSES.delete
+    ) {
       const player = (
         await this.playerModel.find({ _id: player_id }).exec()
       )[0];
 
       if (Boolean(player)) {
         player.game_id = undefined;
+        if (Boolean(game)) {
+          player.games_played = [...player.games_played, game._id];
+        }
+
         await player.save();
       }
 
@@ -68,12 +76,16 @@ export class GameService {
   async createGame(playerCreator) {
     const { nickname, _id } = playerCreator;
     const position = getPlayerStartPlace();
+    const color = getPlayerColor();
+
+    console.log('COLOR', color);
 
     const newGame = new this.gameModel({
       status: GAME_STATUSES.start,
       hide: true,
-      players: [{ nickname, _id, creator: true, position }],
+      players: [{ nickname, _id, creator: true, position, color }],
       gameKey: uuidv4(),
+      settings: { hunterStep: 3, preyStep: 2 },
     });
     newGame.save();
 

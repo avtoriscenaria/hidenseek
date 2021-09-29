@@ -13,7 +13,7 @@ export class GameController {
   }
 
   @Get('/:game_id/:player_id')
-  getUsers(
+  getGame(
     @Param() { game_id, player_id }: { game_id: ObjectId; player_id: ObjectId },
   ) {
     return this.game.getGame(game_id, player_id);

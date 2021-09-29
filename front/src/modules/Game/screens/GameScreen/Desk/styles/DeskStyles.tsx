@@ -1,6 +1,11 @@
+import { Theme } from "@material-ui/core";
 import colors from "constants/colors";
 
-const styles = () => ({
+interface IStyles {
+  won?: boolean;
+}
+
+const styles = (theme: Theme, { won }: IStyles) => ({
   container: {
     width: "max-content",
     position: "relative",
@@ -19,7 +24,7 @@ const styles = () => ({
     justifyContent: "center",
     alignItems: "center",
     zIndex: 1,
-    color: colors.error,
+    color: won ? colors.success : colors.error,
   },
   backdrop: {
     width: "100%",

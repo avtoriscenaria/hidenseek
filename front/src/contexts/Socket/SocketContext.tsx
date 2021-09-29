@@ -8,7 +8,6 @@ import React, {
 import { useHistory } from "react-router";
 
 import { GAME_STATUSES } from "constants/gameConstants";
-import { HOST } from "constants/api";
 import { Game, GamePlayer } from "common/interfaces/Game";
 import localStorageHelper from "common/utils/localStorageHelper";
 import getGameRequest from "common/utils/getGame";
@@ -44,7 +43,7 @@ const SocketContext = createContext(defaultContext);
 export const SocketContextProvider: React.FC = ({ children }) => {
   const history = useHistory();
   const { token } = localStorageHelper("get", LSData.authData) || {};
-  const { logout, hasGame, player } = useAppLayoutContext();
+  const { logout, hasGame, player, setHasGame } = useAppLayoutContext();
   const [connect, setConnected] = useState(false);
   const [game, setGame] = useState<Game | undefined>();
   const [timer, setTimer] = useState<number | undefined>();
@@ -88,6 +87,7 @@ export const SocketContextProvider: React.FC = ({ children }) => {
             history.push(ROUTES.game.base);
           }
         } else {
+          setHasGame();
           history.push(ROUTES.game.menu);
         }
       });

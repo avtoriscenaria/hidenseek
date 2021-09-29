@@ -30,6 +30,7 @@ const translations = {
     startGame: "Начать игру",
     endTurn: "Закончить ход",
     caught: "Вы пойманы",
+    won: "Вы выйграли",
     caughtPlayer: "Пойман",
     toMenu: "Меню",
     exitGame: "Выйти",

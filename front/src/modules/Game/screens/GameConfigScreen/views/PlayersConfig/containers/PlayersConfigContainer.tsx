@@ -9,12 +9,12 @@ import { setHunterRoleSocket } from "contexts/Socket/helpers/SocketIo";
 
 const PlayersConfigContainer: React.FC = () => {
   const { game: gameTranslations } = useTranslations();
-  const { game } = useSocketContext();
+  const { game, myGamePlayer } = useSocketContext();
 
-  const setHunter = (value: boolean) => {
+  const setHunter = (value: boolean, id: string) => {
     console.log(value);
-    if (value) {
-      setHunterRoleSocket();
+    if (value && id) {
+      setHunterRoleSocket(id);
     }
   };
 
@@ -22,6 +22,7 @@ const PlayersConfigContainer: React.FC = () => {
     <PlayersConfigComponent
       gameKey={game?.gameKey}
       players={game?.players}
+      isMyPlayerCreator={Boolean(myGamePlayer?.creator)}
       translations={gameTranslations}
       copyKey={copyText}
       setHunter={setHunter}

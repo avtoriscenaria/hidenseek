@@ -12,7 +12,7 @@ const styles = (theme: Theme, { isHunter, isCaught }: IStyles) => ({
     alignItems: "center",
     justifyContent: "flex-start",
     marginBottom: 12,
-    opacity: !isHunter && isCaught ? 0.6 : 1,
+    opacity: !isHunter && isCaught ? 0.1 : 1,
   },
   playerColor: {
     width: 30,

@@ -1,5 +1,4 @@
 import React from "react";
-import FileCopyIcon from "@material-ui/icons/FileCopy";
 
 import useStyles from "common/hooks/useStyles";
 import { GamePlayer } from "common/interfaces/Game";
@@ -13,13 +12,15 @@ interface PlayersConfigProps {
   gameKey?: string;
   players?: GamePlayer[];
   translations: any;
+  isMyPlayerCreator: boolean;
   copyKey: (elementId: string) => void;
-  setHunter: (value: boolean) => void;
+  setHunter: (value: boolean, id: string) => void;
 }
 
 const PlayersConfigComponent: React.FC<PlayersConfigProps> = ({
   players = [],
   gameKey = "",
+  isMyPlayerCreator = false,
   copyKey,
   setHunter,
   translations,
@@ -45,6 +46,7 @@ const PlayersConfigComponent: React.FC<PlayersConfigProps> = ({
       </div>
       {players.map((p) => (
         <PlayerConfig
+          isMyPlayerCreator={isMyPlayerCreator}
           key={`playerConfig-${p._id}`}
           player={p}
           setHunter={setHunter}

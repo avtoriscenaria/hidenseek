@@ -7,9 +7,22 @@ import DeskComponent from "../components/DeskComponent";
 
 const DeskContainer: React.FC = () => {
   const { game } = useTranslations();
-  const { myGamePlayer: { caught } = { caught: false } } = useSocketContext();
+  const { myGamePlayer: { caught, won } = { caught: false, won: false } } =
+    useSocketContext();
 
-  return <DeskComponent caught={caught} caughtDescription={game.caught} />;
+  const modalDescription = Boolean(caught)
+    ? game.caught
+    : Boolean(won)
+    ? game.won
+    : "";
+
+  return (
+    <DeskComponent
+      caught={Boolean(caught)}
+      won={Boolean(won)}
+      modalDescription={modalDescription}
+    />
+  );
 };
 
 export default DeskContainer;

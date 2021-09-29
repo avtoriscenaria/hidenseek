@@ -28,6 +28,9 @@ export class GamePlayer {
 
   @Prop()
   caught: boolean;
+
+  @Prop()
+  won: boolean;
 }
 
 export const GameSchema = SchemaFactory.createForClass(GamePlayer);
