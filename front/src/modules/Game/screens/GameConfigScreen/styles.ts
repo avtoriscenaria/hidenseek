@@ -1,3 +1,5 @@
+import colors from "constants/colors";
+
 const styles = () => ({
   container: {
     height: "100%",
@@ -19,6 +21,14 @@ const styles = () => ({
   menuActions: {
     display: "flex",
     marginBottom: 24,
+  },
+  reloadDescription: {
+    fontSize: 12,
+    paddingBottom: 10,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    color: colors.description,
   },
   startGame: {
     display: "flex",

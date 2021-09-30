@@ -1,12 +1,16 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { Redirect } from "react-router-dom";
 import Paper from "@material-ui/core/Paper";
 import Divider from "@material-ui/core/Divider";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
+import { IGamePlayer } from "common/interfaces/Game";
 import useTranslations from "common/hooks/useTranslations";
 import { useAppLayoutContext } from "contexts/AppLayoutContext";
-import { onStartGameEmit } from "contexts/Socket/helpers/SocketIo";
+import {
+  onStartGameEmit,
+  updateGameSocket,
+} from "contexts/Socket/helpers/SocketIo";
 import ROUTES from "constants/routes";
 import useStyles from "common/hooks/useStyles";
 import Button from "common/components/Button";
@@ -29,6 +33,10 @@ const GameConfigScreen: React.FC = () => {
   };
 
   const isCreator = Boolean(myGamePlayer?.creator);
+  const isHunterSelected = useCallback(
+    () => game.players.some((p: IGamePlayer) => p.hunter),
+    [game.players]
+  )();
 
   return !hasGame ? (
     <Redirect to={ROUTES.game.menu} />
@@ -44,10 +52,14 @@ const GameConfigScreen: React.FC = () => {
 
           <PlayersConfig />
         </div>
+
+        <div className={classes.reloadDescription}>
+          <Button label={gameTranslations.update} onClick={updateGameSocket} />
+        </div>
         <div className={classes.startGame}>
           {isCreator ? (
             <Button
-              disabled={game.players.length > 1}
+              disabled={game.players.length < 2 || !isHunterSelected}
               label={gameTranslations.startGame}
               onClick={startGame}
             />

@@ -20,16 +20,14 @@ export class GameService {
   ) {}
 
   async getGame(game_id, player_id) {
-    const game = (await this.gameModel.find({ _id: game_id }).exec())[0];
+    const game = await this.gameModel.findById(game_id);
 
     if (
       !Boolean(game) ||
       game.status === GAME_STATUSES.finished ||
       game.status === GAME_STATUSES.delete
     ) {
-      const player = (
-        await this.playerModel.find({ _id: player_id }).exec()
-      )[0];
+      const player = await this.playerModel.findById(player_id);
 
       if (Boolean(player)) {
         player.game_id = undefined;
@@ -50,7 +48,7 @@ export class GameService {
   }
 
   async exitGame(player_id) {
-    const player = (await this.playerModel.find({ _id: player_id }).exec())[0];
+    const player = await this.playerModel.findById(player_id);
     const responseData = {
       status: STATUSES.failure,
       message: 'SOMETHING_WENT_WRONG',
@@ -99,11 +97,9 @@ export class GameService {
 
   async findGame(findGameData) {
     const { gameKey, player_id } = findGameData;
-    const player = (await this.playerModel.find({ _id: player_id }).exec())[0];
+    const player = await this.playerModel.findById(player_id);
 
     const responseData = { status: STATUSES.success, message: '', data: {} };
-
-    console.log('GAME KEY', gameKey, player_id);
 
     if (player) {
       if (player.game_id) {

@@ -4,6 +4,8 @@ import { Redirect } from "react-router-dom";
 import { useAppLayoutContext } from "contexts/AppLayoutContext";
 import ROUTES from "constants/routes";
 import useStyles from "common/hooks/useStyles";
+import { useSocketContext } from "contexts/Socket/SocketContext";
+import { GAME_STATUSES } from "constants/gameConstants";
 
 import Header from "./Header";
 import Desk from "./Desk";
@@ -13,9 +15,12 @@ import styles from "./styles";
 const GameScreen: React.FC = () => {
   const classes = useStyles(styles);
   const { hasGame } = useAppLayoutContext();
+  const { game } = useSocketContext();
 
-  return !hasGame ? (
-    <Redirect to={ROUTES.game.menu} />
+  const isRedirect = !hasGame || game?.status === GAME_STATUSES.start;
+
+  return isRedirect ? (
+    <Redirect to={!hasGame ? ROUTES.game.menu : ROUTES.game.config} />
   ) : (
     <div>
       <Header />

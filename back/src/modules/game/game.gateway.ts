@@ -60,7 +60,7 @@ export class GameGateway
   @SubscribeMessage('start_game')
   async startGame(client: Socket, { timeStep }): Promise<void> {
     const { room, player_id } = client.handshake.query;
-    const game = (await this.gameModel.find({ _id: room }).exec())[0];
+    const game = await this.gameModel.findById(room);
 
     if (Boolean(game) && game.status === GAME_STATUSES.start) {
       const player = game.players.find(
@@ -103,7 +103,7 @@ export class GameGateway
   async runTimer(client: Socket, timeStep: number): Promise<void> {
     const { room } = client.handshake.query;
 
-    const game = (await this.gameModel.find({ _id: room }).exec())[0];
+    const game = await this.gameModel.findById(room);
 
     const dontRunTimer =
       !Boolean(game) ||
@@ -126,11 +126,20 @@ export class GameGateway
     }
   }
 
+  @SubscribeMessage('get_game')
+  async findGame(client: Socket): Promise<void> {
+    const { room } = client.handshake.query;
+
+    const game = await this.gameModel.findById(room);
+
+    this.server.in(room).emit('update_game', { game });
+  }
+
   @SubscribeMessage('end_turn')
   async endTurn(client: Socket, { timeStep }): Promise<void> {
     const { room, player_id } = client.handshake.query;
 
-    const game = (await this.gameModel.find({ _id: room }).exec())[0];
+    const game = await this.gameModel.findById(room);
     const gamePlayers = game.players.map((p) => ({
       ...p,
       step: p._id.toString() === player_id.toString() ? 0 : p.step,
@@ -174,7 +183,7 @@ export class GameGateway
   async setHunterRole(client: Socket, { selectedPlayer }): Promise<void> {
     const { room } = client.handshake.query;
 
-    const game = (await this.gameModel.find({ _id: room }).exec())[0];
+    const game = await this.gameModel.findById(room);
 
     if (Boolean(game)) {
       const updatedPlayers = game.players.map((p) => ({
@@ -194,7 +203,7 @@ export class GameGateway
   async movePlayer(client: Socket, payload: any): Promise<void> {
     const { room, player_id } = client.handshake.query;
     const { coordinates } = payload;
-    const game = (await this.gameModel.find({ _id: room }).exec())[0];
+    const game = await this.gameModel.findById(room);
 
     if (game) {
       const gamePlayer = game.players.find(
@@ -291,7 +300,7 @@ export class GameGateway
     }
 
     if (room && player_id) {
-      const game = (await this.gameModel.find({ _id: room }).exec())[0];
+      const game = await this.gameModel.findById(room);
 
       if (game) {
         const gamePlayer = game.players.find(

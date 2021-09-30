@@ -26,6 +26,7 @@ import {
 interface ISocket {
   myGamePlayer?: IGamePlayer;
   game?: IGame;
+  token?: string;
   timer?: number;
   isHideStep?: boolean;
   setGame: (game?: IGame) => void;
@@ -39,6 +40,8 @@ const SocketContext = createContext(defaultContext);
 
 export const SocketContextProvider: React.FC = ({ children }) => {
   const history = useHistory();
+
+  const [isLoaded, setIsLoaded] = useState(false);
   const { token } = localStorageHelper("get", LSData.authData) || {};
   const { logout, hasGame, player, setHasGame } = useAppLayoutContext();
   const [connect, setConnected] = useState(false);
@@ -85,7 +88,10 @@ export const SocketContextProvider: React.FC = ({ children }) => {
           setHasGame();
           history.push(ROUTES.game.menu);
         }
+        setIsLoaded(true);
       });
+    } else {
+      setIsLoaded(true);
     }
   }, [game, hasGame, history, player?._id, setHasGame]);
 
@@ -107,7 +113,7 @@ export const SocketContextProvider: React.FC = ({ children }) => {
         setGame,
       }}
     >
-      {children}
+      {isLoaded && children}
     </SocketContext.Provider>
   );
 };

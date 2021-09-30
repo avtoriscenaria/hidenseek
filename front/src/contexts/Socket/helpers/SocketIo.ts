@@ -30,6 +30,25 @@ export const disconnectSocket = () => {
   }
 };
 
+export const updateGameSocket = () => {
+  if (socket) {
+    socket.emit("get_game");
+  }
+};
+
+// export const findGameSocket = (token: string, payload: {
+//   gameKey?: string;
+//   player_id?: string;
+// }) => {
+//   console.log("SOCKET", socket);
+//   if (socket === undefined) {
+//     socket = io(HOST, {
+//       query: { token },
+//     });
+//     socket.emit("find_game", payload);
+//   }
+// };
+
 export const onStartGameEmit = () => {
   if (socket) {
     console.log("onStartGameEmit");

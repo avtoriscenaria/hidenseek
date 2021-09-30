@@ -11,7 +11,11 @@ interface ICheckbox {
   onChange: (value: boolean) => void;
 }
 
-export default function Checkbox({ checked, disabled, onChange }: ICheckbox) {
+export default function Checkbox({
+  checked = false,
+  disabled,
+  onChange,
+}: ICheckbox) {
   const classes = useStyles(styles);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
