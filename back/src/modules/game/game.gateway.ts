@@ -45,7 +45,12 @@ export class GameGateway
 
       if (Boolean(player) && player.creator) {
         game.status = GAME_STATUSES.in_process;
+        game.hide = true;
+        game.players = game.players.map((p) =>
+          Boolean(p.hunter) ? p : { ...p, step: 10 },
+        );
         await game.save();
+        this.server.in(room).emit('update_game', { game });
         this.server.in(room).emit('start_game');
 
         this.TIMER_RUN[room] = new Date().getTime();
@@ -139,13 +144,21 @@ export class GameGateway
       step: p._id.toString() === player_id.toString() ? 0 : p.step,
     }));
     game.players = gamePlayers;
-    console.log('GAME_PLAYERS', game.players);
     if (
       game.players.some(
         (p) => Boolean(p.hunter) !== Boolean(game.hide) && p.step === 0,
       )
     ) {
       game.hide = !game.hide;
+      game.players = game.players.map((p) => ({
+        ...p,
+        step:
+          Boolean(p.hunter) && !game.hide
+            ? game.settings.hunterStep
+            : !Boolean(p.hunter) && game.hide
+            ? game.settings.preyStep
+            : 0,
+      }));
 
       await game.save();
 
@@ -173,8 +186,6 @@ export class GameGateway
 
         await game.save();
 
-        console.log('GAME');
-
         this.server.in(room).emit('timer', { time: new Date().getTime() });
         this.server.in(room).emit('update_game', { game });
       }, 20_000);
@@ -190,7 +201,7 @@ export class GameGateway
     const { room, player_id } = client.handshake.query;
 
     const game = (await this.gameModel.find({ _id: room }).exec())[0];
-    console.log('selectedPlayer', selectedPlayer);
+
     if (Boolean(game)) {
       const updatedPlayers = game.players.map((p) => ({
         ...p,
