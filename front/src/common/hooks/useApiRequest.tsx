@@ -1,7 +1,6 @@
 import { HOST, STATUSES } from "constants/api";
 import LSData from "constants/LSData";
 import { useAppLayoutContext } from "contexts/AppLayoutContext";
-import localStorageHelper from "common/utils/localStorageHelper";
 
 interface ApiRequestProps {
   (
@@ -32,7 +31,6 @@ const useApiRequest: ApiRequestProps = (
   let Authorization: string;
 
   if (!disableAuth) {
-    //const authDataString = localStorageHelper("get", LSData.authData);
     const authDataString = localStorage.getItem(LSData.authData);
 
     if (authDataString) {

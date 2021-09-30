@@ -14,11 +14,9 @@ const getGame = async (
   const authDataString = localStorage.getItem(LSData.authData);
 
   if (authDataString) {
-    const { token, nickname } = JSON.parse(authDataString);
+    const { token } = JSON.parse(authDataString);
 
     Authorization = `Bearer ${token}`;
-
-    console.log("PLAYER_ID", player_id);
 
     const res = await fetch(`${HOST}${uri}/${game_id}/${player_id}`, {
       method,
@@ -27,7 +25,6 @@ const getGame = async (
         Authorization,
       },
     }).then((res) => res.json());
-    console.log("RESPONSE", res);
     if (res.status === STATUSES.success) {
       callback(res.data.game);
     } else {

@@ -1,6 +1,5 @@
-import React, { memo, useState, useEffect, useCallback } from "react";
+import React, { memo, useState, useEffect } from "react";
 
-import { GamePlayer } from "common/interfaces/Game";
 import { useAppLayoutContext } from "contexts/AppLayoutContext";
 import { useSocketContext } from "contexts/Socket/SocketContext";
 

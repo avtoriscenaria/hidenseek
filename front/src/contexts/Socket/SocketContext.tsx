@@ -15,11 +15,9 @@ import LSData from "constants/LSData";
 import ROUTES from "constants/routes";
 
 import { useAppLayoutContext } from "../AppLayoutContext";
-// import { playerConnect, startGame, movePlayer } from "./helpers";
 
 import {
   initiateSocket,
-  disconnectSocket,
   onStartGame,
   updateGame,
   onLogout,
@@ -74,9 +72,7 @@ export const SocketContextProvider: React.FC = ({ children }) => {
 
   useEffect(() => {
     if (Boolean(hasGame) && game === undefined) {
-      console.log("CHECK");
       getGameRequest(hasGame, player?._id, (responseGame) => {
-        console.log("RES", responseGame);
         if (Boolean(responseGame)) {
           setGame(responseGame);
           const { status } = responseGame || {};
@@ -92,7 +88,7 @@ export const SocketContextProvider: React.FC = ({ children }) => {
         }
       });
     }
-  }, [game, hasGame, history, player?._id]);
+  }, [game, hasGame, history, player?._id, setHasGame]);
 
   const getMyGamePlayer = useCallback(() => {
     return game?.players.find((p) => p._id === player?._id);

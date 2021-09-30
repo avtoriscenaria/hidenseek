@@ -15,14 +15,12 @@ const Timer: React.FC<ITimer> = memo(({ timer, className }) => {
   useEffect(() => {
     if (timeLeft === undefined && timer !== undefined) {
       const initialTime = SECONDS_INTERVAL - timer;
-      console.log("initialTime", initialTime);
       setTimeLeft(initialTime);
     }
   }, [timeLeft, timer]);
 
   useEffect(() => {
     const localTimer = setTimeout(() => {
-      console.log("TIK");
       if (timeLeft) {
         setTimeLeft(timeLeft - 1);
       }
@@ -35,6 +33,7 @@ const Timer: React.FC<ITimer> = memo(({ timer, className }) => {
     if (timer && timeLeft !== undefined) {
       setTimeLeft(SECONDS_INTERVAL);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timer]);
 
   return <div className={className}>{timeLeft}</div>;

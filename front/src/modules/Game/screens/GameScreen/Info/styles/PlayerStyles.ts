@@ -4,9 +4,13 @@ import colors from "constants/colors";
 interface IStyles {
   isHunter: boolean;
   isCaught: boolean;
+  isMyGamePlayer: boolean;
 }
 
-const styles = (theme: Theme, { isHunter, isCaught }: IStyles) => ({
+const styles = (
+  theme: Theme,
+  { isHunter, isCaught, isMyGamePlayer }: IStyles
+) => ({
   container: {
     display: "flex",
     alignItems: "center",
@@ -22,7 +26,7 @@ const styles = (theme: Theme, { isHunter, isCaught }: IStyles) => ({
   nickname: {
     paddingLeft: 8,
     width: 120,
-    color: isHunter ? colors.error : "",
+    color: isHunter ? colors.error : isMyGamePlayer ? colors.success : "",
 
     whiteSpace: "nowrap",
     textOverflow: "ellipsis",

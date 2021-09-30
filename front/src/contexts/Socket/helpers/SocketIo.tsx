@@ -1,8 +1,8 @@
 import io from "socket.io-client";
 
 import { HOST, STEP_INTERVAL } from "constants/api";
-import { movePlayer, playerConnect, startGame } from "./index";
-import { Game, GamePlayer } from "common/interfaces/Game";
+import { startGame } from "./index";
+import { Game } from "common/interfaces/Game";
 
 let socket: any;
 
@@ -13,11 +13,9 @@ export const initiateSocket = (
   player_id?: string
 ) => {
   if (token && room && player_id) {
-    console.log("CONNECTION...");
     socket = io(HOST, {
       query: { token, room, player_id },
     });
-    console.log(`Connecting socket...`);
     if (socket && room) {
       console.log(`Connected!`);
       setConnected(true);
@@ -35,7 +33,7 @@ export const disconnectSocket = () => {
 export const onStartGameEmit = () => {
   if (socket) {
     console.log("onStartGameEmit");
-    socket.emit("start_game");
+    socket.emit("start_game", { timeStep: STEP_INTERVAL });
   }
 };
 
@@ -62,54 +60,21 @@ export const movePlayerSocket = (
   coordinates: { x: number; y: number }
 ) => {
   if (socket) {
-    console.log("MOVE PLAYER");
     socket.emit("move", { coordinates });
   }
 };
 
 export const setHunterRoleSocket = (selectedPlayer: string) => {
   if (socket) {
-    console.log("setHunterRoleSocket");
     socket.emit("hunter_role", { selectedPlayer });
   }
 };
 
 export const endTurn = () => {
   if (socket) {
-    console.log("END TURN");
-    socket.emit("end_turn");
+    socket.emit("end_turn", { timeStep: STEP_INTERVAL });
   }
 };
-
-// export const onMovePlayerSocket = (
-//   setGame: (game: Game) => void,
-//   game?: Game
-// ) => {
-//   if (socket) {
-//     socket.once(
-//       "move",
-//       (payload: {
-//         players: GamePlayer[];
-//         // player_id: string;
-//         // coordinates: { x: number; y: number };
-//       }) => {
-//         console.log("OTHER MOVE", payload);
-//         movePlayer(payload, setGame, game);
-//       }
-//     );
-//   }
-// };
-
-// export const onNewPlayerConnect = (
-//   setGame: (game: Game) => void,
-//   game?: Game
-// ) => {
-//   if (socket) {
-//     socket.once("player_connect", (gamePlayer: GamePlayer) =>
-//       playerConnect(gamePlayer, setGame, game)
-//     );
-//   }
-// };
 
 export const startTimer = () => {
   if (socket) {
@@ -136,11 +101,3 @@ export const onLogout = (logoutCB: () => void) => {
     });
   }
 };
-
-// socket.on("start_game", () => startGame(setGame, history, game));
-// socket.on(
-//   "move",
-//   (payload: { player_id: string; coordinates: { x: number; y: number } }) =>
-//     movePlayer(payload, setGame, game)
-// );
-// socket.on("disconnect", () => console.log("DISCONECTED"));

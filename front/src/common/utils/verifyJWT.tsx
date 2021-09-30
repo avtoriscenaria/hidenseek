@@ -25,12 +25,16 @@ const verifyJWT = async (
         "Content-Type": "application/json",
         Authorization,
       },
-    }).then((res) => res.json());
+    })
+      .then((res) => res.json())
+      .catch((e) => console.log(e));
 
-    callback({
-      isVerified: res.status === STATUSES.success,
-      player: res.data?.player,
-    });
+    if (Boolean(res)) {
+      callback({
+        isVerified: res.status === STATUSES.success,
+        player: res.data?.player,
+      });
+    }
   } else {
     callback();
   }

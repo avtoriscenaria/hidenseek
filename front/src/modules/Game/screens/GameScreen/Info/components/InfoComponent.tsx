@@ -11,6 +11,7 @@ import styles from "../styles/InfoStyles";
 interface InfoComponentProps {
   players: GamePlayer[];
   translations: any;
+  myGamePlayerId?: string;
   exitGame: () => void;
   onMenu: () => void;
 }
@@ -18,6 +19,7 @@ interface InfoComponentProps {
 const InfoComponent: React.FC<InfoComponentProps> = ({
   translations,
   players,
+  myGamePlayerId = "",
   onMenu,
   exitGame,
 }) => {
@@ -26,7 +28,12 @@ const InfoComponent: React.FC<InfoComponentProps> = ({
   return (
     <Paper className={classeses.container}>
       {players.map((p) => (
-        <Player key={p._id} player={p} translations={translations} />
+        <Player
+          key={p._id}
+          player={p}
+          translations={translations}
+          isMyGamePlayer={myGamePlayerId === p._id}
+        />
       ))}
       <div className={classeses.buttonsWrapper}>
         {/* <Button label={translations.toMenu} onClick={onMenu} /> */}
