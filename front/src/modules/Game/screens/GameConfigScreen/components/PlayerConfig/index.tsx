@@ -1,18 +1,11 @@
-import { IGamePlayer } from "common/interfaces/Game";
-
 import PlayerConfig from "./PlayerConfig";
-
-interface PlayerConfigProps {
-  player: IGamePlayer;
-  isMyPlayerCreator: boolean;
-  setHunter: (value: boolean, id: string) => void;
-}
+import { IPlayerConfig } from "../../interfaces";
 
 export default function PlayerConfigContainer({
   player,
   isMyPlayerCreator,
   setHunter,
-}: PlayerConfigProps) {
+}: IPlayerConfig) {
   return (
     <PlayerConfig
       player={player}

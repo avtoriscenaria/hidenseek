@@ -1,22 +1,16 @@
 import Paper from "@material-ui/core/Paper";
 
 import useStyles from "common/hooks/useStyles";
-import { IGamePlayer } from "common/interfaces/Game";
 import Checkbox from "common/components/Checkbox";
 
 import styles from "./styles";
-
-interface PlayerConfigProps {
-  player: IGamePlayer;
-  isMyPlayerCreator: boolean;
-  setHunter: (value: boolean, id: string) => void;
-}
+import { IPlayerConfig } from "../../interfaces";
 
 export default function PlayerConfig({
   player,
   isMyPlayerCreator,
   setHunter,
-}: PlayerConfigProps) {
+}: IPlayerConfig) {
   const classes = useStyles(styles);
   const { nickname, color, hunter = false, _id } = player;
 

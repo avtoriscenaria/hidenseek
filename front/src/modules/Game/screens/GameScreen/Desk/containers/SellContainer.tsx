@@ -2,26 +2,25 @@ import React, { memo, useState, useEffect } from "react";
 
 import { useAppLayoutContext } from "contexts/AppLayoutContext";
 import { useSocketContext } from "contexts/Socket/SocketContext";
+import { movePlayerSocket } from "contexts/Socket/helpers/SocketIo";
 
 import SellComponent from "../components/SellComponent";
-import { SellConfig } from "../interfaces";
+import { ISellConfig } from "../interfaces";
 import { useBorderConfig } from "../hooks";
 import { configurateSell } from "../utils";
-
-import { movePlayerSocket } from "contexts/Socket/helpers/SocketIo";
 
 const defaultGame = {
   players: [],
   hide: false,
 };
 
-interface SellContainerProps {
-  config: SellConfig;
+interface ISellContainer {
+  config: ISellConfig;
   style: Object;
   coordinates: { x: number; y: number };
 }
 
-const SellContainer: React.FC<SellContainerProps> = memo(
+const SellContainer: React.FC<ISellContainer> = memo(
   ({ config: sell, coordinates, style }) => {
     const { player: { _id } = { _id: "" } } = useAppLayoutContext();
     const { game = defaultGame, myGamePlayer = { step: 0, hunter: false } } =

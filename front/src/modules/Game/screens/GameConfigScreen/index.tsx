@@ -21,7 +21,7 @@ const GameConfigScreen: React.FC = () => {
   const { game: gameTranslations } = useTranslations();
 
   const { hasGame } = useAppLayoutContext();
-  const { myGamePlayer } = useSocketContext();
+  const { myGamePlayer, game = { players: [] } } = useSocketContext();
 
   const startGame = () => {
     console.log("startGame");
@@ -46,7 +46,11 @@ const GameConfigScreen: React.FC = () => {
         </div>
         <div className={classes.startGame}>
           {isCreator ? (
-            <Button label={gameTranslations.startGame} onClick={startGame} />
+            <Button
+              disabled={game.players.length > 1}
+              label={gameTranslations.startGame}
+              onClick={startGame}
+            />
           ) : (
             <CircularProgress />
           )}

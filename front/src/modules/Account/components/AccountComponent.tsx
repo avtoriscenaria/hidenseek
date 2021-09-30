@@ -2,12 +2,12 @@ import React from "react";
 
 import Button from "common/components/Button";
 
-interface AccountComponentProps {
+interface IAccountComponent {
   translations: any;
   logout: () => void;
 }
 
-const AccountComponent: React.FC<AccountComponentProps> = ({
+const AccountComponent: React.FC<IAccountComponent> = ({
   translations,
   logout,
 }) => {

@@ -1,10 +1,10 @@
 import React, { useState, ChangeEvent } from "react";
 
 import useTranslations from "common/hooks/useTranslations";
+import { useAppLayoutContext } from "contexts/AppLayoutContext";
 
 import FindGameComponent from "../components/FindGameComponent";
 import { useFindGameRequest } from "../hooks";
-import { useAppLayoutContext } from "contexts/AppLayoutContext";
 
 const FindGameContainer: React.FC = () => {
   const { game: gameTranslations } = useTranslations();

@@ -1,9 +1,9 @@
-export interface SellConfig {
+export interface ISellConfig {
   x?: number;
   y?: number;
 }
 
-export interface SellBorder {
+export interface ISellBorder {
   borderTopColor?: string;
   borderRightColor?: string;
   borderBottomColor?: string;

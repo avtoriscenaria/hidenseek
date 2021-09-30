@@ -1,9 +1,9 @@
 import React from "react";
 
 import useTranslations from "common/hooks/useTranslations";
+import { useAppLayoutContext } from "contexts/AppLayoutContext";
 
 import AccountComponent from "../components/AccountComponent";
-import { useAppLayoutContext } from "contexts/AppLayoutContext";
 
 const AccountContainer: React.FC = () => {
   const { logout } = useAppLayoutContext();

@@ -4,12 +4,13 @@ import { Paper } from "@material-ui/core";
 import Input from "common/components/Input";
 import Button from "common/components/Button";
 import useStyles from "common/hooks/useStyles";
-import { LoginData } from "../interfaces";
+
+import { ILoginData } from "../interfaces";
 import styles from "../styles";
 import { isLoginValid } from "../utils";
 
-interface LoginComponentProps {
-  loginData: LoginData;
+interface ILoginComponent {
+  loginData: ILoginData;
   translations: any;
   error: boolean;
   message: string;
@@ -18,7 +19,7 @@ interface LoginComponentProps {
   onSignUp: () => void;
 }
 
-const LoginComponent: React.FC<LoginComponentProps> = ({
+const LoginComponent: React.FC<ILoginComponent> = ({
   loginData: { nickname, password },
   translations,
   error,

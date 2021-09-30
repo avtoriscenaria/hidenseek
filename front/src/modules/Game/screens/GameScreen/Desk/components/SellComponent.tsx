@@ -2,18 +2,19 @@ import React from "react";
 import ClearIcon from "@material-ui/icons/Clear";
 
 import useStyles from "common/hooks/useStyles";
-import { SellBorder } from "../interfaces";
+
+import { ISellBorder } from "../interfaces";
 import styles from "../styles/SellStyles";
 
-interface SellComponentProps {
-  borderConfig: SellBorder;
+interface ISellComponent {
+  borderConfig: ISellBorder;
   style: Object;
   canMoveStyles?: { backgroundColor: string; opacity: number; height: string };
   crossColor?: string;
   onClick: () => void;
 }
 
-const SellComponent: React.FC<SellComponentProps> = ({
+const SellComponent: React.FC<ISellComponent> = ({
   borderConfig,
   style: additionalStyle,
   canMoveStyles = {},

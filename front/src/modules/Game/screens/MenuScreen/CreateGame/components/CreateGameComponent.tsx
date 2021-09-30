@@ -5,12 +5,12 @@ import useStyles from "common/hooks/useStyles";
 
 import styles from "../styles";
 
-interface CreateGameComponentProps {
+interface ICreateGameComponent {
   translations: any;
   onCreateGame: () => void;
 }
 
-const CreateGameComponent: React.FC<CreateGameComponentProps> = ({
+const CreateGameComponent: React.FC<ICreateGameComponent> = ({
   translations,
   onCreateGame,
 }) => {

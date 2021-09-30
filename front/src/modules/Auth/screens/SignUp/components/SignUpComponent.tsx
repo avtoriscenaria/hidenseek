@@ -4,12 +4,13 @@ import { Paper } from "@material-ui/core";
 import Input from "common/components/Input";
 import Button from "common/components/Button";
 import useStyles from "common/hooks/useStyles";
-import { SignUpData } from "../interfaces";
+
+import { ISignUpData } from "../interfaces";
 import { isSignUpValid, isPasswordConfirmed } from "../utils";
 import styles from "../styles";
 
-interface SignUpComponentProps {
-  signUpData: SignUpData;
+interface ISignUpComponent {
+  signUpData: ISignUpData;
   translations: any;
   error: boolean;
   message: string;
@@ -20,7 +21,7 @@ interface SignUpComponentProps {
   setIsFocusedConfirmPassword: () => void;
 }
 
-const SignUpComponent: React.FC<SignUpComponentProps> = ({
+const SignUpComponent: React.FC<ISignUpComponent> = ({
   signUpData: { nickname, password, confirmPassword },
   translations,
   error,

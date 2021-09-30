@@ -25,7 +25,6 @@ const SignUpContainer: React.FC = () => {
   };
 
   const onLogin = () => {
-    console.log("LOGIN");
     history.push(ROUTES.auth.base);
   };
 

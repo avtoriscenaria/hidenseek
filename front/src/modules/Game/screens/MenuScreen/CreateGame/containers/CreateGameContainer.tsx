@@ -1,10 +1,10 @@
 import React from "react";
 
 import useTranslations from "common/hooks/useTranslations";
+import { useAppLayoutContext } from "contexts/AppLayoutContext";
 
 import CreateGameComponent from "../components/CreateGameComponent";
 import { useGameCreateRequest } from "../hooks";
-import { useAppLayoutContext } from "contexts/AppLayoutContext";
 
 const CreateGameContainer: React.FC = () => {
   const { game: gameTranslations } = useTranslations();

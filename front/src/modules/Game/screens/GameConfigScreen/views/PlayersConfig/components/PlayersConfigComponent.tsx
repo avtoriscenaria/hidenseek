@@ -8,7 +8,7 @@ import styles from "../styles";
 
 const GAME_KEY = "gameKey";
 
-interface PlayersConfigProps {
+interface IPlayersConfig {
   gameKey?: string;
   players?: IGamePlayer[];
   translations: any;
@@ -17,7 +17,7 @@ interface PlayersConfigProps {
   setHunter: (value: boolean, id: string) => void;
 }
 
-const PlayersConfigComponent: React.FC<PlayersConfigProps> = ({
+const PlayersConfigComponent: React.FC<IPlayersConfig> = ({
   players = [],
   gameKey = "",
   isMyPlayerCreator = false,

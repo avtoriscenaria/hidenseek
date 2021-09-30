@@ -6,7 +6,7 @@ import Input from "common/components/Input";
 
 import styles from "../styles";
 
-interface FindGameComponentProps {
+interface IFindGameComponent {
   translations: any;
   gameKey?: string;
   isFindByKey: boolean;
@@ -17,7 +17,7 @@ interface FindGameComponentProps {
   ) => void;
 }
 
-const FindGameComponent: React.FC<FindGameComponentProps> = ({
+const FindGameComponent: React.FC<IFindGameComponent> = ({
   translations,
   gameKey,
   isFindByKey,

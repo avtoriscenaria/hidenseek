@@ -1,6 +1,7 @@
-import ROUTES from "constants/routes";
 import React from "react";
 import { Route, Switch } from "react-router-dom";
+
+import ROUTES from "constants/routes";
 
 import Login from "./screens/Login";
 import SignUp from "./screens/SignUp";

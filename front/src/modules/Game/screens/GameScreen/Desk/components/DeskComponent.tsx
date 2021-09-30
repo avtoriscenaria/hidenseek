@@ -2,8 +2,9 @@ import React from "react";
 import Paper from "@material-ui/core/Paper";
 
 import desk from "constants/deskConfig";
-import Sell from "../containers/SellContainer";
 import useStyles from "common/hooks/useStyles";
+
+import Sell from "../containers/SellContainer";
 import styles from "../styles/DeskStyles";
 
 interface IDeskComponent {

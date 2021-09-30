@@ -1,7 +1,8 @@
+import React from "react";
+
 import useTranslations from "common/hooks/useTranslations";
 // import ROUTES from "constants/routes";
 import { useSocketContext } from "contexts/Socket/SocketContext";
-import React from "react";
 // import { useHistory } from "react-router-dom";
 
 import InfoComponent from "../components/InfoComponent";

@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import { SellBorder, SellConfig } from "../interfaces";
+import { ISellBorder, ISellConfig } from "../interfaces";
 
-export const useBorderConfig = (sell: SellConfig) => {
-  const [mainBorder, setMainBorder] = useState<SellBorder>({});
+export const useBorderConfig = (sell: ISellConfig) => {
+  const [mainBorder, setMainBorder] = useState<ISellBorder>({});
 
   useEffect(() => {
-    const border: SellBorder = {};
+    const border: ISellBorder = {};
     if (sell.y !== undefined) {
       border.borderTopColor =
         sell.y === 0 || sell.y === 2 ? "black" : undefined;
