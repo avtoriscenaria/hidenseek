@@ -1,7 +1,7 @@
 import React from "react";
 
 import useStyles from "common/hooks/useStyles";
-import { GamePlayer } from "common/interfaces/Game";
+import { IGamePlayer } from "common/interfaces/Game";
 
 import PlayerConfig from "../../../components/PlayerConfig";
 import styles from "../styles";
@@ -10,7 +10,7 @@ const GAME_KEY = "gameKey";
 
 interface PlayersConfigProps {
   gameKey?: string;
-  players?: GamePlayer[];
+  players?: IGamePlayer[];
   translations: any;
   isMyPlayerCreator: boolean;
   copyKey: (elementId: string) => void;

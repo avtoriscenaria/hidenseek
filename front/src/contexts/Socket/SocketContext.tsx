@@ -8,14 +8,13 @@ import React, {
 import { useHistory } from "react-router";
 
 import { GAME_STATUSES } from "constants/gameConstants";
-import { Game, GamePlayer } from "common/interfaces/Game";
+import { IGame, IGamePlayer } from "common/interfaces/Game";
 import localStorageHelper from "common/utils/localStorageHelper";
 import getGameRequest from "common/utils/getGame";
 import LSData from "constants/LSData";
 import ROUTES from "constants/routes";
 
 import { useAppLayoutContext } from "../AppLayoutContext";
-
 import {
   initiateSocket,
   onStartGame,
@@ -24,15 +23,15 @@ import {
   subscribeOnTimer,
 } from "./helpers/SocketIo";
 
-interface Socket {
-  myGamePlayer?: GamePlayer;
-  game?: Game;
+interface ISocket {
+  myGamePlayer?: IGamePlayer;
+  game?: IGame;
   timer?: number;
   isHideStep?: boolean;
-  setGame: (game?: Game) => void;
+  setGame: (game?: IGame) => void;
 }
 
-const defaultContext: Socket = {
+const defaultContext: ISocket = {
   setGame: () => {},
 };
 
@@ -43,7 +42,7 @@ export const SocketContextProvider: React.FC = ({ children }) => {
   const { token } = localStorageHelper("get", LSData.authData) || {};
   const { logout, hasGame, player, setHasGame } = useAppLayoutContext();
   const [connect, setConnected] = useState(false);
-  const [game, setGame] = useState<Game | undefined>();
+  const [game, setGame] = useState<IGame | undefined>();
   const [timer, setTimer] = useState<number | undefined>();
 
   useEffect(() => {
@@ -113,6 +112,6 @@ export const SocketContextProvider: React.FC = ({ children }) => {
   );
 };
 
-export const useSocketContext = (): Socket => useContext(SocketContext);
+export const useSocketContext = (): ISocket => useContext(SocketContext);
 
 export default SocketContext;

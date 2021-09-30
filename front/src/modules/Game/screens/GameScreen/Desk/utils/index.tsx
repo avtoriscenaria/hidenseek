@@ -1,8 +1,8 @@
-import { GamePlayer } from "common/interfaces/Game";
+import { IGamePlayer } from "common/interfaces/Game";
 
 export const configurateSell = (
   _id: string,
-  players: GamePlayer[],
+  players: IGamePlayer[],
   coordinates: { x: number; y: number },
   sell: { x?: number; y?: number },
   playerPosition: string,

@@ -2,7 +2,7 @@ import io from "socket.io-client";
 
 import { HOST, STEP_INTERVAL } from "constants/api";
 import { startGame } from "./index";
-import { Game } from "common/interfaces/Game";
+import { IGame } from "common/interfaces/Game";
 
 let socket: any;
 
@@ -37,18 +37,18 @@ export const onStartGameEmit = () => {
   }
 };
 
-export const updateGame = (updateGame: (game: Game) => void) => {
+export const updateGame = (updateGame: (game: IGame) => void) => {
   if (socket) {
-    socket.once("update_game", ({ game }: { game: Game }) => {
+    socket.once("update_game", ({ game }: { game: IGame }) => {
       updateGame(game);
     });
   }
 };
 
 export const onStartGame = (
-  setGame: (game: Game) => void,
+  setGame: (game: IGame) => void,
   history: any,
-  game?: Game
+  game?: IGame
 ) => {
   if (socket) {
     socket.once("start_game", () => startGame(setGame, history, game));

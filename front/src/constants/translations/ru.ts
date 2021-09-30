@@ -1,4 +1,7 @@
 const translations = {
+  main: {
+    gameName: "Hide & Seek",
+  },
   auth: {
     welcome: "Здарова!",
     nickname: "Nickname",

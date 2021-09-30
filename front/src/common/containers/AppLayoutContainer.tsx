@@ -1,14 +1,15 @@
 import React from "react";
 
-import AppHeader from "../components/AppHeader";
 import useStyles from "common/hooks/useStyles";
+
+import AppHeader from "../components/AppHeader";
 import styles from "../styles/AppLayoutStyles";
 
-interface AppLayoutProps {
+interface IAppLayout {
   children: React.ReactNode;
 }
 
-export default function AppLayout({ children }: AppLayoutProps) {
+export default function AppLayout({ children }: IAppLayout) {
   const classes = useStyles(styles);
 
   return (

@@ -1,11 +1,11 @@
 import { API, HOST, STATUSES } from "constants/api";
-import { Game } from "common/interfaces/Game";
+import { IGame } from "common/interfaces/Game";
 import LSData from "constants/LSData";
 
 const getGame = async (
   game_id?: string,
   player_id?: string,
-  callback: (game?: Game) => void = () => {}
+  callback: (game?: IGame) => void = () => {}
 ) => {
   const { uri, method } = API.game.getGame;
 

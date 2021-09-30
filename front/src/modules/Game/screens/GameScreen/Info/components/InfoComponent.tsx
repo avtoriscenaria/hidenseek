@@ -1,7 +1,7 @@
 import React from "react";
 import Paper from "@material-ui/core/Paper";
 
-import { GamePlayer } from "common/interfaces/Game";
+import { IGamePlayer } from "common/interfaces/Game";
 import useStyles from "common/hooks/useStyles";
 import Button from "common/components/Button";
 
@@ -9,7 +9,7 @@ import Player from "./PlayerComponent";
 import styles from "../styles/InfoStyles";
 
 interface InfoComponentProps {
-  players: GamePlayer[];
+  players: IGamePlayer[];
   translations: any;
   myGamePlayerId?: string;
   exitGame: () => void;

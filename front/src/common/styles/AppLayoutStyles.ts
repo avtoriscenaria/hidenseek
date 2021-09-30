@@ -1,6 +1,4 @@
-import { Theme } from "@material-ui/core/styles";
-
-const styles = (theme: Theme) => ({
+const styles = () => ({
   root: {
     flexGrow: 1,
     height: "100%",

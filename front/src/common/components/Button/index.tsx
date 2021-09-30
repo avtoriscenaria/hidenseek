@@ -3,7 +3,7 @@ import Button from "@material-ui/core/Button";
 import useStyles from "../../hooks/useStyles";
 import styles from "./styles";
 
-interface ButtonProps {
+interface IButton {
   label: string;
   onClick: () => void;
   disabled?: boolean;
@@ -11,13 +11,13 @@ interface ButtonProps {
   type?: "inherit" | "default" | "primary" | "secondary";
 }
 
-export default function ContainedButtons({
+export default function ContainedButton({
   label,
   onClick,
   disabled,
   classes: propClass,
   type = "primary",
-}: ButtonProps) {
+}: IButton) {
   const classes = useStyles(styles);
   const additionalClass = propClass ? ` ${propClass}` : "";
 

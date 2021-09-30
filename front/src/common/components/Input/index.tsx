@@ -11,7 +11,7 @@ import useStyles from "common/hooks/useStyles";
 
 import styles from "./styles";
 
-interface InputProps {
+interface IInput {
   label: string;
   name: string;
   value?: string;
@@ -35,7 +35,7 @@ export default function Input({
   onChange,
   onFocus = () => {},
   classes: propClass,
-}: InputProps) {
+}: IInput) {
   const classes = useStyles(styles);
   const [showPassword, setShowPassword] = useState(false);
   const additionalClass = propClass ? ` ${propClass}` : "";

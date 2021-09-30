@@ -1,14 +1,15 @@
-import ROUTES from "constants/routes";
-import { useAppLayoutContext } from "contexts/AppLayoutContext";
 import { Route, Redirect } from "react-router-dom";
 
-interface SmartRouteProps {
+import ROUTES from "constants/routes";
+import { useAppLayoutContext } from "contexts/AppLayoutContext";
+
+interface ISmartRoute {
   exact?: boolean;
   path: string;
   component: React.FC;
 }
 
-export default function SmartRoute(props: SmartRouteProps) {
+export default function SmartRoute(props: ISmartRoute) {
   const { isAuthorized } = useAppLayoutContext();
   return isAuthorized ? (
     <Route {...props} />

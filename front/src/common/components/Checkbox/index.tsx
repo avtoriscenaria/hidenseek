@@ -5,17 +5,13 @@ import useStyles from "common/hooks/useStyles";
 
 import styles from "./styles";
 
-interface CheckboxProps {
+interface ICheckbox {
   checked: boolean;
   disabled?: boolean;
   onChange: (value: boolean) => void;
 }
 
-export default function Checkbox({
-  checked,
-  disabled,
-  onChange,
-}: CheckboxProps) {
+export default function Checkbox({ checked, disabled, onChange }: ICheckbox) {
   const classes = useStyles(styles);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

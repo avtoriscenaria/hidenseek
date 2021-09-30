@@ -1,12 +1,12 @@
-export interface Game {
+export interface IGame {
   hide: boolean;
   status: string;
   gameKey: string;
-  players: GamePlayer[];
+  players: IGamePlayer[];
   _id: string;
 }
 
-export interface GamePlayer {
+export interface IGamePlayer {
   nickname: string;
   _id: string;
   creator?: boolean;

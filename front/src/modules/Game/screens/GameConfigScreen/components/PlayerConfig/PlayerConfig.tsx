@@ -1,13 +1,13 @@
 import Paper from "@material-ui/core/Paper";
 
 import useStyles from "common/hooks/useStyles";
-import { GamePlayer } from "common/interfaces/Game";
+import { IGamePlayer } from "common/interfaces/Game";
 import Checkbox from "common/components/Checkbox";
 
 import styles from "./styles";
 
 interface PlayerConfigProps {
-  player: GamePlayer;
+  player: IGamePlayer;
   isMyPlayerCreator: boolean;
   setHunter: (value: boolean, id: string) => void;
 }

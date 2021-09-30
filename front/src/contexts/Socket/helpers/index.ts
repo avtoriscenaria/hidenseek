@@ -1,11 +1,11 @@
-import { Game } from "common/interfaces/Game";
+import { IGame } from "common/interfaces/Game";
 import { GAME_STATUSES } from "constants/gameConstants";
 import ROUTES from "constants/routes";
 
 export const startGame = (
-  setGame: (game: Game) => void,
+  setGame: (game: IGame) => void,
   history: any,
-  game?: Game
+  game?: IGame
 ) => {
   if (game !== undefined) {
     setGame({ ...game, status: GAME_STATUSES.in_process });

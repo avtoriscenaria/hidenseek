@@ -10,7 +10,7 @@ import { useEffect } from "react";
 import localStorageHelper from "common/utils/localStorageHelper";
 import Player from "common/interfaces/Player";
 
-interface AppLayoutProps {
+interface IAppLayout {
   isAuthorized: boolean;
   hasGame?: string;
   player?: Player;
@@ -20,7 +20,7 @@ interface AppLayoutProps {
   logout: () => void;
 }
 
-const defaultContext: AppLayoutProps = {
+const defaultContext: IAppLayout = {
   isAuthorized: false,
   setIsAuthorized: () => {},
   setHasGame: () => {},
@@ -81,7 +81,7 @@ export const AppLayoutContextProvider: React.FC = ({ children }) => {
   );
 };
 
-export const useAppLayoutContext = (): AppLayoutProps =>
+export const useAppLayoutContext = (): IAppLayout =>
   useContext(AppLayoutContext);
 
 export default AppLayoutContext;

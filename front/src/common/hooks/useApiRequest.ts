@@ -2,7 +2,7 @@ import { HOST, STATUSES } from "constants/api";
 import LSData from "constants/LSData";
 import { useAppLayoutContext } from "contexts/AppLayoutContext";
 
-interface ApiRequestProps {
+interface IApiRequest {
   (
     apiData: {
       uri: string;
@@ -17,13 +17,13 @@ interface ApiRequestProps {
   ): { request: (data?: any) => Promise<void> };
 }
 
-interface responseActionsProps {
+interface IResponseActions {
   status: string;
   data?: any;
   message?: any;
 }
 
-const useApiRequest: ApiRequestProps = (
+const useApiRequest: IApiRequest = (
   { uri, method, disableAuth },
   { onSuccess = () => {}, onFailure = () => {} } = {}
 ) => {
@@ -67,7 +67,7 @@ const useApiRequest: ApiRequestProps = (
 };
 
 const responseActions = (
-  res: responseActionsProps,
+  res: IResponseActions,
   onSuccess: (data?: any) => void,
   onFailure: (message?: string) => void,
   logout: () => void

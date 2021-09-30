@@ -6,21 +6,24 @@ import Typography from "@material-ui/core/Typography";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 
 import useStyles from "common/hooks/useStyles";
-import styles from "../styles";
 
-interface AppHeaderProps {
+import styles from "./styles";
+
+interface IAppHeader {
   isAuthorized: boolean;
   disableTitleNavigation: boolean;
+  translations: { gameName: string };
   handleGame: (event: React.MouseEvent<HTMLElement>) => void;
   handleMenu: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
 export default function AppHeader({
   isAuthorized,
+  translations,
   disableTitleNavigation,
   handleGame,
   handleMenu,
-}: AppHeaderProps) {
+}: IAppHeader) {
   const classes = useStyles(styles);
 
   return (
@@ -37,7 +40,7 @@ export default function AppHeader({
               }
               onClick={handleGame}
             >
-              Hide & Seek
+              {translations.gameName}
             </Typography>
           </div>
 

@@ -1,9 +1,9 @@
-import { GamePlayer } from "common/interfaces/Game";
+import { IGamePlayer } from "common/interfaces/Game";
 
 import PlayerConfig from "./PlayerConfig";
 
 interface PlayerConfigProps {
-  player: GamePlayer;
+  player: IGamePlayer;
   isMyPlayerCreator: boolean;
   setHunter: (value: boolean, id: string) => void;
 }
