@@ -54,7 +54,8 @@ const GameConfigScreen: React.FC = () => {
         </div>
 
         <div className={classes.reloadDescription}>
-          <Button label={gameTranslations.update} onClick={updateGameSocket} />
+          {gameTranslations.reloadToUpdate}
+          {/* <Button label={gameTranslations.update} onClick={updateGameSocket} /> */}
         </div>
         <div className={classes.startGame}>
           {isCreator ? (
