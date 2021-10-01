@@ -3,11 +3,12 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as argon2 from 'argon2';
 
+import messages, { STATUSES } from 'src/constants';
+
 import { SignUpPlayerDto, LoginPlayerDto } from './dto';
 import { Player, PlayerDocument } from './schemas/player.schema';
 import { JWT } from '../common/services/jwt.service';
 import { Response } from '../common/services/response.service';
-import messages, { STATUSES } from 'src/constants';
 
 @Injectable()
 export class AuthService {

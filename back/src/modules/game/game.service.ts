@@ -3,13 +3,13 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
+import getPlayerStartPlace from 'src/utils/getPlayerStartPlace';
+import getPlayerColor from 'src/utils/getPlayerColor';
 import messages, { GAME_STATUSES, STATUSES } from 'src/constants';
 
 import { Response } from '../common/services/response.service';
 import { Game, GameDocument } from './schemas/game.schema';
 import { Player, PlayerDocument } from '../auth/schemas/player.schema';
-import getPlayerStartPlace from 'src/utils/getPlayerStartPlace';
-import getPlayerColor from 'src/utils/getPlayerColor';
 
 @Injectable()
 export class GameService {

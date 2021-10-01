@@ -11,10 +11,11 @@ import { Logger } from '@nestjs/common';
 import { Socket, Server } from 'socket.io';
 import { InjectModel } from '@nestjs/mongoose';
 
+import { GAME_STATUSES } from 'src/constants';
+
 import { JWT } from '../common/services/jwt.service';
 import { Game, GameDocument } from './schemas/game.schema';
 import { Player, PlayerDocument } from '../auth/schemas/player.schema';
-import { GAME_STATUSES } from 'src/constants';
 
 @WebSocketGateway()
 export class GameGateway
@@ -210,7 +211,7 @@ export class GameGateway
     const { room } = client.handshake.query;
 
     const game = await this.gameModel.findById(room);
-    console.log('GAME', game);
+
     if (Boolean(game)) {
       const updatedPlayers = game.players.map((p) => ({
         ...p,
