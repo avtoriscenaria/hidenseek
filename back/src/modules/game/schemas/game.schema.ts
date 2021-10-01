@@ -18,7 +18,7 @@ export class Game {
   @Prop()
   hide: boolean;
 
-  @Prop(SettingsProps)
+  @Prop()
   settings: SettingsProps;
 
   @Prop()

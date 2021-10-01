@@ -17,7 +17,7 @@ export const initiateSocket = (
       query: { token, room, player_id },
     });
     if (socket && room) {
-      console.log(`Connected!`);
+      console.log(`Connected!`, room);
       setConnected(true);
       startTimer();
     }
@@ -112,11 +112,10 @@ export const subscribeOnTimer = (setTimer: (time: number) => void) => {
   }
 };
 
-export const onLogout = (logoutCB: () => void) => {
+export const logoutSocket = () => {
   if (socket) {
-    socket.once("logout", () => {
-      console.log("LOGOUT");
-      logoutCB();
-    });
+    socket.emit("logout");
+    socket = undefined;
+    console.log("SOCKET", socket);
   }
 };

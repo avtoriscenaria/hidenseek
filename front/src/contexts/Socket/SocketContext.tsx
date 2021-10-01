@@ -19,7 +19,6 @@ import {
   initiateSocket,
   onStartGame,
   updateGame,
-  onLogout,
   subscribeOnTimer,
 } from "./helpers/SocketIo";
 
@@ -30,10 +29,12 @@ interface ISocket {
   timer?: number;
   isHideStep?: boolean;
   setGame: (game?: IGame) => void;
+  setConnected: (value: boolean) => void;
 }
 
 const defaultContext: ISocket = {
   setGame: () => {},
+  setConnected: () => {},
 };
 
 const SocketContext = createContext(defaultContext);
@@ -43,7 +44,7 @@ export const SocketContextProvider: React.FC = ({ children }) => {
 
   const [isLoaded, setIsLoaded] = useState(false);
   const { token } = localStorageHelper("get", LSData.authData) || {};
-  const { logout, hasGame, player, setHasGame } = useAppLayoutContext();
+  const { hasGame, player, setHasGame } = useAppLayoutContext();
   const [connect, setConnected] = useState(false);
   const [game, setGame] = useState<IGame | undefined>();
   const [timer, setTimer] = useState<number | undefined>();
@@ -69,10 +70,6 @@ export const SocketContextProvider: React.FC = ({ children }) => {
   }, [connect, timer]);
 
   useEffect(() => {
-    onLogout(logout);
-  }, [logout]);
-
-  useEffect(() => {
     if (Boolean(hasGame) && game === undefined) {
       getGameRequest(hasGame, player?._id, (responseGame) => {
         if (Boolean(responseGame)) {
@@ -95,18 +92,18 @@ export const SocketContextProvider: React.FC = ({ children }) => {
     }
   }, [game, hasGame, history, player?._id, setHasGame]);
 
-  const getMyGamePlayer = useCallback(() => {
-    return game?.players.find((p) => p._id === player?._id);
-  }, [game?.players, player?._id]);
+  const getMyGamePlayer = useCallback(
+    () => game?.players.find((p) => p._id === player?._id),
+    [game?.players, player?._id]
+  );
 
-  const getGameStep = useCallback(() => {
-    return game?.hide;
-  }, [game?.hide]);
+  const getGameStep = useCallback(() => game?.hide, [game?.hide]);
 
   return (
     <SocketContext.Provider
       value={{
         myGamePlayer: getMyGamePlayer(),
+        setConnected,
         game,
         timer,
         isHideStep: getGameStep(),

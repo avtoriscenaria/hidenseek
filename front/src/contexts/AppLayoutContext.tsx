@@ -10,6 +10,8 @@ import { useEffect } from "react";
 import localStorageHelper from "common/utils/localStorageHelper";
 import Player from "common/interfaces/Player";
 
+import { logoutSocket } from "./Socket/helpers/SocketIo";
+
 interface IAppLayout {
   isAuthorized: boolean;
   hasGame?: string;
@@ -61,6 +63,7 @@ export const AppLayoutContextProvider: React.FC = ({ children }) => {
   const logout = () => {
     localStorage.removeItem(LSData.authData);
     setIsAuthorized(false);
+    logoutSocket();
     history.push(ROUTES.auth.base);
   };
 

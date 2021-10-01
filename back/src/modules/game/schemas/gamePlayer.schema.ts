@@ -24,6 +24,9 @@ export class GamePlayer {
   creator: boolean;
 
   @Prop()
+  online: boolean;
+
+  @Prop()
   hunter: boolean;
 
   @Prop()

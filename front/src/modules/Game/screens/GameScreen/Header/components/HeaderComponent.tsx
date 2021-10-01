@@ -1,6 +1,5 @@
 import React from "react";
 
-import { endTurn } from "contexts/Socket/helpers/SocketIo";
 import useStyles from "common/hooks/useStyles";
 import Button from "common/components/Button";
 import Timer from "common/components/Timer";
@@ -10,6 +9,7 @@ import styles from "../styles/HeaderStyles";
 interface IHeaderComponent {
   timer?: number;
   step?: number;
+  endTurn: () => void;
   translations: any;
   disableButton: boolean;
 }
@@ -17,6 +17,7 @@ interface IHeaderComponent {
 const InfoComponent: React.FC<IHeaderComponent> = ({
   timer,
   step,
+  endTurn,
   translations,
   disableButton,
 }) => {

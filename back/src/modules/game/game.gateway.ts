@@ -57,6 +57,29 @@ export class GameGateway
     }, timeStep);
   }
 
+  private async disconnectPlayer(client: Socket): Promise<void> {
+    const { room, player_id } = client.handshake.query;
+
+    const game = await this.gameModel.findById(room);
+
+    if (game) {
+      game.players = game.players.map((p) =>
+        p._id.toString() === player_id.toString() ? { ...p, online: false } : p,
+      );
+      game.save();
+
+      if (
+        !game.players.some((p) => p.online) &&
+        this.TIME_INTERVAL[room] !== undefined
+      ) {
+        clearInterval(this.TIME_INTERVAL[room]);
+        this.TIMER_RUN[room] = undefined;
+        this.TIME_INTERVAL[room] = undefined;
+      }
+      this.logger.log(`Client disconnected: ${client.id}`);
+    }
+  }
+
   @SubscribeMessage('start_game')
   async startGame(client: Socket, { timeStep }): Promise<void> {
     const { room, player_id } = client.handshake.query;
@@ -147,8 +170,11 @@ export class GameGateway
     game.players = gamePlayers;
 
     if (
-      game.players.some(
-        (p) => Boolean(p.hunter) !== Boolean(game.hide) && p.step === 0,
+      !game.players.some(
+        (p) =>
+          Boolean(p.hunter) !== Boolean(game.hide) &&
+          p.step > 0 &&
+          !Boolean(p.caught),
       )
     ) {
       game.hide = !game.hide;
@@ -184,7 +210,7 @@ export class GameGateway
     const { room } = client.handshake.query;
 
     const game = await this.gameModel.findById(room);
-
+    console.log('GAME', game);
     if (Boolean(game)) {
       const updatedPlayers = game.players.map((p) => ({
         ...p,
@@ -259,8 +285,8 @@ export class GameGateway
   }
 
   @SubscribeMessage('logout')
-  logoutPlayer(client: Socket, payload: string): void {
-    console.log('LOGOUT');
+  logoutPlayer(client: Socket): void {
+    this.disconnectPlayer(client);
   }
 
   afterInit(server: Server) {
@@ -268,7 +294,7 @@ export class GameGateway
   }
 
   handleDisconnect(client: Socket) {
-    this.logger.log(`Client disconnected: ${client.id}`);
+    this.disconnectPlayer(client);
   }
 
   async handleConnection(client: Socket) {
@@ -285,14 +311,10 @@ export class GameGateway
 
     client.join(room);
 
-    console.log('CONNECT', this.TIMER_RUN[room]);
-
     if (this.TIMER_RUN[room]) {
       const startTime = Math.round(
         (new Date().getTime() - this.TIMER_RUN[room]) / 1000,
       );
-
-      console.log('startTime', startTime);
 
       client.emit('timer', {
         startTime,
@@ -308,6 +330,13 @@ export class GameGateway
         );
 
         if (gamePlayer && !Boolean(this.TIMER_RUN[room])) {
+          game.players = game.players.map((p) =>
+            p._id.toString() === player_id.toString()
+              ? { ...p, online: true }
+              : p,
+          );
+          game.save();
+
           client.broadcast.to(room).emit('player_connect', gamePlayer);
         }
       }
