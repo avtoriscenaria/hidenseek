@@ -9,7 +9,7 @@ import useTranslations from "common/hooks/useTranslations";
 import { useAppLayoutContext } from "contexts/AppLayoutContext";
 import {
   onStartGameEmit,
-  updateGameSocket,
+  // updateGameSocket,
 } from "contexts/Socket/helpers/SocketIo";
 import ROUTES from "constants/routes";
 import useStyles from "common/hooks/useStyles";
