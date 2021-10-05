@@ -5,13 +5,13 @@ import Input from "common/components/Input";
 import Button from "common/components/Button";
 import useStyles from "common/hooks/useStyles";
 
-import { ILoginData } from "../interfaces";
+import { ILoginData, ILoginTranslations } from "../interfaces";
 import styles from "../styles";
 import { isLoginValid } from "../utils";
 
 interface ILoginComponent {
   loginData: ILoginData;
-  translations: any;
+  translations: ILoginTranslations;
   error: boolean;
   message: string;
   onChange: (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void;

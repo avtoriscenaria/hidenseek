@@ -5,9 +5,10 @@ import Button from "common/components/Button";
 import Input from "common/components/Input";
 
 import styles from "../styles";
+import { IFindGameTranslations } from "../interfaces";
 
 interface IFindGameComponent {
-  translations: any;
+  translations: IFindGameTranslations;
   gameKey?: string;
   isFindByKey: boolean;
   onFind: () => void;

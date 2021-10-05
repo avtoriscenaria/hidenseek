@@ -4,9 +4,10 @@ import Button from "common/components/Button";
 import useStyles from "common/hooks/useStyles";
 
 import styles from "../styles";
+import { ICreateGameTranslations } from "../interfaces";
 
 interface ICreateGameComponent {
-  translations: any;
+  translations: ICreateGameTranslations;
   onCreateGame: () => void;
 }
 

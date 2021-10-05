@@ -4,11 +4,12 @@ import useStyles from "common/hooks/useStyles";
 import { IGamePlayer } from "common/interfaces/Game";
 
 import styles from "../styles/PlayerStyles";
+import { IInfoTranslations } from "../interfaces";
 
 interface IPlayerComponent {
   player: IGamePlayer;
   isMyGamePlayer: boolean;
-  translations: any;
+  translations: IInfoTranslations;
 }
 
 const PlayerComponent: React.FC<IPlayerComponent> = memo(
@@ -20,7 +21,7 @@ const PlayerComponent: React.FC<IPlayerComponent> = memo(
       caught: isCaught = false,
     },
     isMyGamePlayer,
-    translations: { hunter, caughtPlayer = false },
+    translations: { hunter, caughtPlayer },
   }) => {
     const classes = useStyles((theme) =>
       styles(theme, { isHunter, isCaught, isMyGamePlayer })

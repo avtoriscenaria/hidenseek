@@ -5,13 +5,13 @@ import Input from "common/components/Input";
 import Button from "common/components/Button";
 import useStyles from "common/hooks/useStyles";
 
-import { ISignUpData } from "../interfaces";
+import { ISignUpData, ISignUpTranslations } from "../interfaces";
 import { isSignUpValid, isPasswordConfirmed } from "../utils";
 import styles from "../styles";
 
 interface ISignUpComponent {
   signUpData: ISignUpData;
-  translations: any;
+  translations: ISignUpTranslations;
   error: boolean;
   message: string;
   isFocusedConfirmPassword: boolean;

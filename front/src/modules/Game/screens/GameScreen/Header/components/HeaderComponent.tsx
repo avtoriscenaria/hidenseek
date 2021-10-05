@@ -10,7 +10,9 @@ interface IHeaderComponent {
   timer?: number;
   step?: number;
   endTurn: () => void;
-  translations: any;
+  translations: {
+    endTurn: string;
+  };
   disableButton: boolean;
 }
 

@@ -53,6 +53,7 @@ export class AuthService {
 
       if (isPasswordCorrect) {
         const token = await this.jwt.generateToken(player);
+
         const { admin, _id, game_id } = player;
 
         return this.response.prepare({

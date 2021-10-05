@@ -1,84 +1,21 @@
+import { Socket, Server } from 'socket.io';
 import {
   SubscribeMessage,
-  WebSocketGateway,
   OnGatewayInit,
-  WebSocketServer,
   OnGatewayConnection,
   OnGatewayDisconnect,
 } from '@nestjs/websockets';
-import { Model } from 'mongoose';
-import { Logger } from '@nestjs/common';
-import { Socket, Server } from 'socket.io';
-import { InjectModel } from '@nestjs/mongoose';
 
 import { GAME_STATUSES } from 'src/constants';
 
-import { JWT } from '../common/services/jwt.service';
-import { Game, GameDocument } from './schemas/game.schema';
-import { Player, PlayerDocument } from '../auth/schemas/player.schema';
+import { GameGateway } from './game.gateway';
 
-@WebSocketGateway()
-export class GameGateway
+export class GameSocketService
+  extends GameGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
-  constructor(
-    private jwt: JWT,
-    @InjectModel(Game.name) private gameModel: Model<GameDocument>,
-    @InjectModel(Player.name) private playerModel: Model<PlayerDocument>,
-  ) {}
-
-  @WebSocketServer()
-  server: Server;
-
-  private logger: Logger = new Logger('GameGateway');
-  private TIMER_RUN = {};
-  private TIME_INTERVAL = {};
-
-  private changeTurnOrder(room: string, timeStep): void {
-    this.TIME_INTERVAL[room] = setInterval(async () => {
-      console.log('INTERVAL-', timeStep);
-      this.TIMER_RUN[room] = new Date().getTime();
-      const game = (await this.gameModel.find({ _id: room }).exec())[0];
-
-      game.hide = !game.hide;
-      game.players = game.players.map((p) => ({
-        ...p,
-        step:
-          Boolean(p.hunter) && !game.hide
-            ? game.settings.hunterStep
-            : !Boolean(p.hunter) && game.hide
-            ? game.settings.preyStep
-            : 0,
-      }));
-
-      await game.save();
-
-      this.server.in(room).emit('timer', { time: new Date().getTime() });
-      this.server.in(room).emit('update_game', { game });
-    }, timeStep);
-  }
-
-  private async disconnectPlayer(client: Socket): Promise<void> {
-    const { room, player_id } = client.handshake.query;
-
-    const game = await this.gameModel.findById(room);
-
-    if (game) {
-      game.players = game.players.map((p) =>
-        p._id.toString() === player_id.toString() ? { ...p, online: false } : p,
-      );
-      game.save();
-
-      if (
-        !game.players.some((p) => p.online) &&
-        this.TIME_INTERVAL[room] !== undefined
-      ) {
-        clearInterval(this.TIME_INTERVAL[room]);
-        this.TIMER_RUN[room] = undefined;
-        this.TIME_INTERVAL[room] = undefined;
-      }
-      this.logger.log(`Client disconnected: ${client.id}`);
-    }
+  constructor(jwt, gameModel) {
+    super(jwt, gameModel);
   }
 
   @SubscribeMessage('start_game')
@@ -283,11 +220,6 @@ export class GameGateway
         }
       }
     }
-  }
-
-  @SubscribeMessage('logout')
-  logoutPlayer(client: Socket): void {
-    this.disconnectPlayer(client);
   }
 
   afterInit(server: Server) {

@@ -5,7 +5,7 @@ import useStyles from "common/hooks/useStyles";
 import styles from "../styles";
 
 interface IGameType {
-  translations: any;
+  translations: {};
 }
 
 const GameTypeComponent: React.FC<IGameType> = ({ translations }) => {

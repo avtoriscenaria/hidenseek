@@ -114,7 +114,7 @@ export const subscribeOnTimer = (setTimer: (time: number) => void) => {
 
 export const logoutSocket = () => {
   if (socket) {
-    socket.emit("logout");
+    socket.disconnect(true);
     socket = undefined;
     console.log("SOCKET", socket);
   }

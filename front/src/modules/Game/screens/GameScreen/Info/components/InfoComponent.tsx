@@ -7,16 +7,17 @@ import Button from "common/components/Button";
 
 import Player from "./PlayerComponent";
 import styles from "../styles/InfoStyles";
+import { IInfoTranslations } from "../interfaces";
 
-interface InfoComponentProps {
+interface IInfoComponent {
   players: IGamePlayer[];
-  translations: any;
+  translations: IInfoTranslations;
   myGamePlayerId?: string;
   exitGame: () => void;
   onMenu: () => void;
 }
 
-const InfoComponent: React.FC<InfoComponentProps> = ({
+const InfoComponent: React.FC<IInfoComponent> = ({
   translations,
   players,
   myGamePlayerId = "",

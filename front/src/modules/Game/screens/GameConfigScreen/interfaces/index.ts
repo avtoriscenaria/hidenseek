@@ -5,3 +5,10 @@ export interface IPlayerConfig {
   isMyPlayerCreator: boolean;
   setHunter: (value: boolean, id: string) => void;
 }
+
+export interface IPlayersConfigTranslations {
+  gameKey: string;
+  playerColor: string;
+  nickname: string;
+  hunter: string;
+}

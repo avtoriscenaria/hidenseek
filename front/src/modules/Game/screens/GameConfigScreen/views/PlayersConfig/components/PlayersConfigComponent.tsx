@@ -5,13 +5,14 @@ import { IGamePlayer } from "common/interfaces/Game";
 
 import PlayerConfig from "../../../components/PlayerConfig";
 import styles from "../styles";
+import { IPlayersConfigTranslations } from "../../../interfaces";
 
 const GAME_KEY = "gameKey";
 
 interface IPlayersConfig {
   gameKey?: string;
   players?: IGamePlayer[];
-  translations: any;
+  translations: IPlayersConfigTranslations;
   isMyPlayerCreator: boolean;
   copyKey: (elementId: string) => void;
   setHunter: (value: boolean, id: string) => void;

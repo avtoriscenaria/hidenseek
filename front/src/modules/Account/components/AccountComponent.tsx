@@ -3,7 +3,7 @@ import React from "react";
 import Button from "common/components/Button";
 
 interface IAccountComponent {
-  translations: any;
+  translations: { logout: string };
   logout: () => void;
 }
 
