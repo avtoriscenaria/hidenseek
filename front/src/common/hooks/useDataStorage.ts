@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const useDataStorage = (initialState: Object = {}) => {
+const useDataStorage = (initialState: { [key: string]: any } = {}) => {
   const [state, setState] = useState(initialState);
 
   const updateState = (param: string, value: any) => {

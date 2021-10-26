@@ -1,6 +1,6 @@
 import React from "react";
 
-import Paper from "../shared/Paper";
+import Paper from "../../shared/Paper";
 import { deskConfig as desk } from "../settings";
 import Сell from "../Сell";
 import { getTranslations, getBorderRadius, getStyles } from "../helpers";

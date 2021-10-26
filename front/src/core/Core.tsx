@@ -8,10 +8,10 @@ interface ICoreProps {
 }
 
 class Core extends Component<ICoreProps> {
-  constructor(props) {
+  constructor(props: ICoreProps | Readonly<ICoreProps>) {
     super(props);
     const { dispatch } = this.props;
-    initiateSocket();
+    initiateSocket(dispatch);
     //    dispatch(loadInitialData())
     // socket = io.connect("http://localhost:3000");
 

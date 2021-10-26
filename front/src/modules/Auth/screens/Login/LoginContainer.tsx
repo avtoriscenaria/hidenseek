@@ -1,33 +1,40 @@
 import React, { ChangeEvent } from "react";
-import { Paper } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
 
+import useTranslations from "common/hooks/useTranslations";
+import useDataStorage from "common/hooks/useDataStorage";
+import ROUTES from "constants/routes";
+import Paper from "shared/Paper";
 import Input from "common/components/Input";
 import Button from "common/components/Button";
+
+import { useLoginRequest } from "./hooks";
+import { isLoginValid } from "./helpers";
 import useStyles from "common/hooks/useStyles";
+import styles from "./styles";
+import useLoginStateControl from "./useLoginStateControl";
 
-import { ILoginData, ILoginTranslations } from "../interfaces";
-import styles from "../styles";
-import { isLoginValid } from "../utils";
+const LoginContainer: React.FC = () => {
+  const history = useHistory();
+  const { auth: translations } = useTranslations();
+  const {
+    state: { nickname, password },
+    setValue,
+    onLogin,
+    error,
+    message,
+  } = useLoginStateControl();
+  // const { state: loginData, updateState } = useDataStorage();
+  // const { request, error, message } = useLoginRequest();
 
-interface ILoginComponent {
-  loginData: ILoginData;
-  translations: ILoginTranslations;
-  error: boolean;
-  message: string;
-  onChange: (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void;
-  onLogin: () => void;
-  onSignUp: () => void;
-}
+  // const onLogin = async () => {
+  //   request(loginData);
+  // };
 
-const LoginComponent: React.FC<ILoginComponent> = ({
-  loginData: { nickname, password },
-  translations,
-  error,
-  message,
-  onChange,
-  onLogin,
-  onSignUp,
-}) => {
+  const onSignUp = () => {
+    history.push(ROUTES.auth.signUp);
+  };
+
   const classes = useStyles(styles);
 
   return (
@@ -41,7 +48,7 @@ const LoginComponent: React.FC<ILoginComponent> = ({
             name="nickname"
             value={nickname}
             error={error}
-            onChange={onChange}
+            onChange={setValue}
           />
           <Input
             classes={classes.password}
@@ -50,7 +57,7 @@ const LoginComponent: React.FC<ILoginComponent> = ({
             type="password"
             value={password}
             error={error}
-            onChange={onChange}
+            onChange={setValue}
           />
         </div>
         <div className={classes.error}>{message}</div>
@@ -71,4 +78,4 @@ const LoginComponent: React.FC<ILoginComponent> = ({
   );
 };
 
-export default LoginComponent;
+export default LoginContainer;

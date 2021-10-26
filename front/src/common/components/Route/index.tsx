@@ -10,7 +10,9 @@ interface ISmartRoute {
 }
 
 export default function SmartRoute(props: ISmartRoute) {
-  const { isAuthorized } = useAppLayoutContext();
+  // const { isAuthorized } = useAppLayoutContext();
+  const isAuthorized = false;
+
   return isAuthorized ? (
     <Route {...props} />
   ) : (
