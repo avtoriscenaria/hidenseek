@@ -6,17 +6,19 @@ import Сell from "../Сell";
 import { getTranslations, getBorderRadius, getStyles } from "../helpers";
 import styles from "./styles";
 
-import { useSocketContext } from "contexts/Socket/SocketContext";
+interface IGameDesk {
+  game: any;
+  myGamePlayer: any;
+}
 
-const GameDesk: React.FC = () => {
-  const { game } = getTranslations();
-  const { myGamePlayer: { caught, won } = { caught: false, won: false } } =
-    useSocketContext();
+const GameDesk: React.FC<IGameDesk> = ({ game, myGamePlayer }) => {
+  const { game: gameTranslations } = getTranslations();
+  const { caught, won } = myGamePlayer;
 
   const modalDescription = Boolean(caught)
-    ? game.caught
+    ? gameTranslations.caught
     : Boolean(won)
-    ? game.won
+    ? gameTranslations.won
     : "";
 
   const classes = getStyles((theme) => styles(theme, { won }));
