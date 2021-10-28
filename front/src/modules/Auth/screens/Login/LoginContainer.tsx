@@ -1,41 +1,24 @@
-import React, { ChangeEvent } from "react";
-import { useHistory } from "react-router-dom";
+import React from "react";
 
-import useTranslations from "common/hooks/useTranslations";
-import useDataStorage from "common/hooks/useDataStorage";
-import ROUTES from "constants/routes";
 import Paper from "shared/Paper";
 import Input from "common/components/Input";
 import Button from "common/components/Button";
 
-import { useLoginRequest } from "./hooks";
 import { isLoginValid } from "./helpers";
 import useStyles from "common/hooks/useStyles";
 import styles from "./styles";
 import useLoginStateControl from "./useLoginStateControl";
 
 const LoginContainer: React.FC = () => {
-  const history = useHistory();
-  const { auth: translations } = useTranslations();
-  const {
-    state: { nickname, password },
-    setValue,
-    onLogin,
-    error,
-    message,
-  } = useLoginStateControl();
-  // const { state: loginData, updateState } = useDataStorage();
-  // const { request, error, message } = useLoginRequest();
+  const { state, actions, apiService, translations } = useLoginStateControl();
 
-  // const onLogin = async () => {
-  //   request(loginData);
-  // };
-
-  const onSignUp = () => {
-    history.push(ROUTES.auth.signUp);
-  };
+  const { nickname, password, setValue } = state;
+  const { onSignUp } = actions;
+  const { onLogin, response, error, message } = apiService;
 
   const classes = useStyles(styles);
+
+  console.log("Login container UPDATE", response);
 
   return (
     <div className={classes.container}>

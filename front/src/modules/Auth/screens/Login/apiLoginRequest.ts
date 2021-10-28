@@ -1,18 +1,19 @@
 import { HOST, API } from "constants/api";
 
-const apiLoginRequest = (
-  Authorization: string,
-  data: { [key: string]: any }
-) => {
+interface IApiLoginRequest {
+  nickname: string;
+  password: string;
+}
+
+const apiLoginRequest = (data: IApiLoginRequest) => {
   const { method, uri } = API.auth.login;
 
   return fetch(`${HOST}${uri}`, {
     method,
     headers: {
       "Content-Type": "application/json",
-      Authorization,
     },
-    body: data && method === "POST" ? JSON.stringify(data) : undefined,
+    body: JSON.stringify(data),
   });
 };
 
