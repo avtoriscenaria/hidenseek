@@ -5,7 +5,15 @@ import Routes from "modules/Navigation";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 
-ReactDOM.render(<Routes />, document.getElementById("root"));
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
+
+ReactDOM.render(
+  <Provider store={store}>
+    <Routes />
+  </Provider>,
+  document.getElementById("root")
+);
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

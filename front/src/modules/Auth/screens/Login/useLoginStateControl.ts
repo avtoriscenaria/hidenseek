@@ -5,9 +5,14 @@ import ROUTES from "constants/routes";
 import { ChangeEvent, useState } from "react";
 import { useHistory } from "react-router-dom";
 import apiLoginRequest from "./apiLoginRequest";
+import { setPlayer } from "redux/reducers/player";
+import { setOption } from "redux/reducers/options";
+import LSData from "constants/LSData";
+import { useAppDispatch } from "redux/hooks";
 
 const useLoginStateControl = () => {
   const history = useHistory();
+  const dispatch = useAppDispatch();
   const { auth: translations } = useTranslations();
   const [nickname, setNickname] = useState("");
   const [password, setPassword] = useState("");
@@ -15,7 +20,16 @@ const useLoginStateControl = () => {
   const { request, response, error, message } = useApiRequest(
     apiLoginRequest,
     (data) => {
-      console.log("RESPONSE", data);
+      const { player, token } = data;
+      const { game_id } = player;
+      dispatch(setPlayer(player));
+      dispatch(setOption({ game_id }));
+
+      const authData = JSON.stringify({ nickname, token });
+      localStorage.setItem(LSData.authData, authData);
+      dispatch(setOption({ isAuthorized: true }));
+
+      history.push(ROUTES.game.menu);
     }
   );
 
