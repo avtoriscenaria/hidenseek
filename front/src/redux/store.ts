@@ -9,6 +9,7 @@ export const store = configureStore({
     player: playerSlice,
     options: optionsSlice,
   },
+  
 });
 
 export type AppDispatch = typeof store.dispatch;

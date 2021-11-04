@@ -1,14 +1,16 @@
+import { ChangeEvent, useState } from "react";
+import { useHistory } from "react-router-dom";
+import { setPlayer } from "redux/reducers/player";
+import { setOption } from "redux/reducers/options";
+import { useAppDispatch } from "redux/hooks";
+
+import LSData from "constants/LSData";
 import useTranslations from "common/hooks/useTranslations";
 import useApiRequest from "common/useApiRequest";
 import messages from "constants/messages";
 import ROUTES from "constants/routes";
-import { ChangeEvent, useState } from "react";
-import { useHistory } from "react-router-dom";
-import apiLoginRequest from "./apiLoginRequest";
-import { setPlayer } from "redux/reducers/player";
-import { setOption } from "redux/reducers/options";
-import LSData from "constants/LSData";
-import { useAppDispatch } from "redux/hooks";
+
+import apiLoginRequest from "../api/apiLoginRequest";
 
 const useLoginStateControl = () => {
   const history = useHistory();
@@ -29,7 +31,7 @@ const useLoginStateControl = () => {
       localStorage.setItem(LSData.authData, authData);
       dispatch(setOption({ isAuthorized: true }));
 
-      history.push(ROUTES.game.menu);
+      // history.push(ROUTES.game.menu);
     }
   );
 

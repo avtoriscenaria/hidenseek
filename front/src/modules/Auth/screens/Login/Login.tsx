@@ -3,22 +3,22 @@ import React from "react";
 import Paper from "shared/Paper";
 import Input from "common/components/Input";
 import Button from "common/components/Button";
-
-import { isLoginValid } from "./helpers";
 import useStyles from "common/hooks/useStyles";
+import { isLoginValid } from "common/validators";
+
+import useLoginStateControl from "./hooks/useLoginStateControl";
 import styles from "./styles";
-import useLoginStateControl from "./useLoginStateControl";
 
 const LoginContainer: React.FC = () => {
   const { state, actions, apiService, translations } = useLoginStateControl();
 
   const { nickname, password, setValue } = state;
   const { onSignUp } = actions;
-  const { onLogin, response, error, message } = apiService;
+  const { onLogin, error, message } = apiService;
 
   const classes = useStyles(styles);
 
-  console.log("Login container UPDATE", response);
+  console.log("Login container UPDATE");
 
   return (
     <div className={classes.container}>
