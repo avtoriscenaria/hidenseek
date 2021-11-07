@@ -6,7 +6,7 @@ import Button from "common/components/Button";
 import useStyles from "common/hooks/useStyles";
 import { isPasswordConfirmed, isSignUpValid } from "common/validators";
 
-import useSignUpStateControl from "./useSignUpStateControl";
+import useSignUpStateControl from "./hooks/useSignUpStateControl";
 import styles from "./styles";
 
 const SignUp: React.FC = () => {
@@ -18,19 +18,8 @@ const SignUp: React.FC = () => {
     isFocusedConfirmPassword,
     setValue,
   } = state;
-  const { onLogin } = actions;
+  const { onLogin, focusConfirmPassword } = actions;
   const { error, message, onSignUp } = apiService;
-
-  //   const { state: signUpData, updateState } = useDataStorage();
-  //const { request, error, message } = useSignUpRequest();
-
-  //   const onChange = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-  //     const {
-  //       target: { name, value },
-  //     } = e;
-
-  //     updateState(name, value);
-  //   };
 
   const classes = useStyles(styles);
 
@@ -67,7 +56,7 @@ const SignUp: React.FC = () => {
               !isPasswordConfirmed(password, confirmPassword)
             }
             onChange={setValue}
-            onFocus={setValue}
+            onFocus={focusConfirmPassword}
           />
         </div>
         <Button

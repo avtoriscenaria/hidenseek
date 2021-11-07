@@ -3,12 +3,10 @@ import { ChangeEvent, useState } from "react";
 
 import useTranslations from "common/hooks/useTranslations";
 import ROUTES from "constants/routes";
+import useApiRequest from "common/useApiRequest";
+import messages from "constants/messages";
 
-interface ISetValue {
-  target: {
-    value: boolean;
-  };
-}
+import { apiSignUpRequest } from "../../../api";
 
 const useSignUpStateControl = () => {
   const history = useHistory();
@@ -19,12 +17,24 @@ const useSignUpStateControl = () => {
   const [isFocusedConfirmPassword, setIsFocusedConfirmPassword] =
     useState(false);
 
+  const { request, response, error, message } = useApiRequest(
+    apiSignUpRequest,
+    () => {
+      history.push(ROUTES.auth.base);
+    }
+  );
+
   const setValue = ({
     target: { name, value },
   }: ChangeEvent<HTMLTextAreaElement | HTMLInputElement | any>) => {
     // TO DO
-    console.log(name, value);
-    //setIsFocusedConfirmPassword(value);
+    if (name === "nickname") {
+      setNickname(value);
+    } else if (name === "password") {
+      setPassword(value);
+    } else if (name === "confirmPassword") {
+      setConfirmPassword(value);
+    }
   };
 
   const onLogin = () => {
@@ -32,11 +42,11 @@ const useSignUpStateControl = () => {
   };
 
   const onSignUp = async () => {
-    // const { nickname, password }: { nickname?: string; password?: string } =
-    //   signUpData;
+    request({ nickname, password });
+  };
 
-    // request({ nickname, password });
-    console.log("onSignUp");
+  const focusConfirmPassword = () => {
+    setIsFocusedConfirmPassword(true);
   };
 
   return {
@@ -47,12 +57,15 @@ const useSignUpStateControl = () => {
       isFocusedConfirmPassword,
       setValue,
     },
-    actions: { onLogin },
+    actions: { onLogin, focusConfirmPassword },
     apiService: {
       onSignUp,
-      //   response,
-      error: false,
-      message: "",
+      response,
+      error,
+      message:
+        message === messages.player_exist_warning
+          ? translations.player_exist_warning
+          : message,
     },
     translations,
   };

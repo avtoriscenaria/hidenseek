@@ -1,6 +1,6 @@
 import { HOST, API } from "constants/api";
 
-import { IApiLoginRequest } from "../../../interfaces/ILogin";
+import { IApiLoginRequest } from "../interfaces";
 
 const apiLoginRequest = (data: IApiLoginRequest) => {
   const { method, uri } = API.auth.login;

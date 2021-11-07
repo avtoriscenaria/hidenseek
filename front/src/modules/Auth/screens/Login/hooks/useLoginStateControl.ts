@@ -10,7 +10,7 @@ import useApiRequest from "common/useApiRequest";
 import messages from "constants/messages";
 import ROUTES from "constants/routes";
 
-import apiLoginRequest from "../api/apiLoginRequest";
+import { apiLoginRequest } from "../../../api";
 
 const useLoginStateControl = () => {
   const history = useHistory();
@@ -30,6 +30,14 @@ const useLoginStateControl = () => {
       const authData = JSON.stringify({ nickname, token });
       localStorage.setItem(LSData.authData, authData);
       dispatch(setOption({ isAuthorized: true }));
+
+      // history.push(ROUTES.game.menu);
+
+      // setPlayer({ nickname, _id, admin });
+      // setHasGame(game_id);
+      // const authData = JSON.stringify({ nickname, token });
+      // localStorage.setItem(LSData.authData, authData);
+      // setIsAuthorized(true);
 
       // history.push(ROUTES.game.menu);
     }
