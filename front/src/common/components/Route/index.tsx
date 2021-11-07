@@ -1,7 +1,8 @@
 import { Route, Redirect } from "react-router-dom";
 
 import ROUTES from "constants/routes";
-import { useAppLayoutContext } from "contexts/AppLayoutContext";
+import { getIsAuthorised } from "common/selectors";
+import { useAppSelector } from "redux/hooks";
 
 interface ISmartRoute {
   exact?: boolean;
@@ -10,8 +11,7 @@ interface ISmartRoute {
 }
 
 export default function SmartRoute(props: ISmartRoute) {
-  // const { isAuthorized } = useAppLayoutContext();
-  const isAuthorized = false;
+  const isAuthorized = useAppSelector(getIsAuthorised);
 
   return isAuthorized ? (
     <Route {...props} />

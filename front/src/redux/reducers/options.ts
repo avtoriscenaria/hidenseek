@@ -1,25 +1,21 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface IOptionsState {
-  options: {
-    game_id: string;
-    isAuthorized: boolean;
-  };
+  game_id: string;
+  isAuthorized: boolean;
 }
 
 const initialState: IOptionsState = {
-  options: {
-    game_id: "",
-    isAuthorized: false,
-  },
+  game_id: "",
+  isAuthorized: false,
 };
 
 const optionsSlice = createSlice({
   name: "options",
   initialState,
   reducers: {
-    setOption(state, option: PayloadAction<any>) {
-      return { ...state, options: { ...state.options, ...option } };
+    setOption(state, { payload: option }: PayloadAction<any>) {
+      return { ...state, ...option };
     },
   },
 });

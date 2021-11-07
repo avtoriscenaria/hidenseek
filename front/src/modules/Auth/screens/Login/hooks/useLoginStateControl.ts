@@ -31,7 +31,7 @@ const useLoginStateControl = () => {
       localStorage.setItem(LSData.authData, authData);
       dispatch(setOption({ isAuthorized: true }));
 
-      // history.push(ROUTES.game.menu);
+      history.push(ROUTES.game.menu);
 
       // setPlayer({ nickname, _id, admin });
       // setHasGame(game_id);

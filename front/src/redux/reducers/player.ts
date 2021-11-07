@@ -12,7 +12,7 @@ const playerSlice = createSlice({
   name: "player",
   initialState,
   reducers: {
-    setPlayer(state, player: PayloadAction<any>) {
+    setPlayer(state, { payload: player }: PayloadAction<any>) {
       return { ...state, player };
     },
   },

@@ -23,10 +23,8 @@ const Navigation = () => {
         />
         <LibRoute path={ROUTES.auth.base} component={Auth} />
 
-        {/* <SocketContextProvider> */}
-        {/* <Route path={ROUTES.game.base} component={Game} />
-          <Route path={ROUTES.account.base} component={Account} /> */}
-        {/* </SocketContextProvider> */}
+        <Route path={ROUTES.game.base} component={Game} />
+        <Route path={ROUTES.account.base} component={Account} />
       </Switch>
       {/* </AppLayoutContextProvider> */}
     </Router>
