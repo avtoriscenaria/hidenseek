@@ -5,16 +5,18 @@ import { useAppLayoutContext } from "contexts/AppLayoutContext";
 
 import AccountComponent from "../components/AccountComponent";
 import { useSocketContext } from "contexts/Socket/SocketContext";
+import { useLogout } from "core/hooks";
 
 const AccountContainer: React.FC = () => {
-  const { logout: appContextLogout } = useAppLayoutContext();
-  const { setConnected } = useSocketContext();
+  const { logout } = useLogout();
+  // const { logout: appContextLogout } = useAppLayoutContext();
+  // const { setConnected } = useSocketContext();
   const { account: accountTranslations } = useTranslations();
 
-  const logout = () => {
-    setConnected(false);
-    appContextLogout();
-  };
+  // const logout = () => {
+  //   setConnected(false);
+  //   appContextLogout();
+  // };
 
   return (
     <AccountComponent translations={accountTranslations} logout={logout} />
