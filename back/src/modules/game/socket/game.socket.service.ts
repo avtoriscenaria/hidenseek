@@ -14,8 +14,8 @@ export class GameSocketService
   extends GameGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
-  constructor(jwt, gameModel) {
-    super(jwt, gameModel);
+  constructor(jwt, gameModel, playerModal) {
+    super(jwt, gameModel, playerModal);
   }
 
   @SubscribeMessage('start_game')
@@ -244,36 +244,58 @@ export class GameSocketService
 
     client.join(room);
 
-    if (this.TIMER_RUN[room]) {
-      const startTime = Math.round(
-        (new Date().getTime() - this.TIMER_RUN[room]) / 1000,
-      );
-
-      client.emit('timer', {
-        startTime,
-      });
-    }
-
     if (room && player_id) {
       const game = await this.gameModel.findById(room);
 
       if (game) {
-        const gamePlayer = game.players.find(
-          (p) => p._id.toString() === player_id.toString(),
-        );
-
-        if (gamePlayer && !Boolean(this.TIMER_RUN[room])) {
-          game.players = game.players.map((p) =>
-            p._id.toString() === player_id.toString()
-              ? { ...p, online: true }
-              : p,
+        if (
+          game.status === GAME_STATUSES.start ||
+          game.status === GAME_STATUSES.in_process
+        ) {
+          const gamePlayer = game.players.find(
+            (p) => p._id.toString() === player_id.toString(),
           );
-          game.save();
 
-          client.broadcast.to(room).emit('player_connect', gamePlayer);
+          // if (gamePlayer && !Boolean(this.TIMER_RUN[room])) {
+          if (gamePlayer && !Boolean(this.TIMER_RUN[room])) {
+            game.players = game.players.map((p) =>
+              p._id.toString() === player_id.toString()
+                ? { ...p, online: true }
+                : p,
+            );
+
+            game.save();
+            console.log('INITIAL');
+            this.server.in(room).emit('update_game', game);
+            //client.emit('game_connect', game);
+            // console.log('ROOM', this.server.sockets);
+            // console.log('CLIENT', `player-${player_id}`, `room-${room}`);
+            // this.server.emit('update_game', game);
+            //client.broadcast.to(room).emit('update_game', game);
+          }
+        } else {
+          const player = await this.playerModal.findById(player_id);
+
+          player.games_played = [...player.games_played, player.game_id];
+          player.game_id = undefined;
+          player.save();
+
+          client.leave(room);
         }
       }
     }
+
+    // client.join(room);
+
+    // if (this.TIMER_RUN[room]) {
+    //   const startTime = Math.round(
+    //     (new Date().getTime() - this.TIMER_RUN[room]) / 1000,
+    //   );
+
+    //   client.emit('timer', {
+    //     startTime,
+    //   });
+    // }
 
     this.logger.log(`Client connected: ${client.id}`);
   }

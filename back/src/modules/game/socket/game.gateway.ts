@@ -6,12 +6,14 @@ import { InjectModel } from '@nestjs/mongoose';
 
 import { JWT } from '../../common/services/jwt.service';
 import { Game, GameDocument } from '../schemas/game.schema';
+import { Player, PlayerDocument } from '../../auth/schemas/player.schema';
 
 @WebSocketGateway()
 export class GameGateway {
   constructor(
     public jwt: JWT,
     @InjectModel(Game.name) public gameModel: Model<GameDocument>,
+    @InjectModel(Player.name) public playerModal: Model<PlayerDocument>,
   ) {}
 
   @WebSocketServer()

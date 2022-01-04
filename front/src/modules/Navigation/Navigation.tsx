@@ -1,20 +1,16 @@
 import { Router, Switch, Route as LibRoute, Redirect } from "react-router-dom";
 import { createBrowserHistory } from "history";
 
-import { AppLayoutContextProvider } from "contexts/AppLayoutContext";
 // import { SocketContextProvider } from "contexts/Socket/SocketContext";
 import ROUTES from "constants/routes";
-import Route from "common/components/Route";
 import Auth from "modules/Auth";
-import Game from "modules/Game";
-import Account from "modules/Account";
+import GameContainer from "modules/GameContainer";
 
 const Navigation = () => {
   const history = createBrowserHistory();
 
   return (
     <Router history={history}>
-      {/* <AppLayoutContextProvider> */}
       <Switch>
         <LibRoute
           exact
@@ -22,11 +18,8 @@ const Navigation = () => {
           component={() => <Redirect to={ROUTES.auth.base} />}
         />
         <LibRoute path={ROUTES.auth.base} component={Auth} />
-
-        <Route path={ROUTES.game.base} component={Game} />
-        <Route path={ROUTES.account.base} component={Account} />
+        <GameContainer />
       </Switch>
-      {/* </AppLayoutContextProvider> */}
     </Router>
   );
 };

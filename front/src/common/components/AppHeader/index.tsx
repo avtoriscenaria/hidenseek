@@ -6,17 +6,21 @@ import ROUTES from "constants/routes";
 import { useAppLayoutContext } from "contexts/AppLayoutContext";
 
 import AppHeader from "./AppHeaderComponent";
+import { useAppSelector } from "redux/hooks";
+import { getIsAuthorised } from "common/selectors";
 
 export default function AppHeaderContainer() {
   const history = useHistory();
   const { main: maintTranslations } = useTranslations();
-  const { isAuthorized } = useAppLayoutContext();
+
+  const isAuthorized = useAppSelector(getIsAuthorised);
 
   const disableTitleNavigation = !isAuthorized;
 
   const handleGame = (event: React.MouseEvent<HTMLElement>) => {
     if (isAuthorized) {
-      history.push(ROUTES.game.base);
+      console.log("handleGame");
+      // history.push(ROUTES.game.base);
     }
   };
 

@@ -7,22 +7,40 @@ import { IGame } from "common/interfaces/Game";
 let socket: any;
 
 export const initiateSocket = (
-  setConnected: (value: boolean) => void,
+  setConnected: () => void,
   token?: string,
   room?: string,
   player_id?: string
 ) => {
-  if (token && room && player_id) {
+  if (!Boolean(socket) && token && room && player_id) {
+    console.log("CONNECTION");
     socket = io(HOST, {
-      query: { token, room, player_id },
+      query: {
+        token,
+        room,
+        player_id,
+      },
     });
-    if (socket && room) {
-      console.log(`Connected!`, room);
-      setConnected(true);
-      startTimer();
+
+    if (socket) {
+      setConnected();
     }
   }
 };
+
+export const gameConnect = (
+  setGame: (game: IGame) => void,
+  setGameStatus: (status: string) => void
+) => {
+  if (socket) {
+    socket.once("game_connect", (game: IGame) => {
+      console.log("gameConnect", game);
+      setGame(game);
+      setGameStatus(game.status);
+    });
+  }
+};
+
 export const disconnectSocket = () => {
   console.log("Disconnecting socket...");
   if (socket) {

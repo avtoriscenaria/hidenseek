@@ -92,6 +92,8 @@ export class GameService {
     player.game_id = newGame._id;
     player.save();
 
+    console.log('GAME', JSON.stringify(newGame, null, 4));
+
     return this.response.prepare({ data: { game: newGame } });
   }
 

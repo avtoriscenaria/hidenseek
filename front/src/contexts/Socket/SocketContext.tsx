@@ -51,7 +51,7 @@ export const SocketContextProvider: React.FC = ({ children }) => {
 
   useEffect(() => {
     if (!connect) {
-      initiateSocket(setConnected, token, hasGame, player?._id);
+      // initiateSocket(setConnected, token, hasGame, player?._id);
     }
   }, [connect, token, hasGame, player?._id, game]);
 

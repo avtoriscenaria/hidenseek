@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 
 import Paper from "shared/Paper";
 import Input from "common/components/Input";
@@ -9,7 +9,7 @@ import { isLoginValid } from "common/validators";
 import useLoginStateControl from "./hooks/useLoginStateControl";
 import styles from "./styles";
 
-const LoginContainer: React.FC = () => {
+const LoginContainer: React.FC = memo(() => {
   const { state, actions, apiService, translations } = useLoginStateControl();
 
   const { nickname, password, setValue } = state;
@@ -17,8 +17,6 @@ const LoginContainer: React.FC = () => {
   const { onLogin, error, message } = apiService;
 
   const classes = useStyles(styles);
-
-  console.log("Login container UPDATE");
 
   return (
     <div className={classes.container}>
@@ -59,6 +57,6 @@ const LoginContainer: React.FC = () => {
       </Paper>
     </div>
   );
-};
+});
 
 export default LoginContainer;

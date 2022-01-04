@@ -26,6 +26,7 @@ export class GameController {
 
   @Post('/find')
   findGame(@Body() findGameData: { gameKey: string; player_id: string }) {
+    console.log('FIND GAME', findGameData);
     return this.game.findGame(findGameData);
   }
 }

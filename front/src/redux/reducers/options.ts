@@ -3,11 +3,15 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface IOptionsState {
   game_id: string;
   isAuthorized: boolean;
+  gameStatus: string;
+  socket: any;
 }
 
 const initialState: IOptionsState = {
   game_id: "",
   isAuthorized: false,
+  gameStatus: "",
+  socket: null,
 };
 
 const optionsSlice = createSlice({

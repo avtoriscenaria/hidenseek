@@ -1,17 +1,18 @@
+import { memo } from "react";
 import Button from "@material-ui/core/Button";
 
 import useStyles from "../../hooks/useStyles";
 import styles from "./styles";
 
 interface IButton {
-  label: string;
-  onClick: () => void;
+  label?: string;
+  onClick?: () => void;
   disabled?: boolean;
   classes?: string;
   type?: "inherit" | "default" | "primary" | "secondary";
 }
 
-export default function ContainedButton({
+export default memo(function ContainedButton({
   label,
   onClick,
   disabled,
@@ -20,7 +21,7 @@ export default function ContainedButton({
 }: IButton) {
   const classes = useStyles(styles);
   const additionalClass = propClass ? ` ${propClass}` : "";
-
+  console.log("Button");
   return (
     <Button
       className={`${classes.button}${additionalClass}`}
@@ -32,4 +33,4 @@ export default function ContainedButton({
       {label}
     </Button>
   );
-}
+});
