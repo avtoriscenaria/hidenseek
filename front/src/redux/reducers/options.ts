@@ -5,6 +5,7 @@ interface IOptionsState {
   isAuthorized: boolean;
   gameStatus: string;
   socket: any;
+  timer?: number;
 }
 
 const initialState: IOptionsState = {

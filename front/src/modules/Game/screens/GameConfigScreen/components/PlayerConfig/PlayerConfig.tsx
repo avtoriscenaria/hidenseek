@@ -12,7 +12,7 @@ export default function PlayerConfig({
   setHunter,
 }: IPlayerConfig) {
   const classes = useStyles(styles);
-  const { nickname, color, hunter = false, _id } = player;
+  const { nickname, color, hunter, _id } = player;
 
   return (
     <div className={classes.container}>
@@ -28,7 +28,7 @@ export default function PlayerConfig({
         <div className={classes.nickname}>{nickname}</div>
         <div className={classes.hunter}>
           <Checkbox
-            checked={hunter}
+            checked={Boolean(hunter)}
             onChange={(v) => setHunter(v, _id)}
             disabled={!isMyPlayerCreator}
           />

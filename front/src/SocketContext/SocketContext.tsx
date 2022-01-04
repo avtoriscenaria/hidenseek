@@ -6,16 +6,30 @@ import useVerifyJWT from "./useVerifyJWT";
 
 interface ISocket {
   connect: (token: string, room: string, player_id: string) => void;
+  setHunterRoleSocket: (selectedPlayer: string) => void;
+  onStartGameEmit: () => void;
+  endTurnSocket: () => void;
+  movePlayerSocket: (coordinates: any) => void;
 }
 
 const defaultContext: ISocket = {
   connect: () => {},
+  setHunterRoleSocket: () => {},
+  onStartGameEmit: () => {},
+  endTurnSocket: () => {},
+  movePlayerSocket: () => {},
 };
 
 const SocketContext = createContext(defaultContext);
 
 export const SocketContextProvider: React.FC = ({ children }) => {
-  const { connect } = useSocket();
+  const {
+    connect,
+    setHunterRoleSocket,
+    onStartGameEmit,
+    endTurnSocket,
+    movePlayerSocket,
+  } = useSocket();
   const { isLoad } = useVerifyJWT(connect);
 
   console.log("RE_MOUNT");
@@ -24,6 +38,10 @@ export const SocketContextProvider: React.FC = ({ children }) => {
     <SocketContext.Provider
       value={{
         connect,
+        setHunterRoleSocket,
+        onStartGameEmit,
+        endTurnSocket,
+        movePlayerSocket,
       }}
     >
       {isLoad ? children : <MainLoader />}

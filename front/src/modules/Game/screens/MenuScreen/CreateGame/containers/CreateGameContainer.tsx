@@ -1,14 +1,16 @@
 import React from "react";
 
 import useTranslations from "common/hooks/useTranslations";
-import { useAppLayoutContext } from "contexts/AppLayoutContext";
 
 import CreateGameComponent from "../components/CreateGameComponent";
 import { useGameCreateRequest } from "../hooks";
+import { useAppSelector } from "redux/hooks";
+import { getPlayer } from "common/selectors";
 
 const CreateGameContainer: React.FC = () => {
   const { game: gameTranslations } = useTranslations();
-  const { player: { nickname, _id } = {} } = useAppLayoutContext();
+
+  const { nickname, _id } = useAppSelector(getPlayer);
   const { request } = useGameCreateRequest();
 
   const onCreateGame = () => {

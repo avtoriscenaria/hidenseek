@@ -9,14 +9,14 @@ import { useSocketContext } from "contexts/Socket/SocketContext";
 export const useGameCreateRequest = () => {
   const history = useHistory();
 
-  const { setHasGame } = useAppLayoutContext();
-  const { setGame } = useSocketContext();
+  // const { setHasGame } = useAppLayoutContext();
+  // const { setGame } = useSocketContext();
 
   const { request } = useApiRequest(API.game.createtGame, {
     onSuccess: ({ game }) => {
-      setGame(game);
-      setHasGame(game._id);
-      history.push(ROUTES.game.config);
+      // setGame(game);
+      // setHasGame(game._id);
+      //history.push(ROUTES.game.config);
     },
     onFailure: (resMessage) => {
       console.log("SOMETHING GOES WRONG", resMessage);

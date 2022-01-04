@@ -242,8 +242,6 @@ export class GameSocketService
       }
     });
 
-    client.join(room);
-
     if (room && player_id) {
       const game = await this.gameModel.findById(room);
 
@@ -256,23 +254,30 @@ export class GameSocketService
             (p) => p._id.toString() === player_id.toString(),
           );
 
-          // if (gamePlayer && !Boolean(this.TIMER_RUN[room])) {
           if (gamePlayer && !Boolean(this.TIMER_RUN[room])) {
             game.players = game.players.map((p) =>
               p._id.toString() === player_id.toString()
                 ? { ...p, online: true }
                 : p,
             );
-
-            game.save();
-            console.log('INITIAL');
-            this.server.in(room).emit('update_game', game);
-            //client.emit('game_connect', game);
-            // console.log('ROOM', this.server.sockets);
-            // console.log('CLIENT', `player-${player_id}`, `room-${room}`);
-            // this.server.emit('update_game', game);
-            //client.broadcast.to(room).emit('update_game', game);
           }
+
+          game.save();
+
+          client.join(room);
+
+          if (game.status === GAME_STATUSES.in_process) {
+            // if (this.TIMER_RUN[room]) {
+            //   const startTime = Math.round(
+            //     (new Date().getTime() - this.TIMER_RUN[room]) / 1000,
+            //   );
+            //   client.emit('timer', {
+            //     startTime,
+            //   });
+            // }
+          }
+
+          this.server.in(room).emit('update_game', { game });
         } else {
           const player = await this.playerModal.findById(player_id);
 

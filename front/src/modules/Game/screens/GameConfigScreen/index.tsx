@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import { Redirect } from "react-router-dom";
 import Paper from "@material-ui/core/Paper";
 import Divider from "@material-ui/core/Divider";
@@ -14,18 +14,35 @@ import {
 import ROUTES from "constants/routes";
 import useStyles from "common/hooks/useStyles";
 import Button from "common/components/Button";
-import { useSocketContext } from "contexts/Socket/SocketContext";
+import { useSocketContext } from "SocketContext/SocketContext";
 
 import GameType from "./views/GameType";
 import PlayersConfig from "./views/PlayersConfig";
 import styles from "./styles";
+import { useDispatch } from "react-redux";
+import { getGame, getGameId, getPlayer } from "common/selectors";
+import { useAppSelector } from "redux/hooks";
+
+const getMyGamePlayer = (players: any, player_id: string) => {
+  console.log("CHECK MEMO");
+  return players.find((p: any) => p._id === player_id);
+};
+
+const getHunter = (players: any) => {
+  console.log("CHECK HUNTER");
+  return players.some((p: IGamePlayer) => p.hunter);
+};
 
 const GameConfigScreen: React.FC = () => {
   const classes = useStyles(styles);
   const { game: gameTranslations } = useTranslations();
-
-  const { hasGame } = useAppLayoutContext();
-  const { myGamePlayer, game = { players: [] } } = useSocketContext();
+  const { onStartGameEmit } = useSocketContext();
+  const game = useAppSelector(getGame);
+  const player = useAppSelector(getPlayer);
+  const myGamePlayer: any = useMemo(
+    () => getMyGamePlayer(game.players, player._id),
+    [game.players, player._id]
+  );
 
   const startGame = () => {
     console.log("startGame");
@@ -33,14 +50,12 @@ const GameConfigScreen: React.FC = () => {
   };
 
   const isCreator = Boolean(myGamePlayer?.creator);
-  const isHunterSelected = useCallback(
-    () => game.players.some((p: IGamePlayer) => p.hunter),
+  const isHunterSelected = useMemo(
+    () => getHunter(game.players),
     [game.players]
-  )();
+  );
 
-  return !hasGame ? (
-    <Redirect to={ROUTES.game.menu} />
-  ) : (
+  return (
     <div className={classes.container}>
       <Paper className={classes.wrapper}>
         <div className={classes.menuActions}>
@@ -53,10 +68,7 @@ const GameConfigScreen: React.FC = () => {
           <PlayersConfig />
         </div>
 
-        <div className={classes.reloadDescription}>
-          {gameTranslations.reloadToUpdate}
-          {/* <Button label={gameTranslations.update} onClick={updateGameSocket} /> */}
-        </div>
+        <div className={classes.reloadDescription}></div>
         <div className={classes.startGame}>
           {isCreator ? (
             <Button
