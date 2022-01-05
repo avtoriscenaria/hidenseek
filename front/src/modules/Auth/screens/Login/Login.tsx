@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React from "react";
 
 import Paper from "shared/Paper";
 import Input from "common/components/Input";
@@ -9,10 +9,10 @@ import { isLoginValid } from "common/validators";
 import useLoginStateControl from "./hooks/useLoginStateControl";
 import styles from "./styles";
 
-const LoginContainer: React.FC = memo(() => {
+const LoginContainer: React.FC = () => {
   const { state, actions, apiService, translations } = useLoginStateControl();
 
-  const { nickname, password, setValue } = state;
+  const { nicknameInputProps, passwordInputProps } = state;
   const { onSignUp } = actions;
   const { onLogin, error, message } = apiService;
 
@@ -26,26 +26,24 @@ const LoginContainer: React.FC = memo(() => {
           <Input
             classes={classes.nickname}
             label={translations.nickname}
-            name="nickname"
-            value={nickname}
             error={error}
-            onChange={setValue}
+            {...nicknameInputProps}
           />
           <Input
             classes={classes.password}
             label={translations.password}
-            name="password"
             type="password"
-            value={password}
             error={error}
-            onChange={setValue}
+            {...passwordInputProps}
           />
         </div>
         <div className={classes.error}>{message}</div>
         <Button
           classes={classes.login}
           label={translations.login}
-          disabled={!isLoginValid(nickname, password)}
+          disabled={
+            !isLoginValid(nicknameInputProps.value, passwordInputProps.value)
+          }
           onClick={onLogin}
         />
         <div className={classes.registrationContainer}>
@@ -57,6 +55,6 @@ const LoginContainer: React.FC = memo(() => {
       </Paper>
     </div>
   );
-});
+};
 
 export default LoginContainer;

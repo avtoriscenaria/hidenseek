@@ -12,11 +12,10 @@ import styles from "./styles";
 const SignUp: React.FC = () => {
   const { state, actions, apiService, translations } = useSignUpStateControl();
   const {
-    nickname,
-    password,
-    confirmPassword,
+    nicknameInputProps,
+    passwordInputProps,
+    confirmPasswordInputProps,
     isFocusedConfirmPassword,
-    setValue,
   } = state;
   const { onLogin, focusConfirmPassword } = actions;
   const { error, message, onSignUp } = apiService;
@@ -33,8 +32,7 @@ const SignUp: React.FC = () => {
             label={translations.nickname}
             name="nickname"
             error={error}
-            value={nickname}
-            onChange={setValue}
+            {...nicknameInputProps}
           />
           <div className={classes.nicknameError}>{message}</div>
           <Input
@@ -42,27 +40,34 @@ const SignUp: React.FC = () => {
             label={translations.password}
             name="password"
             type="password"
-            value={password}
-            onChange={setValue}
+            {...passwordInputProps}
           />
           <Input
             classes={classes.confirmPassword}
             label={translations.confirmPassword}
             name="confirmPassword"
             type="password"
-            value={confirmPassword}
             error={
               isFocusedConfirmPassword &&
-              !isPasswordConfirmed(password, confirmPassword)
+              !isPasswordConfirmed(
+                passwordInputProps.value,
+                confirmPasswordInputProps.value
+              )
             }
-            onChange={setValue}
             onFocus={focusConfirmPassword}
+            {...confirmPasswordInputProps}
           />
         </div>
         <Button
           classes={classes.signUp}
           label={translations.signUp}
-          disabled={!isSignUpValid(nickname, password, confirmPassword)}
+          disabled={
+            !isSignUpValid(
+              nicknameInputProps.value,
+              passwordInputProps.value,
+              confirmPasswordInputProps.value
+            )
+          }
           onClick={onSignUp}
         />
         <div className={classes.loginContainer}>

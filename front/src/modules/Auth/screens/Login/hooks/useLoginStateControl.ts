@@ -1,9 +1,10 @@
-import { ChangeEvent, useMemo, useCallback, useState, memo } from "react";
+import { useCallback } from "react";
 import { useHistory } from "react-router-dom";
+
 import { setPlayer } from "redux/reducers/player";
 import { setOption } from "redux/reducers/options";
 import { useAppDispatch } from "redux/hooks";
-
+import useInput from "hooks/useInput";
 import LSData from "constants/LSData";
 import useTranslations from "common/hooks/useTranslations";
 import useApiRequest from "common/useApiRequest";
@@ -15,13 +16,13 @@ import { apiLoginRequest } from "../../../api";
 const useLoginStateControl = () => {
   const history = useHistory();
   const dispatch = useAppDispatch();
+
   const { auth: translations } = useTranslations();
-  const [nickname, setNickname] = useState("");
-  const [password, setPassword] = useState("");
-  const apiLogin = useCallback(apiLoginRequest, []);
+  const { value: nickname, inputProps: nicknameInputProps } = useInput();
+  const { value: password, inputProps: passwordInputProps } = useInput();
 
   const { request, response, error, message } = useApiRequest(
-    apiLogin,
+    apiLoginRequest,
     useCallback(
       (data) => {
         const { player, token } = data;
@@ -38,29 +39,20 @@ const useLoginStateControl = () => {
       [dispatch, history]
     )
   );
-  const setValue = ({
-    target: { name, value },
-  }: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-    if (name === "nickname") {
-      setNickname(value);
-    }
-    if (name === "password") {
-      setPassword(value);
-    }
-  };
 
-  const onLogin = useCallback(async () => {
-    console.log("LOGIN");
+  const onLogin = () => {
     request({ nickname, password });
-  }, [nickname, password, request]);
-
-  const onSignUp = () => {
-    history.push(ROUTES.auth.signUp);
   };
+
+  const onSignUp = useCallback(() => {
+    history.push(ROUTES.auth.signUp);
+  }, [history]);
 
   return {
-    state: { nickname, password, setValue },
-    actions: { onSignUp },
+    state: { nicknameInputProps, passwordInputProps },
+    actions: {
+      onSignUp,
+    },
     apiService: {
       onLogin,
       response,

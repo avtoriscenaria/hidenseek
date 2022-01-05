@@ -1,6 +1,7 @@
 import { useHistory } from "react-router";
 import { ChangeEvent, useState } from "react";
 
+import useInput from "hooks/useInput";
 import useTranslations from "common/hooks/useTranslations";
 import ROUTES from "constants/routes";
 import useApiRequest from "common/useApiRequest";
@@ -11,9 +12,11 @@ import { apiSignUpRequest } from "../../../api";
 const useSignUpStateControl = () => {
   const history = useHistory();
   const { auth: translations } = useTranslations();
-  const [nickname, setNickname] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const { value: nickname, inputProps: nicknameInputProps } = useInput();
+  const { value: password, inputProps: passwordInputProps } = useInput();
+  const { inputProps: confirmPasswordInputProps } = useInput();
+
   const [isFocusedConfirmPassword, setIsFocusedConfirmPassword] =
     useState(false);
 
@@ -23,19 +26,6 @@ const useSignUpStateControl = () => {
       history.push(ROUTES.auth.base);
     }
   );
-
-  const setValue = ({
-    target: { name, value },
-  }: ChangeEvent<HTMLTextAreaElement | HTMLInputElement | any>) => {
-    // TO DO
-    if (name === "nickname") {
-      setNickname(value);
-    } else if (name === "password") {
-      setPassword(value);
-    } else if (name === "confirmPassword") {
-      setConfirmPassword(value);
-    }
-  };
 
   const onLogin = () => {
     history.push(ROUTES.auth.base);
@@ -51,11 +41,10 @@ const useSignUpStateControl = () => {
 
   return {
     state: {
-      nickname,
-      password,
-      confirmPassword,
+      nicknameInputProps,
+      passwordInputProps,
+      confirmPasswordInputProps,
       isFocusedConfirmPassword,
-      setValue,
     },
     actions: { onLogin, focusConfirmPassword },
     apiService: {

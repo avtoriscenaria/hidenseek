@@ -13,7 +13,7 @@ import styles from "./styles";
 
 interface IInput {
   label: string;
-  name: string;
+  name?: string;
   value?: string;
   type?: string;
   error?: boolean;
