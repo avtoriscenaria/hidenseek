@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface IOptionsState {
   game_id: string;
   isAuthorized: boolean;
+  isLoaded: boolean;
   gameStatus: string;
   socket: any;
   timer?: number;
@@ -11,6 +12,7 @@ interface IOptionsState {
 const initialState: IOptionsState = {
   game_id: "",
   isAuthorized: false,
+  isLoaded: false,
   gameStatus: "",
   socket: null,
 };

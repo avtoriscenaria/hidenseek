@@ -9,6 +9,7 @@ import { SignUpPlayerDto, LoginPlayerDto } from './dto';
 import { Player, PlayerDocument } from './schemas/player.schema';
 import { JWT } from '../common/services/jwt.service';
 import { Response } from '../common/services/response.service';
+import { DataBase } from '../common/services/database.service';
 
 @Injectable()
 export class AuthService {
@@ -16,6 +17,7 @@ export class AuthService {
     @InjectModel(Player.name) private playerModel: Model<PlayerDocument>,
     private jwt: JWT,
     private response: Response,
+    private db: DataBase,
   ) {}
 
   async createPlayer(playerDto: SignUpPlayerDto) {
@@ -46,7 +48,9 @@ export class AuthService {
 
   async loginPlayer(playerDto: LoginPlayerDto) {
     const { nickname, password } = playerDto;
-    const player = (await this.playerModel.find({ nickname }).exec())[0];
+    //const checkP = this.db.getFromDBByParams('player', { nickname });
+
+    const player = (await this.playerModel.find({ nickname }).exec())[0]; //TODO
 
     if (player !== undefined) {
       const isPasswordCorrect = await argon2.verify(player.password, password);

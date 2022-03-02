@@ -18,8 +18,10 @@ const useLoginStateControl = () => {
   const dispatch = useAppDispatch();
 
   const { auth: translations } = useTranslations();
-  const { value: nickname, inputProps: nicknameInputProps } = useInput();
-  const { value: password, inputProps: passwordInputProps } = useInput();
+  const { value: nickname, inputProps: nicknameInputProps } =
+    useInput("nickname");
+  const { value: password, inputProps: passwordInputProps } =
+    useInput("password");
 
   const { request, response, error, message } = useApiRequest(
     apiLoginRequest,

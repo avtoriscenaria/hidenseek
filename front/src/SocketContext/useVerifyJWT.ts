@@ -1,12 +1,7 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import io from "socket.io-client";
-
-import { HOST } from "constants/api";
-import { useDispatch } from "react-redux";
-import { setOption } from "redux/reducers/options";
-import { setGame } from "redux/reducers/game";
-import { IGame } from "common/interfaces/Game";
+import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+
+import { setOption } from "redux/reducers/options";
 import { useAppDispatch } from "redux/hooks";
 import localStorageHelper from "common/utils/localStorageHelper";
 import LSData from "constants/LSData";
@@ -29,14 +24,12 @@ const useVerifyJWT = (
       dispatch(setOption({ isAuthorized: isVerified }));
       if (isVerified && player?._id) {
         dispatch(setPlayer(player));
-
+        console.log(player);
         if (player.game_id) {
-          console.log(player?.game_id, player?._id);
-
           connectSocket(token, player.game_id, player._id);
+        } else {
+          setIsLoad(true);
         }
-
-        setIsLoad(true);
       } else {
         localStorageHelper("remove", LSData.authData);
         history.push(ROUTES.auth.base);

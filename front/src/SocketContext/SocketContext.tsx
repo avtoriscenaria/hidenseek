@@ -1,8 +1,11 @@
 import React, { createContext, useContext } from "react";
-import useSocket from "./useSocket";
+
 import MainLoader from "common/components/MainLoader";
 
+import useSocket from "./useSocket";
 import useVerifyJWT from "./useVerifyJWT";
+import { useAppSelector } from "redux/hooks";
+import { getIsLoaded } from "common/selectors";
 
 interface ISocket {
   connect: (token: string, room: string, player_id: string) => void;
@@ -30,9 +33,11 @@ export const SocketContextProvider: React.FC = ({ children }) => {
     endTurnSocket,
     movePlayerSocket,
   } = useSocket();
-  const { isLoad } = useVerifyJWT(connect);
 
-  console.log("RE_MOUNT");
+  const { isLoad } = useVerifyJWT(connect);
+  const isLoaded = useAppSelector(getIsLoaded);
+
+  console.log("RE_MOUNT", isLoaded);
 
   return (
     <SocketContext.Provider
@@ -44,7 +49,7 @@ export const SocketContextProvider: React.FC = ({ children }) => {
         movePlayerSocket,
       }}
     >
-      {isLoad ? children : <MainLoader />}
+      {isLoaded || isLoad ? children : <MainLoader />}
     </SocketContext.Provider>
   );
 };

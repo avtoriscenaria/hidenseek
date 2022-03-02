@@ -13,9 +13,11 @@ const useSignUpStateControl = () => {
   const history = useHistory();
   const { auth: translations } = useTranslations();
 
-  const { value: nickname, inputProps: nicknameInputProps } = useInput();
-  const { value: password, inputProps: passwordInputProps } = useInput();
-  const { inputProps: confirmPasswordInputProps } = useInput();
+  const { value: nickname, inputProps: nicknameInputProps } =
+    useInput("nickname");
+  const { value: password, inputProps: passwordInputProps } =
+    useInput("password");
+  const { inputProps: confirmPasswordInputProps } = useInput("confirmPassword");
 
   const [isFocusedConfirmPassword, setIsFocusedConfirmPassword] =
     useState(false);

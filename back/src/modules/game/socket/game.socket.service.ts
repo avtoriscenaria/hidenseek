@@ -20,6 +20,7 @@ export class GameSocketService
 
   @SubscribeMessage('start_game')
   async startGame(client: Socket, { timeStep }): Promise<void> {
+    console.log('start_game');
     const { room, player_id } = client.handshake.query;
     const game = await this.gameModel.findById(room);
 
@@ -62,6 +63,7 @@ export class GameSocketService
 
   @SubscribeMessage('run_timer')
   async runTimer(client: Socket, timeStep: number): Promise<void> {
+    console.log('run_timer');
     const { room } = client.handshake.query;
 
     const game = await this.gameModel.findById(room);
@@ -89,6 +91,7 @@ export class GameSocketService
 
   @SubscribeMessage('get_game')
   async findGame(client: Socket): Promise<void> {
+    console.log('get_game');
     const { room } = client.handshake.query;
 
     const game = await this.gameModel.findById(room);
@@ -98,6 +101,7 @@ export class GameSocketService
 
   @SubscribeMessage('end_turn')
   async endTurn(client: Socket, { timeStep }): Promise<void> {
+    console.log('end_turn');
     const { room, player_id } = client.handshake.query;
 
     const game = await this.gameModel.findById(room);
@@ -145,6 +149,7 @@ export class GameSocketService
 
   @SubscribeMessage('hunter_role')
   async setHunterRole(client: Socket, { selectedPlayer }): Promise<void> {
+    console.log('hunter_role');
     const { room } = client.handshake.query;
 
     const game = await this.gameModel.findById(room);
@@ -165,6 +170,7 @@ export class GameSocketService
 
   @SubscribeMessage('move')
   async movePlayer(client: Socket, payload: any): Promise<void> {
+    console.log('move');
     const { room, player_id } = client.handshake.query;
     const { coordinates } = payload;
     const game = await this.gameModel.findById(room);
@@ -192,7 +198,7 @@ export class GameSocketService
               ? {
                   ...p,
                   position: coordinates,
-                  step: p.step - 1 >= 0 ? p.step - 1 : 0,
+                  //step: p.step - 1 >= 0 ? p.step - 1 : 0,
                 }
               : gamePlayer.hunter &&
                 p.position.x === coordinates.x &&
@@ -242,6 +248,7 @@ export class GameSocketService
       }
     });
 
+    console.log('handleConnection', room, player_id);
     if (room && player_id) {
       const game = await this.gameModel.findById(room);
 
@@ -265,19 +272,34 @@ export class GameSocketService
           game.save();
 
           client.join(room);
-
+          console.log(
+            'GAME STATUS',
+            game.status,
+            this.TIMER_RUN[room],
+            this.TIME_INTERVAL[room],
+          );
           if (game.status === GAME_STATUSES.in_process) {
-            // if (this.TIMER_RUN[room]) {
-            //   const startTime = Math.round(
-            //     (new Date().getTime() - this.TIMER_RUN[room]) / 1000,
-            //   );
-            //   client.emit('timer', {
-            //     startTime,
-            //   });
-            // }
+            // T         I           M            E            R
+            if (!Boolean(this.TIMER_RUN[room])) {
+              console.log('TIMER NOT RUN');
+
+              client.emit('timer', {
+                startTime: 0,
+              });
+
+              //this.changeTurnOrder(room, 20_000);
+            } else {
+              const startTime = Math.round(
+                (new Date().getTime() - this.TIMER_RUN[room]) / 1000,
+              );
+              console.log('START TIME', startTime);
+              client.emit('timer', {
+                startTime,
+              });
+            }
           }
 
-          this.server.in(room).emit('update_game', { game });
+          this.server.in(room).emit('update_game', { game, isLoaded: true });
         } else {
           const player = await this.playerModal.findById(player_id);
 
@@ -289,18 +311,6 @@ export class GameSocketService
         }
       }
     }
-
-    // client.join(room);
-
-    // if (this.TIMER_RUN[room]) {
-    //   const startTime = Math.round(
-    //     (new Date().getTime() - this.TIMER_RUN[room]) / 1000,
-    //   );
-
-    //   client.emit('timer', {
-    //     startTime,
-    //   });
-    // }
 
     this.logger.log(`Client connected: ${client.id}`);
   }

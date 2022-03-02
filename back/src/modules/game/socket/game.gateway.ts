@@ -7,11 +7,13 @@ import { InjectModel } from '@nestjs/mongoose';
 import { JWT } from '../../common/services/jwt.service';
 import { Game, GameDocument } from '../schemas/game.schema';
 import { Player, PlayerDocument } from '../../auth/schemas/player.schema';
+import { DataBase } from 'src/modules/common/services/database.service';
 
 @WebSocketGateway()
 export class GameGateway {
   constructor(
     public jwt: JWT,
+    //public db: DataBase,
     @InjectModel(Game.name) public gameModel: Model<GameDocument>,
     @InjectModel(Player.name) public playerModal: Model<PlayerDocument>,
   ) {}
@@ -28,6 +30,8 @@ export class GameGateway {
       console.log('INTERVAL-', timeStep);
       this.TIMER_RUN[room] = new Date().getTime();
       const game = (await this.gameModel.find({ _id: room }).exec())[0];
+
+      // const game = (await this.db.getFromDB("game", room)
 
       game.hide = !game.hide;
       game.players = game.players.map((p) => ({

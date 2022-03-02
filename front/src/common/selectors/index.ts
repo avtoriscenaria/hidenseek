@@ -1,4 +1,5 @@
 export const getIsAuthorised = (state: any) => state.options.isAuthorized;
+export const getIsLoaded = (state: any) => state.options.isLoaded;
 export const getGameStatus = (state: any) => state.game?.game?.status;
 export const getMyGamePlayer = (state: any) =>
   state.game?.game?.players.find(

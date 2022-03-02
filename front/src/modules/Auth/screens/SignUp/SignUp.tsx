@@ -30,7 +30,6 @@ const SignUp: React.FC = () => {
           <Input
             classes={classes.nickname}
             label={translations.nickname}
-            name="nickname"
             error={error}
             {...nicknameInputProps}
           />
@@ -38,14 +37,12 @@ const SignUp: React.FC = () => {
           <Input
             classes={classes.password}
             label={translations.password}
-            name="password"
             type="password"
             {...passwordInputProps}
           />
           <Input
             classes={classes.confirmPassword}
             label={translations.confirmPassword}
-            name="confirmPassword"
             type="password"
             error={
               isFocusedConfirmPassword &&
