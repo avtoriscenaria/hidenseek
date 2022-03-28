@@ -9,6 +9,7 @@ import { getIsLoaded } from "common/selectors";
 
 interface ISocket {
   connect: (token: string, room: string, player_id: string) => void;
+  connectToGame: (create: boolean, player_id: string, gameKey?: string) => void;
   setHunterRoleSocket: (selectedPlayer: string) => void;
   onStartGameEmit: () => void;
   endTurnSocket: () => void;
@@ -17,6 +18,7 @@ interface ISocket {
 
 const defaultContext: ISocket = {
   connect: () => {},
+  connectToGame: () => {},
   setHunterRoleSocket: () => {},
   onStartGameEmit: () => {},
   endTurnSocket: () => {},
@@ -28,6 +30,7 @@ const SocketContext = createContext(defaultContext);
 export const SocketContextProvider: React.FC = ({ children }) => {
   const {
     connect,
+    connectToGame,
     setHunterRoleSocket,
     onStartGameEmit,
     endTurnSocket,
@@ -43,6 +46,7 @@ export const SocketContextProvider: React.FC = ({ children }) => {
     <SocketContext.Provider
       value={{
         connect,
+        connectToGame,
         setHunterRoleSocket,
         onStartGameEmit,
         endTurnSocket,

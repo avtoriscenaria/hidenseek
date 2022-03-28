@@ -4,7 +4,7 @@ import useTranslations from "common/hooks/useTranslations";
 import { useAppLayoutContext } from "contexts/AppLayoutContext";
 //import { findGameSocket } from "contexts/Socket/helpers/SocketIo";
 
-// import { useSocketContext } from "contexts/Socket/SocketContext";
+import { useSocketContext } from "SocketContext/SocketContext";
 import { useFindGameRequest } from "./hooks";
 
 import useStyles from "common/hooks/useStyles";
@@ -18,17 +18,15 @@ import { getPlayer } from "common/selectors";
 const FindGameContainer: React.FC = () => {
   const { game: translations } = useTranslations();
   //const { player } = useAppLayoutContext();
-  // const { token } = useSocketContext();
+  const { connectToGame } = useSocketContext();
   const { _id: player_id } = useAppSelector(getPlayer);
   const [isFindByKey, setIsFindByKey] = useState(false);
   const [gameKey, setGameKey] = useState("");
-  const { request } = useFindGameRequest();
+  //const { request } = useFindGameRequest();
 
   const onFind = () => {
-    request({
-      gameKey,
-      player_id,
-    });
+    console.log("FIND")
+    connectToGame(false, player_id, gameKey || undefined);
     // findGameSocket(token, {
     //   gameKey,
     //   player_id: player?._id,

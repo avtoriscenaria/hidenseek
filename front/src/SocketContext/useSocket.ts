@@ -6,10 +6,14 @@ import { useDispatch } from "react-redux";
 import { setGame } from "redux/reducers/game";
 import { IGame } from "common/interfaces/Game";
 import { setOption } from "redux/reducers/options";
+import { useAppSelector } from "redux/hooks";
+import { getGame } from "common/selectors";
 
 const useSocket = () => {
   const dispatch = useDispatch();
   const socketRef = useRef<any>();
+  //const currentGame = useAppSelector(getGame)
+
 
   useEffect(() => {
     return () => {
@@ -21,15 +25,18 @@ const useSocket = () => {
   }, []);
 
   const connect = useCallback(
-    (token: string, room: string, player_id: string) => {
-      if (token && room && player_id) {
-        console.log("GAME CONNECT");
+    (token: string, player_id: string, room?: string) => {
+      if (token && player_id) {
+        console.log("CONNECT @#", room)
         const socket = io(HOST, {
           query: {
             token,
-            room,
+            room: room ? room : '',
             player_id,
           },
+          data: {
+            room
+          }
         });
 
         socket.on(
@@ -46,7 +53,6 @@ const useSocket = () => {
         socket.on(
           "timer",
           ({ time, startTime }: { time: number; startTime: number }) => {
-            console.log("UPDATE TIMER");
             dispatch(
               setOption({ timer: time !== undefined ? time : startTime })
             );
@@ -58,6 +64,12 @@ const useSocket = () => {
     },
     [dispatch]
   );
+
+  const connectToGame = useCallback((create: boolean, player_id: string, gameKey?: string) => {
+    if (socketRef.current) {
+      socketRef.current.emit("connect_to_game", { create, player_id, gameKey });
+    }
+  }, []);
 
   const setHunterRoleSocket = useCallback((selectedPlayer: string) => {
     if (socketRef.current) {
@@ -86,6 +98,7 @@ const useSocket = () => {
 
   return {
     connect,
+    connectToGame,
     setHunterRoleSocket,
     onStartGameEmit,
     endTurnSocket,

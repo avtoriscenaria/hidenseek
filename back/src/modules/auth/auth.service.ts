@@ -41,7 +41,7 @@ export class AuthService {
       });
       newPlayer.save();
 
-      response = { nickname };
+      response = { data: { nickname } };
     }
     return this.response.prepare(response);
   }

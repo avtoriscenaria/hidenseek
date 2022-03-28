@@ -10,7 +10,7 @@ import { setPlayer } from "redux/reducers/player";
 import ROUTES from "constants/routes";
 
 const useVerifyJWT = (
-  connectSocket: (token: string, game_id: string, player_id: string) => void
+  connectSocket: (token: string, player_id: string, game_id?: string) => void
 ) => {
   const history = useHistory();
   const dispatch = useAppDispatch();
@@ -24,12 +24,12 @@ const useVerifyJWT = (
       dispatch(setOption({ isAuthorized: isVerified }));
       if (isVerified && player?._id) {
         dispatch(setPlayer(player));
-        console.log(player);
-        if (player.game_id) {
-          connectSocket(token, player.game_id, player._id);
-        } else {
+      
+        //if (player.game_id) {
+          connectSocket(token, player._id, player.game_id);
+        //} else {
           setIsLoad(true);
-        }
+        //}
       } else {
         localStorageHelper("remove", LSData.authData);
         history.push(ROUTES.auth.base);

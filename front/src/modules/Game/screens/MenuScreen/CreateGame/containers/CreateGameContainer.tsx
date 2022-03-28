@@ -2,26 +2,40 @@ import React from "react";
 
 import useTranslations from "common/hooks/useTranslations";
 
-import CreateGameComponent from "../components/CreateGameComponent";
 import { useGameCreateRequest } from "../hooks";
 import { useAppSelector } from "redux/hooks";
 import { getPlayer } from "common/selectors";
 
-const CreateGameContainer: React.FC = () => {
-  const { game: gameTranslations } = useTranslations();
+import Button from "common/components/Button";
+import useStyles from "common/hooks/useStyles";
 
+import styles from "../styles";
+import { useSocketContext } from "SocketContext/SocketContext";
+
+const CreateGameContainer: React.FC = () => {
+  const { game: translations } = useTranslations();
+  const { connectToGame } = useSocketContext()
   const { nickname, _id } = useAppSelector(getPlayer);
-  const { request } = useGameCreateRequest();
+  //const { request } = useGameCreateRequest();
 
   const onCreateGame = () => {
-    request({ nickname, _id });
+    connectToGame(true, _id);
   };
 
+  const classes = useStyles(styles);
+
   return (
-    <CreateGameComponent
-      translations={gameTranslations}
-      onCreateGame={onCreateGame}
-    />
+    <div className={classes.container}>
+      <div className={classes.title}>{translations.createGameTitle}</div>
+      <Button
+        classes={classes.createButton}
+        label={translations.create}
+        onClick={onCreateGame}
+      />
+      <div className={classes.createDescription}>
+        {translations.createGameDescription}
+      </div>
+    </div>
   );
 };
 

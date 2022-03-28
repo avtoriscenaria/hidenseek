@@ -1,7 +1,7 @@
 const ROUTES = {
   auth: {
     base: "/auth",
-    signUp: "/auth/sign_up",
+    signUp: "/auth/sign-up",
   },
   game: {
     base: "/game",

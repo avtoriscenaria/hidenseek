@@ -1,5 +1,5 @@
 import { useHistory } from "react-router";
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 
 import useInput from "hooks/useInput";
 import useTranslations from "common/hooks/useTranslations";
@@ -25,6 +25,7 @@ const useSignUpStateControl = () => {
   const { request, response, error, message } = useApiRequest(
     apiSignUpRequest,
     () => {
+      console.log('ROUTE')
       history.push(ROUTES.auth.base);
     }
   );

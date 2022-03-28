@@ -21,7 +21,7 @@ export default memo(function ContainedButton({
 }: IButton) {
   const classes = useStyles(styles);
   const additionalClass = propClass ? ` ${propClass}` : "";
-  console.log("Button");
+
   return (
     <Button
       className={`${classes.button}${additionalClass}`}

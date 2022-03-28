@@ -24,12 +24,10 @@ import { getGame, getGameId, getPlayer } from "common/selectors";
 import { useAppSelector } from "redux/hooks";
 
 const getMyGamePlayer = (players: any, player_id: string) => {
-  console.log("CHECK MEMO");
   return players.find((p: any) => p._id === player_id);
 };
 
 const getHunter = (players: any) => {
-  console.log("CHECK HUNTER");
   return players.some((p: IGamePlayer) => p.hunter);
 };
 
