@@ -1,11 +1,10 @@
 import React, { useState, ChangeEvent } from "react";
 
 import useTranslations from "common/hooks/useTranslations";
-import { useAppLayoutContext } from "contexts/AppLayoutContext";
+//import { useAppLayoutContext } from "contexts/AppLayoutContext";
 //import { findGameSocket } from "contexts/Socket/helpers/SocketIo";
 
 import { useSocketContext } from "SocketContext/SocketContext";
-import { useFindGameRequest } from "./hooks";
 
 import useStyles from "common/hooks/useStyles";
 import Button from "common/components/Button";
@@ -22,7 +21,6 @@ const FindGameContainer: React.FC = () => {
   const { _id: player_id } = useAppSelector(getPlayer);
   const [isFindByKey, setIsFindByKey] = useState(false);
   const [gameKey, setGameKey] = useState("");
-  //const { request } = useFindGameRequest();
 
   const onFind = () => {
     console.log("FIND")

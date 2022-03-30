@@ -1,6 +1,6 @@
 import { HOST, STATUSES } from "constants/api";
 import LSData from "constants/LSData";
-import { useAppLayoutContext } from "contexts/AppLayoutContext";
+//import { useAppLayoutContext } from "contexts/AppLayoutContext";
 
 interface IApiRequest {
   (
@@ -27,7 +27,7 @@ const useApiRequest: IApiRequest = (
   { uri, method, disableAuth },
   { onSuccess = () => {}, onFailure = () => {} } = {}
 ) => {
-  const { logout } = useAppLayoutContext();
+  //const { logout } = useAppLayoutContext();
   let Authorization: string;
 
   if (!disableAuth) {
@@ -59,7 +59,7 @@ const useApiRequest: IApiRequest = (
     });
 
     if (res !== undefined) {
-      responseActions(res, onSuccess, onFailure, logout);
+      responseActions(res, onSuccess, onFailure);
     }
   };
 
@@ -70,7 +70,7 @@ const responseActions = (
   res: IResponseActions,
   onSuccess: (data?: any) => void,
   onFailure: (message?: string) => void,
-  logout: () => void
+  //logout: () => void
 ) => {
   const { status, data, message } = res;
 
@@ -82,7 +82,7 @@ const responseActions = (
       onFailure(message);
       break;
     case STATUSES.token_expiration:
-      logout();
+      //logout();
       break;
     default:
       break;

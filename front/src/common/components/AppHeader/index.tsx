@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 
 import useTranslations from "common/hooks/useTranslations";
 import ROUTES from "constants/routes";
-import { useAppLayoutContext } from "contexts/AppLayoutContext";
+//import { useAppLayoutContext } from "contexts/AppLayoutContext";
 
 import AppHeader from "./AppHeaderComponent";
 import { useAppSelector } from "redux/hooks";

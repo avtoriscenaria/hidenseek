@@ -1,6 +1,6 @@
 import React from "react";
 
-import { setHunterRoleSocket } from "contexts/Socket/helpers/SocketIo";
+//import { setHunterRoleSocket } from "contexts/Socket/helpers/SocketIo";
 import useTranslations from "common/hooks/useTranslations";
 import copyText from "common/utils/copyText";
 import { useSocketContext } from "SocketContext/SocketContext";

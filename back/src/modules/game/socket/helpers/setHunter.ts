@@ -18,6 +18,7 @@ export const setHunter = async function(client: Socket, selectedPlayer) {
       game.players = updatedPlayers;
 
       await game.save();
+      console.log("GAME HUNTER", game)
 
       this.server.in(room).emit('update_game', { game });
     }

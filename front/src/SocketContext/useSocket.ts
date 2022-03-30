@@ -6,13 +6,10 @@ import { useDispatch } from "react-redux";
 import { setGame } from "redux/reducers/game";
 import { IGame } from "common/interfaces/Game";
 import { setOption } from "redux/reducers/options";
-import { useAppSelector } from "redux/hooks";
-import { getGame } from "common/selectors";
 
 const useSocket = () => {
   const dispatch = useDispatch();
   const socketRef = useRef<any>();
-  //const currentGame = useAppSelector(getGame)
 
 
   useEffect(() => {
@@ -96,6 +93,12 @@ const useSocket = () => {
     }
   }, []);
 
+  const leaveGameSocket = useCallback(() => {
+    if (socketRef.current) {
+      socketRef.current.emit("leave");
+    }
+  }, []);
+
   return {
     connect,
     connectToGame,
@@ -103,6 +106,7 @@ const useSocket = () => {
     onStartGameEmit,
     endTurnSocket,
     movePlayerSocket,
+    leaveGameSocket,
   };
 };
 

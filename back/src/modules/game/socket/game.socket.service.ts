@@ -15,6 +15,7 @@ import {
   setHunter,
   connectToTheGame,
   move,
+  leave,
 } from './helpers';
 
 import { GameGateway } from './game.gateway';
@@ -33,6 +34,7 @@ export class GameSocketService
     this.socketSetHunter = setHunter.bind(this);
     this.socketConnectToTheGame = connectToTheGame.bind(this);
     this.socketMove = move.bind(this);
+    this.socketLeave = leave.bind(this)
   }
 
   socketConnection;
@@ -43,6 +45,7 @@ export class GameSocketService
   socketSetHunter;
   socketConnectToTheGame;
   socketMove;
+  socketLeave;
 
   @SubscribeMessage('start_game')
   async startGame(client: Socket, { timeStep }): Promise<void> {
@@ -83,6 +86,12 @@ export class GameSocketService
   async movePlayer(client: Socket, payload: any): Promise<void> {
     console.log('move');
     this.socketMove(client, payload);
+  }
+
+  @SubscribeMessage('leave')
+  async leaveGame(client: Socket): Promise<void> {
+    console.log('leave');
+    this.socketLeave(client)
   }
 
   afterInit(server: Server) {

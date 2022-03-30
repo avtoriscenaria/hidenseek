@@ -14,6 +14,7 @@ interface ISocket {
   onStartGameEmit: () => void;
   endTurnSocket: () => void;
   movePlayerSocket: (coordinates: any) => void;
+  leaveGameSocket: () => void;
 }
 
 const defaultContext: ISocket = {
@@ -23,6 +24,7 @@ const defaultContext: ISocket = {
   onStartGameEmit: () => {},
   endTurnSocket: () => {},
   movePlayerSocket: () => {},
+  leaveGameSocket: () => {},
 };
 
 const SocketContext = createContext(defaultContext);
@@ -35,6 +37,7 @@ export const SocketContextProvider: React.FC = ({ children }) => {
     onStartGameEmit,
     endTurnSocket,
     movePlayerSocket,
+    leaveGameSocket,
   } = useSocket();
 
   const { isLoad } = useVerifyJWT(connect);
@@ -51,6 +54,7 @@ export const SocketContextProvider: React.FC = ({ children }) => {
         onStartGameEmit,
         endTurnSocket,
         movePlayerSocket,
+        leaveGameSocket,
       }}
     >
       {isLoaded || isLoad ? children : <MainLoader />}

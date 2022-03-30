@@ -2,7 +2,6 @@ import React from "react";
 
 import useTranslations from "common/hooks/useTranslations";
 
-import { useGameCreateRequest } from "../hooks";
 import { useAppSelector } from "redux/hooks";
 import { getPlayer } from "common/selectors";
 
@@ -15,8 +14,7 @@ import { useSocketContext } from "SocketContext/SocketContext";
 const CreateGameContainer: React.FC = () => {
   const { game: translations } = useTranslations();
   const { connectToGame } = useSocketContext()
-  const { nickname, _id } = useAppSelector(getPlayer);
-  //const { request } = useGameCreateRequest();
+  const { _id } = useAppSelector(getPlayer);
 
   const onCreateGame = () => {
     connectToGame(true, _id);

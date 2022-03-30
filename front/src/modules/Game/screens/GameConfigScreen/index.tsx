@@ -6,11 +6,11 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 
 import { IGamePlayer } from "common/interfaces/Game";
 import useTranslations from "common/hooks/useTranslations";
-import { useAppLayoutContext } from "contexts/AppLayoutContext";
-import {
-  onStartGameEmit,
-  // updateGameSocket,
-} from "contexts/Socket/helpers/SocketIo";
+// import { useAppLayoutContext } from "contexts/AppLayoutContext";
+// import {
+//   onStartGameEmit,
+//   // updateGameSocket,
+// } from "contexts/Socket/helpers/SocketIo";
 import ROUTES from "constants/routes";
 import useStyles from "common/hooks/useStyles";
 import Button from "common/components/Button";
