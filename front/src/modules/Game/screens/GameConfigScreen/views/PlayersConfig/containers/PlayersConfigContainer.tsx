@@ -27,7 +27,7 @@ const PlayersConfigContainer: React.FC = () => {
 
   const setHunter = (value: boolean, id: string) => {
     if (value && id) {
-      setHunterRoleSocket(id);
+      setHunterRoleSocket(id, game._id);
     }
   };
 

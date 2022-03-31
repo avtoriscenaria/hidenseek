@@ -16,7 +16,7 @@ const HeaderContainer: React.FC = () => {
 
   const { endTurnSocket } = useSocketContext();
   const timer = useAppSelector(getTimer);
-  const { hide, players } = useAppSelector(getGame);
+  const { hide, players, _id } = useAppSelector(getGame);
   const myGamePlayer = useAppSelector(getMyGamePlayer);
 
   useEffect(() => {
@@ -25,7 +25,7 @@ const HeaderContainer: React.FC = () => {
 
   const endTurn = () => {
     setDisabled(true);
-    endTurnSocket();
+    endTurnSocket(_id);
   };
 
   const isDisabled = useMemo(
@@ -37,6 +37,8 @@ const HeaderContainer: React.FC = () => {
   );
 
   const classes = useStyles(styles);
+
+  console.log("MY", myGamePlayer);
 
   return (
     <div className={classes.container}>

@@ -34,7 +34,7 @@ export class GameSocketService
     this.socketSetHunter = setHunter.bind(this);
     this.socketConnectToTheGame = connectToTheGame.bind(this);
     this.socketMove = move.bind(this);
-    this.socketLeave = leave.bind(this)
+    this.socketLeave = leave.bind(this);
   }
 
   socketConnection;
@@ -48,16 +48,16 @@ export class GameSocketService
   socketLeave;
 
   @SubscribeMessage('start_game')
-  async startGame(client: Socket, { timeStep }): Promise<void> {
+  async startGame(client: Socket, payload): Promise<void> {
     console.log('start_game');
-    this.socketStartGame(client, timeStep);
+    this.socketStartGame(client, payload);
   }
 
-  @SubscribeMessage('run_timer')
-  async runTimer(client: Socket, timeStep: number): Promise<void> {
-    console.log('run_timer');
-    this.socketRunTimer(client, timeStep);
-  }
+  // @SubscribeMessage('run_timer')
+  // async runTimer(client: Socket, timeStep: number): Promise<void> {
+  //   console.log('run_timer');
+  //   this.socketRunTimer(client, timeStep);
+  // }
 
   @SubscribeMessage('get_game')
   async findGame(client: Socket): Promise<void> {
@@ -66,19 +66,20 @@ export class GameSocketService
   }
 
   @SubscribeMessage('end_turn')
-  async endTurn(client: Socket, { timeStep }): Promise<void> {
+  async endTurn(client: Socket, payload): Promise<void> {
     console.log('end_turn');
-    this.socketEndTurn(client, timeStep);
+    this.socketEndTurn(client, payload);
   }
 
   @SubscribeMessage('hunter_role')
-  async setHunterRole(client: Socket, { selectedPlayer }): Promise<void> {
+  async setHunterRole(_t, payload): Promise<void> {
     console.log('hunter_role');
-    this.socketSetHunter(client, selectedPlayer);
+    this.socketSetHunter(payload);
   }
 
   @SubscribeMessage('connect_to_game')
   async connectToGame(client: Socket, payload: any): Promise<void> {
+    console.log('connect_to_game');
     this.socketConnectToTheGame(client, payload);
   }
 
@@ -89,9 +90,9 @@ export class GameSocketService
   }
 
   @SubscribeMessage('leave')
-  async leaveGame(client: Socket): Promise<void> {
+  async leaveGame(client: Socket, payload): Promise<void> {
     console.log('leave');
-    this.socketLeave(client)
+    this.socketLeave(client, payload);
   }
 
   afterInit(server: Server) {
@@ -103,6 +104,7 @@ export class GameSocketService
   }
 
   async handleConnection(client: Socket) {
+    console.log('handleConnection');
     const { token } = client.handshake.query;
     client.use(async (_, next) => {
       const isVerified = await this.jwt.checkAuthToken(token);

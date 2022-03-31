@@ -10,11 +10,12 @@ import { getIsLoaded } from "common/selectors";
 interface ISocket {
   connect: (token: string, room: string, player_id: string) => void;
   connectToGame: (create: boolean, player_id: string, gameKey?: string) => void;
-  setHunterRoleSocket: (selectedPlayer: string) => void;
-  onStartGameEmit: () => void;
-  endTurnSocket: () => void;
-  movePlayerSocket: (coordinates: any) => void;
-  leaveGameSocket: () => void;
+  setHunterRoleSocket: (selectedPlayer: string, game_id: string) => void;
+  onStartGameEmit: (game_id: string) => void;
+  endTurnSocket: (game_id: string) => void;
+  movePlayerSocket: (coordinates: any, game_id: string) => void;
+  leaveGameSocket: (game_id: string) => void;
+  disconnect: () => void;
 }
 
 const defaultContext: ISocket = {
@@ -25,6 +26,7 @@ const defaultContext: ISocket = {
   endTurnSocket: () => {},
   movePlayerSocket: () => {},
   leaveGameSocket: () => {},
+  disconnect: () => {},
 };
 
 const SocketContext = createContext(defaultContext);
@@ -38,6 +40,7 @@ export const SocketContextProvider: React.FC = ({ children }) => {
     endTurnSocket,
     movePlayerSocket,
     leaveGameSocket,
+    disconnect,
   } = useSocket();
 
   const { isLoad } = useVerifyJWT(connect);
@@ -55,6 +58,7 @@ export const SocketContextProvider: React.FC = ({ children }) => {
         endTurnSocket,
         movePlayerSocket,
         leaveGameSocket,
+        disconnect,
       }}
     >
       {isLoaded || isLoad ? children : <MainLoader />}

@@ -1,7 +1,7 @@
 import { Socket } from 'socket.io';
 
-export const leave = async function (client: Socket) {
-  const { room, player_id } = client.handshake.query;
+export const leave = async function (client: Socket, { game_id: room }) {
+  const { player_id } = client.handshake.query;
 
   if (!room) {
     return;
@@ -13,15 +13,15 @@ export const leave = async function (client: Socket) {
     p._id === player_id ? { ...p, leave: true } : p,
   );
 
-  game.save()
+  game.save();
 
   const player = await this.playerModal.findById(player_id);
 
   player.game_id = undefined;
 
-  player.save()
+  player.save();
 
-  client.leave(room)
-
+  client.leave(room);
+  client.emit('leave_game');
   this.server.in(room).emit('update_game', { game });
 };

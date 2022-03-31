@@ -5,7 +5,7 @@ interface IOptionsState {
   isAuthorized: boolean;
   isLoaded: boolean;
   gameStatus: string;
-  socket: any;
+  //socket: any;
   timer?: number;
 }
 
@@ -14,7 +14,7 @@ const initialState: IOptionsState = {
   isAuthorized: false,
   isLoaded: false,
   gameStatus: "",
-  socket: null,
+  //socket: null,
 };
 
 const optionsSlice = createSlice({

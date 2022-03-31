@@ -1,12 +1,4 @@
-import { Socket } from 'socket.io';
-
-export const setHunter = async function(client: Socket, selectedPlayer) {
-    const { room } = client.handshake.query;
-
-    if (!room) {
-      return;
-    }
-
+export const setHunter = async function({ selectedPlayer, game_id: room }) {
     const game = await this.gameModel.findById(room);
 
     if (Boolean(game)) {

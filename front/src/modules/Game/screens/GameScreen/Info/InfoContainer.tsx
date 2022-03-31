@@ -24,11 +24,11 @@ const DeskContainer: React.FC = () => {
   //const { game = { players: [] }, myGamePlayer } = useSocketContext();
   const { game: translations } = useTranslations();
   //const { request } = useExitGameRequest();
-  const { players } = useAppSelector(getGame);
+  const { players, _id } = useAppSelector(getGame);
   const myGamePlayer = useAppSelector(getMyGamePlayer);
-  const { leaveGameSocket} = useSocketContext()
+  const { leaveGameSocket } = useSocketContext();
 
-  const exitGame = () => leaveGameSocket();
+  const exitGame = () => leaveGameSocket(_id);
   const onMenu = () => {}; //history.push(ROUTES.game.menu);
 
   // return (

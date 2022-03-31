@@ -12,6 +12,7 @@ export interface IGamePlayer {
   creator?: boolean;
   hunter?: boolean;
   caught?: boolean;
+  leave?: boolean;
   won?: boolean;
   step: number;
   color: string;

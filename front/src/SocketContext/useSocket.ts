@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import io from "socket.io-client";
 
 import { HOST, STEP_INTERVAL } from "constants/api";
@@ -10,7 +10,6 @@ import { setOption } from "redux/reducers/options";
 const useSocket = () => {
   const dispatch = useDispatch();
   const socketRef = useRef<any>();
-
 
   useEffect(() => {
     return () => {
@@ -24,16 +23,15 @@ const useSocket = () => {
   const connect = useCallback(
     (token: string, player_id: string, room?: string) => {
       if (token && player_id) {
-        console.log("CONNECT @#", room)
         const socket = io(HOST, {
           query: {
             token,
-            room: room ? room : '',
+            room: room ? room : "",
             player_id,
           },
           data: {
-            room
-          }
+            room,
+          },
         });
 
         socket.on(
@@ -56,46 +54,77 @@ const useSocket = () => {
           }
         );
 
+        socket.on("leave_game", () => {
+          console.log("leave_game");
+          dispatch(setGame(null));
+
+          dispatch(
+            setOption({
+              game_id: "",
+              gameStatus: "",
+            })
+          );
+        });
+
         socketRef.current = socket;
       }
     },
     [dispatch]
   );
 
-  const connectToGame = useCallback((create: boolean, player_id: string, gameKey?: string) => {
-    if (socketRef.current) {
-      socketRef.current.emit("connect_to_game", { create, player_id, gameKey });
-    }
-  }, []);
+  const connectToGame = useCallback(
+    (create: boolean, player_id: string, gameKey?: string) => {
+      if (socketRef.current) {
+        socketRef.current.emit("connect_to_game", {
+          create,
+          player_id,
+          gameKey,
+        });
+      }
+    },
+    []
+  );
 
-  const setHunterRoleSocket = useCallback((selectedPlayer: string) => {
-    if (socketRef.current) {
-      socketRef.current.emit("hunter_role", { selectedPlayer });
-    }
-  }, []);
+  const setHunterRoleSocket = useCallback(
+    (selectedPlayer: string, game_id: string) => {
+      if (socketRef.current) {
+        socketRef.current.emit("hunter_role", { selectedPlayer, game_id });
+      }
+    },
+    []
+  );
 
-  const onStartGameEmit = useCallback(() => {
+  const onStartGameEmit = useCallback((game_id) => {
     if (socketRef.current) {
       console.log("onStartGameEmit");
-      socketRef.current.emit("start_game", { timeStep: STEP_INTERVAL });
+      socketRef.current.emit("start_game", {
+        timeStep: STEP_INTERVAL,
+        game_id,
+      });
     }
   }, []);
 
-  const endTurnSocket = useCallback(() => {
+  const endTurnSocket = useCallback((game_id) => {
     if (socketRef.current) {
-      socketRef.current.emit("end_turn", { timeStep: STEP_INTERVAL });
+      socketRef.current.emit("end_turn", { timeStep: STEP_INTERVAL, game_id });
     }
   }, []);
 
-  const movePlayerSocket = useCallback((coordinates) => {
+  const movePlayerSocket = useCallback((coordinates, game_id) => {
     if (socketRef.current) {
-      socketRef.current.emit("move", { coordinates });
+      socketRef.current.emit("move", { coordinates, game_id });
     }
   }, []);
 
-  const leaveGameSocket = useCallback(() => {
+  const leaveGameSocket = useCallback((game_id) => {
     if (socketRef.current) {
-      socketRef.current.emit("leave");
+      socketRef.current.emit("leave", { game_id });
+    }
+  }, []);
+
+  const disconnect = useCallback(() => {
+    if (socketRef.current) {
+      socketRef.current.disconnect();
     }
   }, []);
 
@@ -107,6 +136,7 @@ const useSocket = () => {
     endTurnSocket,
     movePlayerSocket,
     leaveGameSocket,
+    disconnect,
   };
 };
 

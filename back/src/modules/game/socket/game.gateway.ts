@@ -53,24 +53,29 @@ export class GameGateway {
 
   public async disconnectPlayer(client: Socket): Promise<void> {
     const { room, player_id } = client.handshake.query;
+    console.log('DISCONNECT', client.handshake.query);
+    if (Boolean(room)) {
+      const game = await this.gameModel.findById(room);
 
-    const game = await this.gameModel.findById(room);
+      if (game) {
+        game.players = game.players.map((p) =>
+          p._id.toString() === player_id.toString()
+            ? { ...p, online: false }
+            : p,
+        );
+        game.save();
 
-    if (game) {
-      game.players = game.players.map((p) =>
-        p._id.toString() === player_id.toString() ? { ...p, online: false } : p,
-      );
-      game.save();
-
-      if (
-        !game.players.some((p) => p.online) &&
-        this.TIME_INTERVAL[room] !== undefined
-      ) {
-        clearInterval(this.TIME_INTERVAL[room]);
-        this.TIMER_RUN[room] = undefined;
-        this.TIME_INTERVAL[room] = undefined;
+        if (
+          !game.players.some((p) => p.online) &&
+          this.TIME_INTERVAL[room] !== undefined
+        ) {
+          clearInterval(this.TIME_INTERVAL[room]);
+          this.TIMER_RUN[room] = undefined;
+          this.TIME_INTERVAL[room] = undefined;
+        }
       }
     }
+
     this.logger.log(`Client disconnected: ${client.id}`);
   }
 }

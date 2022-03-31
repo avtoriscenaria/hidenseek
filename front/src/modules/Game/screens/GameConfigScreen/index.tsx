@@ -44,7 +44,7 @@ const GameConfigScreen: React.FC = () => {
 
   const startGame = () => {
     console.log("startGame");
-    onStartGameEmit();
+    onStartGameEmit(game._id);
   };
 
   const isCreator = Boolean(myGamePlayer?.creator);

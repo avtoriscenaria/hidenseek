@@ -77,7 +77,7 @@ const SellContainer: React.FC<ISellContainer> = memo(
 
     const move = () => {
       if (Boolean(canMoveColor)) {
-        movePlayerSocket(coordinates);
+        movePlayerSocket(coordinates, game._id);
       }
     };
 
