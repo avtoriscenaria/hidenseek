@@ -35,7 +35,6 @@ export const startGame = async function (
         startTime: 0,
       });
 
-      console.log('client is subscribing to timer with interval ', timeStep);
       if (this.TIME_INTERVAL[room] !== undefined) {
         clearInterval(this.TIME_INTERVAL[room]);
         this.TIME_INTERVAL[room] = undefined;
@@ -43,9 +42,7 @@ export const startGame = async function (
 
       this.changeTurnOrder(room, timeStep);
     } else {
-      console.log('ERROR');
     }
   } else {
-    console.log('ERROR');
   }
 };

@@ -1,8 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
-import { GameController } from './game.controller';
-import { GameService } from './game.service';
 import { GameGateway } from './socket/game.gateway';
 import { GameSocketService } from './socket/game.socket.service';
 import { JWT } from '../common/services/jwt.service';
@@ -16,14 +14,7 @@ import { DataBase } from '../common/services/database.service';
     MongooseModule.forFeature([{ name: Game.name, schema: GameSchema }]),
     MongooseModule.forFeature([{ name: Player.name, schema: PlayerSchema }]),
   ],
-  controllers: [GameController],
-  providers: [
-    GameService,
-    GameGateway,
-    GameSocketService,
-    JWT,
-    Response,
-    DataBase,
-  ],
+  controllers: [],
+  providers: [GameGateway, GameSocketService, JWT, Response, DataBase],
 })
 export class GameModule {}

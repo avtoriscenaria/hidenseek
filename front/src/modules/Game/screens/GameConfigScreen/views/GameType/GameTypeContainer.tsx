@@ -1,13 +1,15 @@
 import React from "react";
 
+import useStyles from "common/hooks/useStyles";
 import useTranslations from "common/hooks/useTranslations";
-
-import GameTypeComponent from "../components/GameTypeComponent";
+import styles from "./styles";
 
 const GameTypeContainer: React.FC = () => {
   const { game: gameTranslations } = useTranslations();
 
-  return <GameTypeComponent translations={gameTranslations} />;
+  const classes = useStyles(styles);
+
+  return <div className={classes.container}></div>;
 };
 
 export default GameTypeContainer;

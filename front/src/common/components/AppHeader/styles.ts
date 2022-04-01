@@ -5,6 +5,14 @@ const styles = () => ({
   toolbar: {
     justifyContent: "flex-end",
   },
+  pannel: {
+    display: "flex",
+    alignItems: "center",
+  },
+  userName: {
+    padding: 8,
+    userSelect: "none",
+  },
   titleContainer: {
     flexGrow: 1,
   },

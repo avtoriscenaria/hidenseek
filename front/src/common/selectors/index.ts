@@ -8,5 +8,5 @@ export const getMyGamePlayer = (state: any) =>
 export const getTimer = (state: any) => state.options.timer;
 export const getGameId = (state: any) => state.options.game_id;
 export const getPlayerId = (state: any) => state.player;
-export const getPlayer = (state: any) => state.player.player;
+export const getPlayer = (state: any) => state.player.player || {};
 export const getGame = (state: any) => state.game.game;

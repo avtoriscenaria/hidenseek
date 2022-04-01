@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as jwt from 'jsonwebtoken';
 
-import { SECRET, EXPIRATION_JWT } from '../../../constants';
-
 @Injectable()
 export class JWT {
   constructor() {}
@@ -12,15 +10,18 @@ export class JWT {
       _id: user._id,
       nickname: user.nickname,
     };
-    const signature = SECRET;
-    const expiration = EXPIRATION_JWT;
 
-    return jwt.sign({ data }, signature, { expiresIn: expiration });
+    const signature = process.env.SECRET;
+    const expiration = process.env.EXPIRATION_JWT;
+
+    return jwt.sign({ data }, signature, {
+      expiresIn: expiration,
+    });
   }
 
   async checkAuthToken(token) {
     try {
-      jwt.verify(token, SECRET);
+      jwt.verify(token, process.env.SECRET);
       return true;
     } catch (e) {
       return false;
@@ -30,7 +31,10 @@ export class JWT {
   async decodeAuthToken(req) {
     const token = getTokenFromHeader(req);
     try {
-      const verifuedData: string | jwt.JwtPayload = jwt.verify(token, SECRET);
+      const verifuedData: string | jwt.JwtPayload = jwt.verify(
+        token,
+        process.env.SECRET,
+      );
 
       if (typeof verifuedData !== 'string') {
         const { data = {} } = verifuedData;

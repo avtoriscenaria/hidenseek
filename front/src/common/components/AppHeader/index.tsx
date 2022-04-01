@@ -19,7 +19,6 @@ export default function AppHeaderContainer() {
 
   const handleGame = (event: React.MouseEvent<HTMLElement>) => {
     if (isAuthorized) {
-      console.log("handleGame");
       history.push(ROUTES.game.base);
     }
   };

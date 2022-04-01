@@ -7,17 +7,14 @@ import { useSocketContext } from "SocketContext/SocketContext";
 import { setOption } from "redux/reducers/options";
 import { setGame } from "redux/reducers/game";
 import { setPlayer } from "redux/reducers/player";
-//import { useLogout } from "core/hooks";
+import localStorageHelper from "common/utils/localStorageHelper";
 
 const AccountContainer: React.FC = () => {
-  //const { logout } = useLogout();
-  // const { logout: appContextLogout } = useAppLayoutContext();
   const { disconnect } = useSocketContext();
   const { account: translations } = useTranslations();
   const dispatch = useDispatch();
 
   const logout = () => {
-    console.log("LOGOUTr");
     disconnect();
     dispatch(
       setOption({
@@ -29,12 +26,8 @@ const AccountContainer: React.FC = () => {
     );
     dispatch(setGame(null));
     dispatch(setPlayer(null));
+    localStorageHelper("remove", "authData");
   };
-
-  // const logout = () => {
-  //   setConnected(false);
-  //   appContextLogout();
-  // };
 
   return (
     <div>

@@ -6,6 +6,8 @@ import { useDispatch } from "react-redux";
 import { setGame } from "redux/reducers/game";
 import { IGame } from "common/interfaces/Game";
 import { setOption } from "redux/reducers/options";
+import localStorageHelper from "common/utils/localStorageHelper";
+import { setPlayer } from "redux/reducers/player";
 
 const useSocket = () => {
   const dispatch = useDispatch();
@@ -14,7 +16,6 @@ const useSocket = () => {
   useEffect(() => {
     return () => {
       if (socketRef.current !== undefined) {
-        console.log("UNMOUNT");
         socketRef.current.disconnect();
       }
     };
@@ -55,7 +56,6 @@ const useSocket = () => {
         );
 
         socket.on("leave_game", () => {
-          console.log("leave_game");
           dispatch(setGame(null));
 
           dispatch(
@@ -64,6 +64,20 @@ const useSocket = () => {
               gameStatus: "",
             })
           );
+        });
+
+        socket.on("logout", () => {
+          dispatch(
+            setOption({
+              game_id: "",
+              isAuthorized: false,
+              isLoaded: false,
+              gameStatus: "",
+            })
+          );
+          dispatch(setGame(null));
+          dispatch(setPlayer(null));
+          localStorageHelper("remove", "authData");
         });
 
         socketRef.current = socket;
@@ -96,7 +110,6 @@ const useSocket = () => {
 
   const onStartGameEmit = useCallback((game_id) => {
     if (socketRef.current) {
-      console.log("onStartGameEmit");
       socketRef.current.emit("start_game", {
         timeStep: STEP_INTERVAL,
         game_id,

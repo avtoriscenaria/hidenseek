@@ -8,12 +8,12 @@ import { getPlayer } from "common/selectors";
 import Button from "common/components/Button";
 import useStyles from "common/hooks/useStyles";
 
-import styles from "../styles";
+import styles from "./styles";
 import { useSocketContext } from "SocketContext/SocketContext";
 
 const CreateGameContainer: React.FC = () => {
   const { game: translations } = useTranslations();
-  const { connectToGame } = useSocketContext()
+  const { connectToGame } = useSocketContext();
   const { _id } = useAppSelector(getPlayer);
 
   const onCreateGame = () => {

@@ -30,6 +30,10 @@ const styles = () => ({
     alignItems: "center",
     color: colors.description,
   },
+  btnsContainer: {
+    display: "flex",
+    justifyContent: "flex-end",
+  },
   startGame: {
     display: "flex",
     alignItems: "center",

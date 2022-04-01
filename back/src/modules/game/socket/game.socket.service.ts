@@ -49,7 +49,6 @@ export class GameSocketService
 
   @SubscribeMessage('start_game')
   async startGame(client: Socket, payload): Promise<void> {
-    console.log('start_game');
     this.socketStartGame(client, payload);
   }
 
@@ -61,37 +60,31 @@ export class GameSocketService
 
   @SubscribeMessage('get_game')
   async findGame(client: Socket): Promise<void> {
-    console.log('get_game');
     this.socketGetGame(client);
   }
 
   @SubscribeMessage('end_turn')
   async endTurn(client: Socket, payload): Promise<void> {
-    console.log('end_turn');
     this.socketEndTurn(client, payload);
   }
 
   @SubscribeMessage('hunter_role')
-  async setHunterRole(_t, payload): Promise<void> {
-    console.log('hunter_role');
+  async setHunterRole(client, payload): Promise<void> {
     this.socketSetHunter(payload);
   }
 
   @SubscribeMessage('connect_to_game')
   async connectToGame(client: Socket, payload: any): Promise<void> {
-    console.log('connect_to_game');
     this.socketConnectToTheGame(client, payload);
   }
 
   @SubscribeMessage('move')
   async movePlayer(client: Socket, payload: any): Promise<void> {
-    console.log('move');
     this.socketMove(client, payload);
   }
 
   @SubscribeMessage('leave')
   async leaveGame(client: Socket, payload): Promise<void> {
-    console.log('leave');
     this.socketLeave(client, payload);
   }
 
@@ -104,8 +97,8 @@ export class GameSocketService
   }
 
   async handleConnection(client: Socket) {
-    console.log('handleConnection');
     const { token } = client.handshake.query;
+
     client.use(async (_, next) => {
       const isVerified = await this.jwt.checkAuthToken(token);
 

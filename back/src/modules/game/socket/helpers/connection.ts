@@ -3,7 +3,7 @@ import { GAME_STATUSES } from 'src/constants';
 
 export const connection = async function (client: Socket) {
   const { room, player_id } = client.handshake.query;
-  console.log('ROOM', typeof room, room);
+
   if (!room) {
     return;
   }

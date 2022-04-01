@@ -2,7 +2,7 @@ import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import * as jwt from 'jsonwebtoken';
 
-import { SECRET, STATUSES } from 'src/constants';
+import { STATUSES } from 'src/constants';
 
 @Injectable()
 export class JWTMiddleware implements NestMiddleware {
@@ -10,11 +10,9 @@ export class JWTMiddleware implements NestMiddleware {
     const token = getTokenFromHeader(req);
 
     try {
-      jwt.verify(token, SECRET);
+      jwt.verify(token, process.env.SECRET);
       next();
     } catch (e) {
-      console.log('JWT failure');
-
       res.send({ status: STATUSES.token_expiration });
     }
   }

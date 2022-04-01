@@ -25,7 +25,6 @@ const useSignUpStateControl = () => {
   const { request, response, error, message } = useApiRequest(
     apiSignUpRequest,
     () => {
-      console.log('ROUTE')
       history.push(ROUTES.auth.base);
     }
   );

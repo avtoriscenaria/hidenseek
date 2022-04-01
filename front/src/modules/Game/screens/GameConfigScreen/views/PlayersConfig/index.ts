@@ -1,1 +1,1 @@
-export { default } from "./containers/PlayersConfigContainer";
+export { default } from "./PlayersConfigContainer";

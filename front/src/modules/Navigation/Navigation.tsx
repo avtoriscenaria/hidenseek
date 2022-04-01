@@ -1,7 +1,6 @@
 import { Router, Switch, Route as LibRoute, Redirect } from "react-router-dom";
 import { createBrowserHistory } from "history";
 
-// import { SocketContextProvider } from "contexts/Socket/SocketContext";
 import ROUTES from "constants/routes";
 import Auth from "modules/Auth";
 import GameContainer from "modules/GameContainer";

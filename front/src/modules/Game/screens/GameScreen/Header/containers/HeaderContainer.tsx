@@ -38,8 +38,6 @@ const HeaderContainer: React.FC = () => {
 
   const classes = useStyles(styles);
 
-  console.log("MY", myGamePlayer);
-
   return (
     <div className={classes.container}>
       <div className={classes.leftWrapper}>

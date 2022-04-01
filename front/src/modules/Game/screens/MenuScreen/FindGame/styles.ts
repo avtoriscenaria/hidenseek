@@ -30,6 +30,9 @@ const styles = () => ({
     userSelect: "none",
     marginBottom: 8,
   },
+  keyInput: {
+    visibility: "hidden",
+  },
 });
 
 export default styles;

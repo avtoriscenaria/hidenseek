@@ -1,8 +1,6 @@
 import React, { useState, ChangeEvent } from "react";
 
 import useTranslations from "common/hooks/useTranslations";
-//import { useAppLayoutContext } from "contexts/AppLayoutContext";
-//import { findGameSocket } from "contexts/Socket/helpers/SocketIo";
 
 import { useSocketContext } from "SocketContext/SocketContext";
 
@@ -16,19 +14,13 @@ import { getPlayer } from "common/selectors";
 
 const FindGameContainer: React.FC = () => {
   const { game: translations } = useTranslations();
-  //const { player } = useAppLayoutContext();
   const { connectToGame } = useSocketContext();
   const { _id: player_id } = useAppSelector(getPlayer);
   const [isFindByKey, setIsFindByKey] = useState(false);
   const [gameKey, setGameKey] = useState("");
 
   const onFind = () => {
-    console.log("FIND")
-    connectToGame(false, player_id, gameKey || undefined);
-    // findGameSocket(token, {
-    //   gameKey,
-    //   player_id: player?._id,
-    // });
+    connectToGame(false, player_id, isFindByKey ? gameKey : undefined);
   };
 
   const onChangeGameKey = ({
@@ -54,16 +46,14 @@ const FindGameContainer: React.FC = () => {
         >
           {translations.findByKey}
         </div>
-        {isFindByKey && (
-          <Input
-            classes={classes.keyInput}
-            label={translations.gameKey}
-            placeholder={translations.enterTheKey}
-            name="gameKey"
-            value={gameKey}
-            onChange={onChangeGameKey}
-          />
-        )}
+        <Input
+          classes={isFindByKey ? "" : classes.keyInput}
+          label={translations.gameKey}
+          placeholder={translations.enterTheKey}
+          name="gameKey"
+          value={gameKey}
+          onChange={onChangeGameKey}
+        />
       </div>
     </div>
   );

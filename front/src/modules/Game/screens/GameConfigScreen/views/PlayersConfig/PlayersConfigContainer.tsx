@@ -1,18 +1,13 @@
 import React from "react";
 
-//import { setHunterRoleSocket } from "contexts/Socket/helpers/SocketIo";
 import useTranslations from "common/hooks/useTranslations";
 import copyText from "common/utils/copyText";
 import { useSocketContext } from "SocketContext/SocketContext";
 
-// import PlayersConfigComponent from "../components/PlayersConfigComponent";
-
 import useStyles from "common/hooks/useStyles";
-import { IGamePlayer } from "common/interfaces/Game";
 
-import PlayerConfig from "../../../components/PlayerConfig";
-import styles from "../styles";
-import { IPlayersConfigTranslations } from "../../../interfaces";
+import { PlayerConfig } from "../../components/PlayerConfig";
+import styles from "./styles";
 import { useAppSelector } from "redux/hooks";
 import { getMyGamePlayer, getGame } from "common/selectors";
 

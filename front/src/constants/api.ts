@@ -1,16 +1,10 @@
-export const HOST = "http://192.168.0.103:3005";
+export const HOST = process.env.REACT_APP_HOST;
 
 export const API = {
   auth: {
     signup: { uri: "/auth/sign_up", method: "POST", disableAuth: true },
     login: { uri: "/auth/login", method: "POST", disableAuth: true },
     getPlayer: { uri: "/auth/get_player", method: "GET" },
-  },
-  game: {
-    createtGame: { uri: "/game/create", method: "POST" },
-    findGame: { uri: "/game/find", method: "POST" },
-    getGame: { uri: "/game", method: "GET" },
-    exitGame: { uri: "/game/exit", method: "GET" },
   },
 };
 

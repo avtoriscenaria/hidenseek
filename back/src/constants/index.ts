@@ -1,11 +1,5 @@
 export { default } from './messages';
 
-export const MONGO_URI =
-  'mongodb+srv://worker:Cp5DVYB9Ebropwab@cluster0.cjqvi.mongodb.net/HNS?retryWrites=true&w=majority';
-
-export const SECRET = 'BlAGo_y31L0w_Br1cK';
-export const EXPIRATION_JWT = '6h';
-
 export const COLORS = ['red', 'yellow', 'green', 'blue', 'purple', 'black'];
 
 export enum STATUSES {

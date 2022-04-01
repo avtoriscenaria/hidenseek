@@ -53,7 +53,7 @@ export class GameGateway {
 
   public async disconnectPlayer(client: Socket): Promise<void> {
     const { room, player_id } = client.handshake.query;
-    console.log('DISCONNECT', client.handshake.query);
+
     if (Boolean(room)) {
       const game = await this.gameModel.findById(room);
 

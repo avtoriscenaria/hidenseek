@@ -8,6 +8,8 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import useStyles from "common/hooks/useStyles";
 
 import styles from "./styles";
+import { useAppSelector } from "redux/hooks";
+import { getPlayer } from "common/selectors";
 
 interface IAppHeader {
   isAuthorized: boolean;
@@ -24,6 +26,7 @@ export default function AppHeader({
   handleGame,
   handleMenu,
 }: IAppHeader) {
+  const { nickname } = useAppSelector(getPlayer);
   const classes = useStyles(styles);
 
   return (
@@ -45,7 +48,8 @@ export default function AppHeader({
           </div>
 
           {!isAuthorized ? null : (
-            <div>
+            <div className={classes.pannel}>
+              <div className={classes.userName}>{nickname}</div>
               <IconButton
                 aria-label="account of current user"
                 aria-controls="menu-appbar"
