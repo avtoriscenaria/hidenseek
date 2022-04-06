@@ -1,13 +1,11 @@
 import { useHistory } from "react-router";
 import { useState } from "react";
 
-import useInput from "hooks/useInput";
-import useTranslations from "common/hooks/useTranslations";
-import ROUTES from "constants/routes";
-import useApiRequest from "common/useApiRequest";
+import { useInput, useTranslations, useApiRequest } from "common/hooks";
 import messages from "constants/messages";
+import ROUTES from "constants/routes";
 
-import { apiSignUpRequest } from "../../../api";
+import { apiSignUpRequest } from "../../requests";
 
 const useSignUpStateControl = () => {
   const history = useHistory();

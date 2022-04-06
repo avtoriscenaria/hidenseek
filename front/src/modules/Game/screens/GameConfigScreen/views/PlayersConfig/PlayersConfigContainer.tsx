@@ -1,7 +1,7 @@
 import React from "react";
 
 import useTranslations from "common/hooks/useTranslations";
-import copyText from "common/utils/copyText";
+import { copyText } from "common/utils";
 import { useSocketContext } from "SocketContext/SocketContext";
 
 import useStyles from "common/hooks/useStyles";

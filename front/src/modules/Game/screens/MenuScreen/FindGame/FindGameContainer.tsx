@@ -5,8 +5,7 @@ import useTranslations from "common/hooks/useTranslations";
 import { useSocketContext } from "SocketContext/SocketContext";
 
 import useStyles from "common/hooks/useStyles";
-import Button from "common/components/Button";
-import Input from "common/components/Input";
+import { Button, Input } from "common/components";
 
 import styles from "./styles";
 import { useAppSelector } from "redux/hooks";

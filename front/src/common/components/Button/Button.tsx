@@ -1,7 +1,8 @@
 import { memo } from "react";
 import Button from "@material-ui/core/Button";
 
-import useStyles from "../../hooks/useStyles";
+import useStyles from "common/hooks/useStyles";
+
 import styles from "./styles";
 
 interface IButton {

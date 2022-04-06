@@ -1,10 +1,10 @@
 import React from "react";
 
-import { useAppSelector } from "redux/hooks";
 import { getGameStatus } from "common/selectors";
+import { GAME_STATUSES } from "constants/gameConstants";
+import { useAppSelector } from "redux/hooks";
 
 import { Menu, GameScreen, GameConfig } from "./screens";
-import { GAME_STATUSES } from "constants/gameConstants";
 
 const Game: React.FC = () => {
   const gameStatus = useAppSelector(getGameStatus);

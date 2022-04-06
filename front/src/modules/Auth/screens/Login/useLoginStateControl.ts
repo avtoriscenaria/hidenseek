@@ -1,17 +1,14 @@
 import { useCallback } from "react";
 import { useHistory } from "react-router-dom";
 
-import { setPlayer } from "redux/reducers/player";
-import { setOption } from "redux/reducers/options";
-import { useAppDispatch } from "redux/hooks";
-import useInput from "hooks/useInput";
+import { useInput, useTranslations, useApiRequest } from "common/hooks";
 import LSData from "constants/LSData";
-import useTranslations from "common/hooks/useTranslations";
-import useApiRequest from "common/useApiRequest";
 import messages from "constants/messages";
 import ROUTES from "constants/routes";
+import { useAppDispatch } from "redux/hooks";
+import { setOption, setPlayer } from "redux/reducers";
 
-import { apiLoginRequest } from "../../../api";
+import { apiLoginRequest } from "../../requests";
 
 const useLoginStateControl = () => {
   const history = useHistory();

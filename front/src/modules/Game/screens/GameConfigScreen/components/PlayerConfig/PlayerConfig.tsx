@@ -1,7 +1,7 @@
 import Paper from "@material-ui/core/Paper";
 
 import useStyles from "common/hooks/useStyles";
-import Checkbox from "common/components/Checkbox";
+import { Checkbox } from "common/components";
 
 import styles from "./styles";
 import { IPlayerConfig } from "../../interfaces";

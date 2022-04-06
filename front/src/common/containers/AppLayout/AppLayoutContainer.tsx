@@ -1,9 +1,9 @@
 import React from "react";
 
 import useStyles from "common/hooks/useStyles";
+import { AppHeader } from "common/components";
 
-import AppHeader from "../components/AppHeader";
-import styles from "../styles/AppLayoutStyles";
+import styles from "./styles";
 
 interface IAppLayout {
   children: React.ReactNode;

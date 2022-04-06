@@ -5,7 +5,7 @@ import useTranslations from "common/hooks/useTranslations";
 import { useAppSelector } from "redux/hooks";
 import { getPlayer } from "common/selectors";
 
-import Button from "common/components/Button";
+import { Button } from "common/components";
 import useStyles from "common/hooks/useStyles";
 
 import styles from "./styles";

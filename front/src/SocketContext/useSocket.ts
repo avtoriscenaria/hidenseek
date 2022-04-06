@@ -1,13 +1,12 @@
 import { useCallback, useEffect, useRef } from "react";
+import { useDispatch } from "react-redux";
 import io from "socket.io-client";
 
-import { HOST, STEP_INTERVAL } from "constants/api";
-import { useDispatch } from "react-redux";
-import { setGame } from "redux/reducers/game";
 import { IGame } from "common/interfaces/Game";
-import { setOption } from "redux/reducers/options";
-import localStorageHelper from "common/utils/localStorageHelper";
-import { setPlayer } from "redux/reducers/player";
+import { localStorageHelper } from "common/utils";
+import { HOST, STEP_INTERVAL } from "constants/api";
+
+import { setGame, setOption, setPlayer } from "redux/reducers";
 
 const useSocket = () => {
   const dispatch = useDispatch();

@@ -1,11 +1,11 @@
 import React from "react";
 
+import { Route } from "common/components";
+import { AppLayout } from "common/containers";
 import ROUTES from "constants/routes";
-import Route from "common/components/Route";
-import Game from "modules/Game";
 import Account from "modules/Account";
-import AppLayout from "common/containers/AppLayoutContainer";
-import { SocketContextProvider } from "SocketContext/SocketContext";
+import Game from "modules/Game";
+import { SocketContextProvider } from "SocketContext";
 
 const GameContainer: React.FC = () => {
   return (

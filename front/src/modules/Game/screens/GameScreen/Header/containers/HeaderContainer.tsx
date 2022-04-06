@@ -4,8 +4,7 @@ import useTranslations from "common/hooks/useTranslations";
 
 import useStyles from "common/hooks/useStyles";
 import styles from "../styles/HeaderStyles";
-import Button from "common/components/Button";
-import Timer from "common/components/Timer";
+import { Button, Timer } from "common/components";
 import { useAppSelector } from "redux/hooks";
 import { getGame, getMyGamePlayer, getTimer } from "common/selectors";
 import { useSocketContext } from "SocketContext/SocketContext";

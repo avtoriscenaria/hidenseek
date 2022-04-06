@@ -1,11 +1,11 @@
 import React, { createContext, useContext } from "react";
 
-import MainLoader from "common/components/MainLoader";
+import { MainLoader } from "common/components";
+import { getIsLoaded } from "common/selectors";
+import { useAppSelector } from "redux/hooks";
 
 import useSocket from "./useSocket";
 import useVerifyJWT from "./useVerifyJWT";
-import { useAppSelector } from "redux/hooks";
-import { getIsLoaded } from "common/selectors";
 
 interface ISocket {
   connect: (token: string, room: string, player_id: string) => void;

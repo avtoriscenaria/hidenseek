@@ -1,13 +1,11 @@
 import React from "react";
-
-import useTranslations from "common/hooks/useTranslations";
 import { useDispatch } from "react-redux";
-import Button from "common/components/Button";
-import { useSocketContext } from "SocketContext/SocketContext";
-import { setOption } from "redux/reducers/options";
-import { setGame } from "redux/reducers/game";
-import { setPlayer } from "redux/reducers/player";
-import localStorageHelper from "common/utils/localStorageHelper";
+
+import { Button } from "common/components";
+import useTranslations from "common/hooks/useTranslations";
+import { localStorageHelper } from "common/utils";
+import { setGame, setOption, setPlayer } from "redux/reducers";
+import { useSocketContext } from "SocketContext";
 
 const AccountContainer: React.FC = () => {
   const { disconnect } = useSocketContext();

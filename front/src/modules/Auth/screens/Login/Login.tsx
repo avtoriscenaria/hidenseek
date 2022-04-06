@@ -1,12 +1,10 @@
 import React from "react";
 
-import Paper from "shared/Paper";
-import Input from "common/components/Input";
-import Button from "common/components/Button";
+import { Button, Input, Paper } from "common/components";
 import useStyles from "common/hooks/useStyles";
 import { isLoginValid } from "common/validators";
 
-import useLoginStateControl from "./hooks/useLoginStateControl";
+import useLoginStateControl from "./useLoginStateControl";
 import styles from "./styles";
 
 const LoginContainer: React.FC = () => {

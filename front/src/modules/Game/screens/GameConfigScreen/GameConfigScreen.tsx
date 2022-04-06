@@ -6,7 +6,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import { IGamePlayer } from "common/interfaces/Game";
 import useTranslations from "common/hooks/useTranslations";
 import useStyles from "common/hooks/useStyles";
-import Button from "common/components/Button";
+import { Button } from "common/components";
 import { useSocketContext } from "SocketContext/SocketContext";
 
 import { GameType, PlayersConfig } from "./views";

@@ -1,8 +1,13 @@
-import translations from "../../constants/translations";
+import { useState } from "react";
 
-const useTranslations = (language?: string) => {
-  const DEAFULT_LANGUAGE = "ru";
-  return translations[language || DEAFULT_LANGUAGE];
+import translations from "constants/translations";
+
+import { DEAFULT_LANGUAGE } from "../../constants";
+
+const useTranslations = () => {
+  const [language] = useState(DEAFULT_LANGUAGE);
+
+  return translations[language];
 };
 
 export default useTranslations;

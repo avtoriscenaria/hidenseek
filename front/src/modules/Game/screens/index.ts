@@ -1,3 +1,3 @@
-export { Menu } from "./MenuScreen";
-export { GameScreen } from "./GameScreen";
 export { GameConfig } from "./GameConfigScreen";
+export { GameScreen } from "./GameScreen";
+export { Menu } from "./MenuScreen";

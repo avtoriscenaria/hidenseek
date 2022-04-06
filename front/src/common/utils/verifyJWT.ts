@@ -1,6 +1,6 @@
 import { API, HOST, STATUSES } from "constants/api";
-import LSData from "constants/LSData";
 import Player from "common/interfaces/Player";
+import LSData from "constants/LSData";
 
 const verifyJWT = async (
   callback: (result?: {

@@ -3,7 +3,7 @@ import React from "react";
 import Paper from "@material-ui/core/Paper";
 import useTranslations from "common/hooks/useTranslations";
 import useStyles from "common/hooks/useStyles";
-import Button from "common/components/Button";
+import { Button } from "common/components";
 
 import Player from "./components/PlayerComponent";
 import styles from "./styles/InfoStyles";

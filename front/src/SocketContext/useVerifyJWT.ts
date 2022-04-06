@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 
-import { setOption } from "redux/reducers/options";
-import { useAppDispatch } from "redux/hooks";
-import localStorageHelper from "common/utils/localStorageHelper";
+import { localStorageHelper, verifyJWT } from "common/utils";
 import LSData from "constants/LSData";
-import verifyJWT from "common/utils/verifyJWT";
-import { setPlayer } from "redux/reducers/player";
 import ROUTES from "constants/routes";
+import { useAppDispatch } from "redux/hooks";
+import { setOption, setPlayer } from "redux/reducers";
 
 const useVerifyJWT = (
   connectSocket: (token: string, player_id: string, game_id?: string) => void
@@ -23,11 +21,9 @@ const useVerifyJWT = (
       if (isVerified && player?._id) {
         dispatch(setPlayer(player));
 
-        //if (player.game_id) {
         connectSocket(token, player._id, player.game_id);
-        //} else {
+
         setIsLoad(true);
-        //}
       } else {
         localStorageHelper("remove", LSData.authData);
         history.push(ROUTES.auth.base);

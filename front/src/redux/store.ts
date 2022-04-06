@@ -1,7 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import gameSlice from "./reducers/game";
-import playerSlice from "./reducers/player";
-import optionsSlice from "./reducers/options";
+import { gameSlice, optionsSlice, playerSlice } from "./reducers";
 
 export const store = configureStore({
   reducer: {
@@ -9,7 +7,6 @@ export const store = configureStore({
     player: playerSlice,
     options: optionsSlice,
   },
-  
 });
 
 export type AppDispatch = typeof store.dispatch;

@@ -1,12 +1,10 @@
 import React from "react";
 
-import Paper from "shared/Paper";
-import Input from "common/components/Input";
-import Button from "common/components/Button";
+import { Button, Input, Paper } from "common/components";
 import useStyles from "common/hooks/useStyles";
 import { isPasswordConfirmed, isSignUpValid } from "common/validators";
 
-import useSignUpStateControl from "./hooks/useSignUpStateControl";
+import useSignUpStateControl from "./useSignUpStateControl";
 import styles from "./styles";
 
 const SignUp: React.FC = () => {

@@ -1,4 +1,6 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
+import { useAppSelector } from "redux/hooks";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
@@ -6,28 +8,29 @@ import Typography from "@material-ui/core/Typography";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 
 import useStyles from "common/hooks/useStyles";
+import { getIsAuthorised } from "common/selectors";
+import useTranslations from "common/hooks/useTranslations";
+import { getPlayer } from "common/selectors";
+import ROUTES from "constants/routes";
 
 import styles from "./styles";
-import { useAppSelector } from "redux/hooks";
-import { getPlayer } from "common/selectors";
 
-interface IAppHeader {
-  isAuthorized: boolean;
-  disableTitleNavigation: boolean;
-  translations: { gameName: string };
-  handleGame: (event: React.MouseEvent<HTMLElement>) => void;
-  handleMenu: (event: React.MouseEvent<HTMLElement>) => void;
-}
-
-export default function AppHeader({
-  isAuthorized,
-  translations,
-  disableTitleNavigation,
-  handleGame,
-  handleMenu,
-}: IAppHeader) {
+export default function AppHeaderContainer() {
+  const history = useHistory();
+  const { main: translations } = useTranslations();
   const { nickname } = useAppSelector(getPlayer);
+  const isAuthorized = useAppSelector(getIsAuthorised);
   const classes = useStyles(styles);
+
+  const handleGame = () => {
+    if (isAuthorized) {
+      history.push(ROUTES.game.base);
+    }
+  };
+
+  const handleMenu = () => {
+    history.push(ROUTES.account.base);
+  };
 
   return (
     <div className={classes.root}>
@@ -37,9 +40,7 @@ export default function AppHeader({
             <Typography
               variant="h6"
               className={
-                disableTitleNavigation
-                  ? classes.notAuthorizedTitle
-                  : classes.title
+                isAuthorized ? classes.title : classes.notAuthorizedTitle
               }
               onClick={handleGame}
             >
