@@ -22,7 +22,8 @@ export const endTurn = async function (
       (p) =>
         Boolean(p.hunter) !== Boolean(game.hide) &&
         p.step > 0 &&
-        !Boolean(p.caught),
+        !Boolean(p.caught) &&
+        !Boolean(p.leave),
     )
   ) {
     game.hide = !game.hide;

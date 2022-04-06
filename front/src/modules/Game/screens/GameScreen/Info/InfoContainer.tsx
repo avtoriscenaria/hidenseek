@@ -18,7 +18,6 @@ const DeskContainer: React.FC = () => {
   const { leaveGameSocket } = useSocketContext();
 
   const exitGame = () => leaveGameSocket(_id);
-  const onMenu = () => {}; //history.push(ROUTES.game.menu);
 
   const classeses = useStyles(styles);
 
@@ -33,7 +32,6 @@ const DeskContainer: React.FC = () => {
         />
       ))}
       <div className={classeses.buttonsWrapper}>
-        {/* <Button label={translations.toMenu} onClick={onMenu} /> */}
         <Button
           label={translations.exitGame}
           type="secondary"

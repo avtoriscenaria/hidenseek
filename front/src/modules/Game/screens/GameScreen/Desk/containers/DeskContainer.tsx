@@ -1,7 +1,6 @@
 import React from "react";
 
 import useTranslations from "common/hooks/useTranslations";
-//simport { useSocketContext } from "contexts/Socket/SocketContext";
 
 import Paper from "@material-ui/core/Paper";
 
@@ -16,22 +15,12 @@ import { getMyGamePlayer } from "common/selectors";
 const DeskContainer: React.FC = () => {
   const { game: translations } = useTranslations();
   const { caught, won } = useAppSelector(getMyGamePlayer);
-  // const { myGamePlayer: { caught, won } = { caught: false, won: false } } =
-  //   useSocketContext();
 
   const modalDescription = Boolean(caught)
     ? translations.caught
     : Boolean(won)
     ? translations.won
     : "";
-
-  // return (
-  //   <DeskComponent
-  //     caught={Boolean(caught)}
-  //     won={Boolean(won)}
-  //     modalDescription={modalDescription}
-  //   />
-  // );
 
   const classes = useStyles((theme) => styles(theme, { won }));
   const showBackDrop = caught || won;
@@ -58,12 +47,6 @@ const DeskContainer: React.FC = () => {
                   j,
                   rows.length - 1
                 ),
-                // backgroundColor: this.makeColor(player, not_you, {
-                //   x: _i,
-                //   y: i,
-                // }),
-                // width: this.makeSellSize(),
-                // height: this.makeSellSize(),
               }}
             />
           ))}

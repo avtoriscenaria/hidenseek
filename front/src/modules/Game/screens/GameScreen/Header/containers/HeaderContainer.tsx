@@ -16,6 +16,7 @@ const HeaderContainer: React.FC = () => {
 
   const { endTurnSocket } = useSocketContext();
   const timer = useAppSelector(getTimer);
+
   const { hide, players, _id } = useAppSelector(getGame);
   const myGamePlayer = useAppSelector(getMyGamePlayer);
 

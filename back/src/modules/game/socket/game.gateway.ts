@@ -26,9 +26,10 @@ export class GameGateway {
   public TIME_INTERVAL = {};
 
   public changeTurnOrder(room: string, timeStep): void {
+    this.TIMER_RUN[room] = new Date().getTime();
     this.TIME_INTERVAL[room] = setInterval(async () => {
-      console.log('INTERVAL-', timeStep);
       this.TIMER_RUN[room] = new Date().getTime();
+      console.log('INTERVAL', timeStep);
       const game = (await this.gameModel.find({ _id: room }).exec())[0];
 
       // const game = (await this.db.getFromDB("game", room)
@@ -53,7 +54,7 @@ export class GameGateway {
 
   public async disconnectPlayer(client: Socket): Promise<void> {
     const { room, player_id } = client.handshake.query;
-
+    console.log('ROOM', room, Boolean(room));
     if (Boolean(room)) {
       const game = await this.gameModel.findById(room);
 
@@ -63,7 +64,7 @@ export class GameGateway {
             ? { ...p, online: false }
             : p,
         );
-        game.save();
+        await game.save();
 
         if (
           !game.players.some((p) => p.online) &&

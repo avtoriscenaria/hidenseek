@@ -13,10 +13,11 @@ import {
   getGame,
   endTurn,
   setHunter,
-  connectToTheGame,
   move,
   leave,
-} from './helpers';
+  createGame,
+  findGame,
+} from './actions';
 
 import { GameGateway } from './game.gateway';
 
@@ -32,9 +33,10 @@ export class GameSocketService
     this.socketGetGame = getGame.bind(this);
     this.socketEndTurn = endTurn.bind(this);
     this.socketSetHunter = setHunter.bind(this);
-    this.socketConnectToTheGame = connectToTheGame.bind(this);
     this.socketMove = move.bind(this);
     this.socketLeave = leave.bind(this);
+    this.socketCreateGame = createGame.bind(this);
+    this.socketFindGame = findGame.bind(this);
   }
 
   socketConnection;
@@ -43,20 +45,15 @@ export class GameSocketService
   socketGetGame;
   socketEndTurn;
   socketSetHunter;
-  socketConnectToTheGame;
+  socketCreateGame;
   socketMove;
   socketLeave;
+  socketFindGame;
 
   @SubscribeMessage('start_game')
   async startGame(client: Socket, payload): Promise<void> {
     this.socketStartGame(client, payload);
   }
-
-  // @SubscribeMessage('run_timer')
-  // async runTimer(client: Socket, timeStep: number): Promise<void> {
-  //   console.log('run_timer');
-  //   this.socketRunTimer(client, timeStep);
-  // }
 
   @SubscribeMessage('get_game')
   async findGame(client: Socket): Promise<void> {
@@ -75,7 +72,15 @@ export class GameSocketService
 
   @SubscribeMessage('connect_to_game')
   async connectToGame(client: Socket, payload: any): Promise<void> {
-    this.socketConnectToTheGame(client, payload);
+    const { create, player_id, gameKey } = payload;
+    const player = await this.playerModal.findById(player_id);
+    if (player) {
+      if (create) {
+        this.socketCreateGame(client, player);
+      } else {
+        this.socketFindGame(client, player, gameKey);
+      }
+    }
   }
 
   @SubscribeMessage('move')

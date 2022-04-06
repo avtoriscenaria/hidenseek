@@ -46,8 +46,6 @@ export const SocketContextProvider: React.FC = ({ children }) => {
   const { isLoad } = useVerifyJWT(connect);
   const isLoaded = useAppSelector(getIsLoaded);
 
-  console.log("RE_MOUNT", isLoaded);
-
   return (
     <SocketContext.Provider
       value={{

@@ -38,6 +38,7 @@ const translations = {
     caught: "Вы пойманы",
     won: "Вы выйграли",
     caughtPlayer: "Пойман",
+    leavePlayer: "Вышел",
     toMenu: "Меню",
     exitGame: "Выйти",
   },

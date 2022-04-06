@@ -1,10 +1,5 @@
 import React, { memo, useState, useEffect } from "react";
 
-//import { useAppLayoutContext } from "contexts/AppLayoutContext";
-//import { useSocketContext } from "contexts/Socket/SocketContext";
-// import { movePlayerSocket } from "contexts/Socket/helpers/SocketIo";
-
-//import SellComponent from "../components/SellComponent";
 import { ISellConfig } from "../interfaces";
 import { useBorderConfig } from "../hooks";
 import { configurateSell } from "../utils";
@@ -15,14 +10,9 @@ import ClearIcon from "@material-ui/icons/Clear";
 
 import useStyles from "common/hooks/useStyles";
 
-import { ISellBorder } from "../interfaces";
 import styles from "../styles/SellStyles";
 import { useSocketContext } from "SocketContext/SocketContext";
-
-const defaultGame = {
-  players: [],
-  hide: false,
-};
+import "./styles.css";
 
 interface ISellContainer {
   config: ISellConfig;
@@ -81,27 +71,6 @@ const SellContainer: React.FC<ISellContainer> = memo(
       }
     };
 
-    // return (
-    //   <SellComponent
-    //     borderConfig={border}
-    //     onClick={move}
-    //     style={{
-    //       ...style,
-    //       cursor: Boolean(canMoveColor) ? "pointer" : undefined,
-    //       backgroundColor: isHideCell ? "grey" : playerPosition,
-    //     }}
-    //     canMoveStyles={
-    //       !Boolean(canMoveColor) || canCatch || isHideCell
-    //         ? undefined
-    //         : {
-    //             backgroundColor: canMoveColor,
-    //             opacity: 0.1,
-    //             height: "100%",
-    //           }
-    //     }
-    //     crossColor={canCatch ? canMoveColor : undefined}
-    //   />
-    // );
     const crossColor = canCatch ? canMoveColor : undefined;
     const classes = useStyles(styles, { color: crossColor });
     const additionalStyle = {
@@ -120,7 +89,7 @@ const SellContainer: React.FC<ISellContainer> = memo(
 
     return (
       <div
-        className={classes.cell}
+        className={`${classes.cell} cell`}
         style={{ ...border, ...additionalStyle }}
         onClick={move}
       >

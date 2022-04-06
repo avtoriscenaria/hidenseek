@@ -62,6 +62,7 @@ const useSocket = () => {
             setOption({
               game_id: "",
               gameStatus: "",
+              timer: 0,
             })
           );
         });

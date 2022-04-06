@@ -7,6 +7,7 @@ interface IOptionsState {
   gameStatus: string;
   //socket: any;
   timer?: number;
+  timerUpdater?: number;
 }
 
 const initialState: IOptionsState = {

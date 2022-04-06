@@ -44,7 +44,10 @@ export const move = async function (client: Socket, payload) {
 
         if (
           gamePlayer.hunter &&
-          !game.players.some((p) => !Boolean(p.hunter) && !Boolean(p.caught))
+          !game.players.some(
+            (p) =>
+              !Boolean(p.hunter) && !Boolean(p.caught) && !Boolean(p.leave),
+          )
         ) {
           game.players = game.players.map((p) =>
             p.hunter ? { ...p, won: true } : p,

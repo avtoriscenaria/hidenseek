@@ -37,6 +37,10 @@ const styles = (
     paddingLeft: 8,
     color: isHunter ? colors.error : "",
   },
+  leave: {
+    paddingLeft: 8,
+    color: "grey",
+  },
 });
 
 export default styles;

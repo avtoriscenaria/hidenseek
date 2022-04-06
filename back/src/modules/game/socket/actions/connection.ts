@@ -27,23 +27,23 @@ export const connection = async function (client: Socket) {
               : p,
           );
 
-          game.save();
+          await game.save();
 
           client.join(room);
 
           if (game.status === GAME_STATUSES.in_process) {
-            if (!Boolean(this.TIMER_RUN[room])) {
-              client.emit('timer', {
-                startTime: 0,
-              });
-              this.changeTurnOrder(room, 20000);
-            } else {
+            if (Boolean(this.TIMER_RUN[room])) {
               const startTime = Math.round(
                 (new Date().getTime() - this.TIMER_RUN[room]) / 1000,
               );
               client.emit('timer', {
                 startTime,
               });
+            } else {
+              client.emit('timer', {
+                startTime: 0,
+              });
+              this.changeTurnOrder(room, 20000);
             }
           }
         }
@@ -54,7 +54,7 @@ export const connection = async function (client: Socket) {
 
         player.games_played = [...player.games_played, player.game_id];
         player.game_id = undefined;
-        player.save();
+        await player.save();
 
         client.leave(room);
       }

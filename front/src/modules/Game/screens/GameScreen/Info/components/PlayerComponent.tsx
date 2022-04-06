@@ -19,9 +19,10 @@ const PlayerComponent: React.FC<IPlayerComponent> = memo(
       color,
       hunter: isHunter = false,
       caught: isCaught = false,
+      leave: isLeave = false,
     },
     isMyGamePlayer,
-    translations: { hunter, caughtPlayer },
+    translations: { hunter, caughtPlayer, leavePlayer },
   }) => {
     const classes = useStyles((theme) =>
       styles(theme, { isHunter, isCaught, isMyGamePlayer })
@@ -37,6 +38,7 @@ const PlayerComponent: React.FC<IPlayerComponent> = memo(
         <div className={classes.status}>
           {isHunter ? hunter : isCaught ? caughtPlayer : ""}
         </div>
+        <div className={classes.leave}>{isLeave ? leavePlayer : ""}</div>
       </div>
     );
   }

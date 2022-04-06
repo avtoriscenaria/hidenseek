@@ -18,17 +18,15 @@ const useVerifyJWT = (
   const { token } = localStorageHelper("get", LSData.authData) || {};
 
   useEffect(() => {
-    console.log("MOUNT");
     verifyJWT(({ isVerified, player } = { isVerified: false }) => {
-      console.log("verifyJWT");
       dispatch(setOption({ isAuthorized: isVerified }));
       if (isVerified && player?._id) {
         dispatch(setPlayer(player));
-      
+
         //if (player.game_id) {
-          connectSocket(token, player._id, player.game_id);
+        connectSocket(token, player._id, player.game_id);
         //} else {
-          setIsLoad(true);
+        setIsLoad(true);
         //}
       } else {
         localStorageHelper("remove", LSData.authData);
