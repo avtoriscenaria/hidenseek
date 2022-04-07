@@ -1,10 +1,10 @@
 import React, { memo } from "react";
 
-import useStyles from "common/hooks/useStyles";
+import { useStyles } from "common/hooks";
 import { IGamePlayer } from "common/interfaces/Game";
 
-import styles from "../styles/PlayerStyles";
 import { IInfoTranslations } from "../interfaces";
+import styles from "../styles/PlayerStyles";
 
 interface IPlayerComponent {
   player: IGamePlayer;

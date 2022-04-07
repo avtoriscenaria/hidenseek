@@ -1,13 +1,12 @@
 import React, { useEffect, useMemo, useState } from "react";
 
-import useTranslations from "common/hooks/useTranslations";
-
-import useStyles from "common/hooks/useStyles";
-import styles from "../styles/HeaderStyles";
 import { Button, Timer } from "common/components";
-import { useAppSelector } from "redux/hooks";
+import { useStyles, useTranslations } from "common/hooks";
 import { getGame, getMyGamePlayer, getTimer } from "common/selectors";
-import { useSocketContext } from "SocketContext/SocketContext";
+import { useAppSelector } from "redux/hooks";
+import { useSocketContext } from "SocketContext";
+
+import styles from "./styles";
 
 const HeaderContainer: React.FC = () => {
   const { game: translations } = useTranslations();

@@ -1,15 +1,12 @@
 import React from "react";
 
-import useTranslations from "common/hooks/useTranslations";
-
-import { useAppSelector } from "redux/hooks";
-import { getPlayer } from "common/selectors";
-
 import { Button } from "common/components";
-import useStyles from "common/hooks/useStyles";
+import { useStyles, useTranslations } from "common/hooks";
+import { getPlayer } from "common/selectors";
+import { useAppSelector } from "redux/hooks";
+import { useSocketContext } from "SocketContext";
 
 import styles from "./styles";
-import { useSocketContext } from "SocketContext/SocketContext";
 
 const CreateGameContainer: React.FC = () => {
   const { game: translations } = useTranslations();

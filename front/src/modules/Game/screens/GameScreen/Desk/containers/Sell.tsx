@@ -1,18 +1,16 @@
 import React, { memo, useState, useEffect } from "react";
-
-import { ISellConfig } from "../interfaces";
-import { useBorderConfig } from "../hooks";
-import { configurateSell } from "../utils";
-import { useAppSelector } from "redux/hooks";
-import { getGame, getMyGamePlayer, getPlayer } from "common/selectors";
-
 import ClearIcon from "@material-ui/icons/Clear";
 
-import useStyles from "common/hooks/useStyles";
+import { useStyles } from "common/hooks";
+import { getGame, getMyGamePlayer, getPlayer } from "common/selectors";
+import { useAppSelector } from "redux/hooks";
+import { useSocketContext } from "SocketContext";
 
-import styles from "../styles/SellStyles";
-import { useSocketContext } from "SocketContext/SocketContext";
 import "./styles.css";
+import { useBorderConfig } from "../hooks";
+import { ISellConfig } from "../interfaces";
+import { configurateSell } from "../utils";
+import styles from "../styles/SellStyles";
 
 interface ISellContainer {
   config: ISellConfig;

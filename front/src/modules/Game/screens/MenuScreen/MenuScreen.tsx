@@ -1,12 +1,11 @@
 import React from "react";
-import Paper from "@material-ui/core/Paper";
 import Divider from "@material-ui/core/Divider";
+import Paper from "@material-ui/core/Paper";
 
-import useStyles from "common/hooks/useStyles";
-import useTranslations from "common/hooks/useTranslations";
+import { useStyles, useTranslations } from "common/hooks";
 
-import FindGame from "./FindGame";
 import CreateGame from "./CreateGame";
+import FindGame from "./FindGame";
 import styles from "./styles";
 
 const MenuScreen: React.FC = () => {

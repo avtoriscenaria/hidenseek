@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
 import { ISellBorder, ISellConfig } from "../interfaces";
 
 export const useBorderConfig = (sell: ISellConfig) => {

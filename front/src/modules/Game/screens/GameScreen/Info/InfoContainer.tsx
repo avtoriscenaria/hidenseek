@@ -1,15 +1,14 @@
 import React from "react";
-
 import Paper from "@material-ui/core/Paper";
-import useTranslations from "common/hooks/useTranslations";
-import useStyles from "common/hooks/useStyles";
+
 import { Button } from "common/components";
+import { useStyles, useTranslations } from "common/hooks";
+import { getGame, getMyGamePlayer } from "common/selectors";
+import { useAppSelector } from "redux/hooks";
+import { useSocketContext } from "SocketContext";
 
 import Player from "./components/PlayerComponent";
 import styles from "./styles/InfoStyles";
-import { useAppSelector } from "redux/hooks";
-import { getGame, getMyGamePlayer } from "common/selectors";
-import { useSocketContext } from "SocketContext/SocketContext";
 
 const DeskContainer: React.FC = () => {
   const { game: translations } = useTranslations();

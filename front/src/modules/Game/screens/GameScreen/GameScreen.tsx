@@ -1,8 +1,9 @@
 import React from "react";
-import useStyles from "common/hooks/useStyles";
 
-import Header from "./Header";
+import { useStyles } from "common/hooks";
+
 import Desk from "./Desk";
+import Header from "./Header";
 import Info from "./Info";
 import styles from "./styles";
 

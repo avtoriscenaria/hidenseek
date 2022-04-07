@@ -1,18 +1,17 @@
 import React, { useMemo } from "react";
-import Paper from "@material-ui/core/Paper";
-import Divider from "@material-ui/core/Divider";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Divider from "@material-ui/core/Divider";
+import Paper from "@material-ui/core/Paper";
 
 import { IGamePlayer } from "common/interfaces/Game";
-import useTranslations from "common/hooks/useTranslations";
-import useStyles from "common/hooks/useStyles";
+import { useStyles, useTranslations } from "common/hooks";
 import { Button } from "common/components";
-import { useSocketContext } from "SocketContext/SocketContext";
-
-import { GameType, PlayersConfig } from "./views";
-import styles from "./styles";
 import { getGame, getPlayer } from "common/selectors";
 import { useAppSelector } from "redux/hooks";
+import { useSocketContext } from "SocketContext";
+
+import styles from "./styles";
+import { GameType, PlayersConfig } from "./views";
 
 const getMyGamePlayer = (players: any, player_id: string) => {
   return players.find((p: any) => p._id === player_id);

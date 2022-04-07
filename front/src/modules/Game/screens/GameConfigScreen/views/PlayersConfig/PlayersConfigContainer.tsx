@@ -1,15 +1,13 @@
 import React from "react";
 
-import useTranslations from "common/hooks/useTranslations";
-import { copyText } from "common/utils";
-import { useSocketContext } from "SocketContext/SocketContext";
-
-import useStyles from "common/hooks/useStyles";
-
-import { PlayerConfig } from "../../components/PlayerConfig";
-import styles from "./styles";
-import { useAppSelector } from "redux/hooks";
+import { useStyles, useTranslations } from "common/hooks";
 import { getMyGamePlayer, getGame } from "common/selectors";
+import { copyText } from "common/utils";
+import { useAppSelector } from "redux/hooks";
+import { useSocketContext } from "SocketContext";
+
+import styles from "./styles";
+import { PlayerConfig } from "../../components/PlayerConfig";
 
 const GAME_KEY = "gameKey";
 

@@ -1,16 +1,14 @@
 import React from "react";
-
-import useTranslations from "common/hooks/useTranslations";
-
 import Paper from "@material-ui/core/Paper";
 
-import desk from "constants/deskConfig";
-import useStyles from "common/hooks/useStyles";
-
-import Sell from "../containers/SellContainer";
-import styles from "../styles/DeskStyles";
-import { useAppSelector } from "redux/hooks";
+import { useStyles, useTranslations } from "common/hooks/";
 import { getMyGamePlayer } from "common/selectors";
+import desk from "constants/deskConfig";
+import { useAppSelector } from "redux/hooks";
+
+import Sell from "./Sell";
+import styles from "../styles/DeskStyles";
+import { borderRadius } from "../utils";
 
 const DeskContainer: React.FC = () => {
   const { game: translations } = useTranslations();
@@ -55,15 +53,5 @@ const DeskContainer: React.FC = () => {
     </Paper>
   );
 };
-
-const borderRadius = (
-  i: number,
-  rowSize: number,
-  j: number,
-  columnSize: number
-) =>
-  `${i === 0 && j === 0 ? 4 : 0}px ${i === rowSize && j === 0 ? 4 : 0}px ${
-    i === rowSize && j === columnSize ? 4 : 0
-  }px ${i === 0 && j === columnSize ? 4 : 0}px`;
 
 export default DeskContainer;
