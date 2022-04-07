@@ -1,5 +1,7 @@
 import { Socket } from 'socket.io';
+
 import { GAME_STATUSES } from 'src/constants';
+
 import { playerLeaveGame } from '../helpers';
 
 export const leave = async function (client: Socket, { game_id: room }) {

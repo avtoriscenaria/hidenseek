@@ -1,10 +1,8 @@
-import { Socket } from 'socket.io';
-import { GAME_STATUSES } from 'src/constants';
-
-import getPlayerStartPlace from 'src/utils/getPlayerStartPlace';
-import getPlayerColor from 'src/utils/getPlayerColor';
-
 import { v4 as uuidv4 } from 'uuid';
+import { Socket } from 'socket.io';
+
+import { GAME_STATUSES } from 'src/constants';
+import { getPlayerColor, getPlayerStartPlace } from 'src/utils';
 
 export const createGame = async function (client: Socket, player) {
   const { _id: player_id } = player;

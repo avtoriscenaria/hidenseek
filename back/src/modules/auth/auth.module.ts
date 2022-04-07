@@ -1,13 +1,12 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
-import { JWTMiddleware } from 'src/middlewares/jwt.middleware';
+import { DataBase, JWT, Response } from 'src/common/services';
+import { JWTMiddleware } from 'src/middlewares';
+
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { Player, PlayerSchema } from './schemas/player.schema';
-import { JWT } from '../common/services/jwt.service';
-import { Response } from '../common/services/response.service';
-import { DataBase } from '../common/services/database.service';
 
 @Module({
   imports: [

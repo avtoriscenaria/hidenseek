@@ -1,4 +1,5 @@
 import { Socket } from 'socket.io';
+
 import { GAME_STATUSES } from 'src/constants';
 
 export const move = async function (client: Socket, payload) {

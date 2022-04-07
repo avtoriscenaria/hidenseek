@@ -1,13 +1,13 @@
-import { WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Model } from 'mongoose';
-import { Logger } from '@nestjs/common';
 import { Socket, Server } from 'socket.io';
+import { Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 
-import { JWT } from '../../common/services/jwt.service';
+import { DataBase, JWT } from 'src/common/services';
+
 import { Game, GameDocument } from '../schemas/game.schema';
 import { Player, PlayerDocument } from '../../auth/schemas/player.schema';
-import { DataBase } from 'src/modules/common/services/database.service';
 
 @WebSocketGateway()
 export class GameGateway {
