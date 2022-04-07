@@ -1,7 +1,7 @@
 import React from "react";
 
 import useStyles from "common/hooks/useStyles";
-import { AppHeader } from "common/components";
+import { AppHeader, WarningNotification } from "common/components";
 
 import styles from "./styles";
 
@@ -15,7 +15,9 @@ export default function AppLayout({ children }: IAppLayout) {
   return (
     <div className={classes.root}>
       <AppHeader />
-      <div className={classes.body}>{children}</div>
+      <WarningNotification>
+        <div className={classes.body}>{children}</div>
+      </WarningNotification>
     </div>
   );
 }

@@ -66,6 +66,17 @@ const useSocket = () => {
           );
         });
 
+        socket.on(
+          "warning_message",
+          ({ warningMessage }: { warningMessage: string }) => {
+            dispatch(
+              setOption({
+                warningMessage,
+              })
+            );
+          }
+        );
+
         socket.on("logout", () => {
           dispatch(
             setOption({

@@ -7,20 +7,17 @@ import { getPlayerColor, getPlayerStartPlace } from 'src/utils';
 export const findGame = async function (client: Socket, player, gameKey) {
   const { _id: player_id } = player;
 
-  //const responseData = { status: STATUSES.success, message: '', data: {} };
-
   if (player.game_id) {
-    // responseData.status = STATUSES.failure;
-    // responseData.message = 'GAME_EXIST';
+    client.emit('warning_message', { warningMessage: 'GAME_EXIST' });
   } else {
     let game;
-    if (!Boolean(gameKey)) {
+    if (Boolean(gameKey)) {
+      game = (await this.gameModel.find({ gameKey }).exec())[0];
+    } else {
       const games = await this.gameModel.find().exec();
       game = games.find(
         (g) => g.status === GAME_STATUSES.start && g.players.length < 6,
       );
-    } else {
-      game = (await this.gameModel.find({ gameKey }).exec())[0];
     }
 
     if (game) {
@@ -31,11 +28,10 @@ export const findGame = async function (client: Socket, player, gameKey) {
       if (Boolean(exitPlayer)) {
         player.game_id = game._id;
         await player.save();
-
-        //responseData.data = { game };
       } else if (game.players.length >= 6) {
-        // responseData.status = STATUSES.failure;
-        // responseData.message = 'GAME_PlAYERS_SIZE_OVERATE';
+        client.emit('warning_message', {
+          warningMessage: 'GAME_PlAYERS_SIZE_OVERATE',
+        });
       } else if (game.status === GAME_STATUSES.start) {
         const position = getPlayerStartPlace(
           game.players.map((p) => p.position),
@@ -64,17 +60,16 @@ export const findGame = async function (client: Socket, player, gameKey) {
 
         client.handshake.query.room = game._id.toString();
 
-        //console.log('GAME', JSON.stringify(newGame, null, 4));
         this.server.in(game._id).emit('update_game', { game });
-
-        //responseData.data = { game };
       } else {
-        // responseData.status = STATUSES.failure;
-        // responseData.message = 'GAME_IN_PROGRESS';
+        client.emit('warning_message', {
+          warningMessage: 'GAME_IN_PROGRESS',
+        });
       }
     } else {
-      // responseData.status = STATUSES.failure;
-      // responseData.message = 'GAME_NOT_EXIST';
+      client.emit('warning_message', {
+        warningMessage: 'GAME_NOT_EXIST',
+      });
     }
   }
 };

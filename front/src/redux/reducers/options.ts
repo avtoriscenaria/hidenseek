@@ -5,9 +5,9 @@ interface IOptionsState {
   isAuthorized: boolean;
   isLoaded: boolean;
   gameStatus: string;
-  //socket: any;
   timer?: number;
   timerUpdater?: number;
+  warningMessage?: string;
 }
 
 const initialState: IOptionsState = {
@@ -15,7 +15,6 @@ const initialState: IOptionsState = {
   isAuthorized: false,
   isLoaded: false,
   gameStatus: "",
-  //socket: null,
 };
 
 const optionsSlice = createSlice({

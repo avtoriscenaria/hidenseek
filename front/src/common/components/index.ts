@@ -6,3 +6,4 @@ export { default as MainLoader } from "./MainLoader";
 export { default as Paper } from "./Paper";
 export { default as Route } from "./Route";
 export { default as Timer } from "./Timer";
+export { default as WarningNotification } from "./WarningNotification";
