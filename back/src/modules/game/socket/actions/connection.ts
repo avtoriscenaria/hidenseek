@@ -10,7 +10,7 @@ export const connection = async function (client: Socket) {
   }
 
   if (Boolean(room) && player_id) {
-    const game = await this.gameModel.findById(room);
+    const game = await this.gameModel.getById(room);
 
     if (game) {
       if (
@@ -22,13 +22,15 @@ export const connection = async function (client: Socket) {
         );
 
         if (gamePlayer) {
-          game.players = game.players.map((p) =>
-            p._id.toString() === player_id.toString()
-              ? { ...p, online: true }
-              : p,
-          );
+          const newData = {
+            players: game.players.map((p) =>
+              p._id.toString() === player_id.toString()
+                ? { ...p, online: true }
+                : p,
+            ),
+          };
 
-          await game.save();
+          await this.gameModel.update({ _id: room }, newData);
 
           client.join(room);
 
@@ -51,11 +53,17 @@ export const connection = async function (client: Socket) {
 
         this.server.in(room).emit('update_game', { game, isLoaded: true });
       } else {
-        const player = await this.playerModal.findById(player_id);
+        const player = await this.playerModal.getById(player_id);
 
-        player.games_played = [...player.games_played, player.game_id];
-        player.game_id = undefined;
-        await player.save();
+        const newData = {
+          games_played: [...player.games_played, player.game_id],
+        };
+
+        const removeData = {
+          game_id: undefined,
+        };
+
+        await this.playerModal.update({ _id: player_id }, newData, removeData);
 
         client.leave(room);
       }

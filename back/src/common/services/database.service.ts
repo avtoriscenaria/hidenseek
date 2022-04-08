@@ -1,13 +1,14 @@
+import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+
 import { Player, PlayerDocument } from 'src/modules/auth/schemas/player.schema';
 import { Game, GameDocument } from 'src/modules/game/schemas/game.schema';
 
 @Injectable()
 export class DataBase {
   constructor(
-    // @InjectModel(Game.name) private gameModel: Model<GameDocument>,
+    //@InjectModel(Game.name) private gameModel: Model<GameDocument>,
     @InjectModel(Player.name) private playerModal: Model<PlayerDocument>,
   ) {}
 

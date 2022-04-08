@@ -72,7 +72,7 @@ export class GameSocketService
   @SubscribeMessage('connect_to_game')
   async connectToGame(client: Socket, payload: any): Promise<void> {
     const { create, player_id, gameKey } = payload;
-    const player = await this.playerModal.findById(player_id);
+    const player = await this.playerModal.getById(player_id);
     if (player) {
       if (create) {
         this.socketCreateGame(client, player);

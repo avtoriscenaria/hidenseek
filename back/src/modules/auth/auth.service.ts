@@ -1,44 +1,43 @@
 import * as argon2 from 'argon2';
 import { Model } from 'mongoose';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
 import { DataBase, JWT, Response } from 'src/common/services';
-import messages, { STATUSES } from 'src/constants';
+import messages, { DATABASE_CONNECTION, STATUSES } from 'src/constants';
 
 import { SignUpPlayerDto, LoginPlayerDto } from './dto';
 import { Player, PlayerDocument } from './schemas/player.schema';
 
+import * as mongodb from 'mongodb';
+import { PlayerDBService } from 'src/common/modules/database/player.service';
+
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectModel(Player.name) private playerModel: Model<PlayerDocument>,
+    private playerModel: PlayerDBService,
     private jwt: JWT,
     private response: Response,
-    private db: DataBase,
   ) {}
 
   async createPlayer(playerDto: SignUpPlayerDto) {
     const { password, nickname: newNickname } = playerDto;
     const nickname = newNickname.trim();
-
-    const player = (await this.playerModel.find({ nickname }).exec())[0];
+    const player = await this.playerModel.get({ nickname });
 
     let response = {};
 
-    if (player) {
+    if (Boolean(player)) {
       response = {
         status: STATUSES.failure,
         message: messages.player_exist_warning,
       };
     } else {
       const passwordHashed = await argon2.hash(password);
-      const newPlayer = new this.playerModel({
+      await this.playerModel.create({
         nickname,
         password: passwordHashed,
       });
-      newPlayer.save();
-
       response = { data: { nickname } };
     }
     return this.response.prepare(response);
@@ -47,16 +46,16 @@ export class AuthService {
   async loginPlayer(playerDto: LoginPlayerDto) {
     const { nickname, password } = playerDto;
 
-    const player = (await this.playerModel.find({ nickname }).exec())[0]; //TODO
+    // await this.playerModel.update({ nickname }, { nickname: 'C' });
+    // return {};
 
+    const player = await this.playerModel.get({ nickname });
     if (player !== undefined) {
       const isPasswordCorrect = await argon2.verify(player.password, password);
 
       if (isPasswordCorrect) {
         const token = await this.jwt.generateToken(player);
-
         const { admin, _id, game_id } = player;
-
         return this.response.prepare({
           data: { player: { nickname, admin, _id, game_id }, token },
         });
@@ -67,7 +66,6 @@ export class AuthService {
         });
       }
     }
-
     return this.response.prepare({
       status: STATUSES.failure,
       message: messages.invalid_nickname_or_password,
@@ -78,20 +76,16 @@ export class AuthService {
     const { nickname: jwtNickname, _id } = await this.jwt.decodeAuthToken(
       request,
     );
-
     if (jwtNickname === nickname) {
-      const player = (await this.playerModel.find({ nickname }).exec())[0];
-
+      const player = await this.playerModel.get({ nickname });
       if (player !== undefined && player._id.toString() === _id.toString()) {
         const { admin, _id, game_id } = player;
-
         return this.response.prepare({
           status: STATUSES.success,
           data: { player: { nickname, admin, _id, game_id } },
         });
       }
     }
-
     return this.response.prepare({
       status: STATUSES.not_authorized,
     });
