@@ -61,9 +61,12 @@ export const leave = async function (client: Socket, { game_id: room }) {
       clearInterval(this.TIME_INTERVAL[room]);
       this.TIME_INTERVAL[room] = undefined;
     } else {
-      await this.gameModel.update({ _id: game._id }, gameData);
+      const updatedGame = await this.gameModel.update(
+        { _id: game._id },
+        gameData,
+      );
 
-      this.server.in(room).emit('update_game', { game });
+      this.server.in(room).emit('update_game', { game: updatedGame });
     }
   }
 };

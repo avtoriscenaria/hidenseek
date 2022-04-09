@@ -68,9 +68,12 @@ export const move = async function (client: Socket, payload) {
           this.TIME_INTERVAL[room] = undefined;
         }
 
-        await this.gameModel({ _id: game._id }, gameData);
+        const updatedGame = await this.gameModel.update(
+          { _id: game._id },
+          gameData,
+        );
 
-        this.server.in(room).emit('update_game', { game });
+        this.server.in(room).emit('update_game', { game: updatedGame });
       }
     }
   }

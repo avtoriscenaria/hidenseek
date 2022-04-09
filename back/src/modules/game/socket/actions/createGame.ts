@@ -33,7 +33,7 @@ export const createGame = async function (client: Socket, player) {
     game_id: newGame._id,
   };
 
-  await this.playerModel.update({ _id: player._id }, newGameData);
+  await this.playerModel.update({ _id: player._id }, playerData);
 
   client.join(newGame._id);
 

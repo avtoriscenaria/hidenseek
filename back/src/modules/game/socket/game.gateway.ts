@@ -2,10 +2,8 @@ import { Socket, Server } from 'socket.io';
 import { Logger } from '@nestjs/common';
 import { WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 
+import { GameDBService, PlayerDBService } from 'src/common/modules/database';
 import { JWT } from 'src/common/services';
-
-import { GameDBService } from 'src/common/modules/database/game.service';
-import { PlayerDBService } from 'src/common/modules/database/player.service';
 
 @WebSocketGateway()
 export class GameGateway {
@@ -34,18 +32,18 @@ export class GameGateway {
         players: game.players.map((p) => ({
           ...p,
           step:
-            Boolean(p.hunter) && !game.hide
+            Boolean(p.hunter) && game.hide
               ? game.settings.hunterStep
-              : !Boolean(p.hunter) && game.hide
+              : !Boolean(p.hunter) && !game.hide
               ? game.settings.preyStep
               : 0,
         })),
       };
 
-      await this.gameModel.update({ _id: room }, newData);
+      const updatedGame = await this.gameModel.update({ _id: room }, newData);
 
       this.server.in(room).emit('timer', { time: new Date().getTime() });
-      this.server.in(room).emit('update_game', { game });
+      this.server.in(room).emit('update_game', { game: updatedGame });
     }, timeStep);
   }
 
@@ -54,7 +52,6 @@ export class GameGateway {
     console.log('ROOM', room, Boolean(room));
     if (Boolean(room)) {
       const game = await this.gameModel.getById(room);
-
       if (game) {
         const newData = {
           players: game.players.map((p) =>
@@ -63,9 +60,7 @@ export class GameGateway {
               : p,
           ),
         };
-
         await this.gameModel.update({ _id: room }, newData);
-
         if (
           !game.players.some((p) => p.online) &&
           this.TIME_INTERVAL[room] !== undefined
@@ -76,7 +71,6 @@ export class GameGateway {
         }
       }
     }
-
     this.logger.log(`Client disconnected: ${client.id}`);
   }
 }

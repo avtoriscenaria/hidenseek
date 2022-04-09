@@ -73,6 +73,7 @@ export class GameSocketService
   async connectToGame(client: Socket, payload: any): Promise<void> {
     const { create, player_id, gameKey } = payload;
     const player = await this.playerModel.getById(player_id);
+
     if (player) {
       if (create) {
         this.socketCreateGame(client, player);
@@ -102,7 +103,7 @@ export class GameSocketService
 
   async handleConnection(client: Socket) {
     const { token } = client.handshake.query;
-    console.log('CHECK');
+
     client.use(async (_, next) => {
       const isVerified = await this.jwt.checkAuthToken(token);
 

@@ -41,18 +41,24 @@ export const endTurn = async function (
           : 0,
     }));
 
-    await this.gameModel.update({ _id: game._id }, gameData);
+    const updatedGame = await this.gameModel.update(
+      { _id: game._id },
+      gameData,
+    );
     clearInterval(this.TIME_INTERVAL[room]);
     this.TIMER_RUN[room] = new Date().getTime();
     this.TIME_INTERVAL[room] = undefined;
 
-    this.server.in(room).emit('update_game', { game });
+    this.server.in(room).emit('update_game', { game: updatedGame });
     this.server.in(room).emit('timer', { time: new Date().getTime() });
 
     this.changeTurnOrder(room, timeStep);
   } else {
-    await this.gameModel.update({ _id: game._id }, gameData);
+    const updatedGame = await this.gameModel.update(
+      { _id: game._id },
+      gameData,
+    );
 
-    this.server.in(room).emit('update_game', { game });
+    this.server.in(room).emit('update_game', { game: updatedGame });
   }
 };

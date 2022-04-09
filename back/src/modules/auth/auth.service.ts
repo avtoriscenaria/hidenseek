@@ -1,16 +1,11 @@
 import * as argon2 from 'argon2';
-import { Model } from 'mongoose';
-import { Inject, Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
+import { Injectable } from '@nestjs/common';
 
+import { PlayerDBService } from 'src/common/modules/database';
 import { JWT, Response } from 'src/common/services';
-import messages, { DATABASE_CONNECTION, STATUSES } from 'src/constants';
+import messages, { STATUSES } from 'src/constants';
 
 import { SignUpPlayerDto, LoginPlayerDto } from './dto';
-import { Player, PlayerDocument } from './schemas/player.schema';
-
-import * as mongodb from 'mongodb';
-import { PlayerDBService } from 'src/common/modules/database/player.service';
 
 @Injectable()
 export class AuthService {
@@ -47,7 +42,8 @@ export class AuthService {
     const { nickname, password } = playerDto;
 
     const player = await this.playerModel.get({ nickname });
-    if (player !== undefined) {
+
+    if (Boolean(player)) {
       const isPasswordCorrect = await argon2.verify(player.password, password);
 
       if (isPasswordCorrect) {

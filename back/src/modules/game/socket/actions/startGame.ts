@@ -28,9 +28,12 @@ export const startGame = async function (
         ),
       };
 
-      await this.gameModel.update({ _id: game._id }, gameData);
+      const updatedGame = await this.gameModel.update(
+        { _id: game._id },
+        gameData,
+      );
 
-      this.server.in(room).emit('update_game', { game });
+      this.server.in(room).emit('update_game', { game: updatedGame });
       this.server.in(room).emit('start_game');
 
       this.TIMER_RUN[room] = new Date().getTime();

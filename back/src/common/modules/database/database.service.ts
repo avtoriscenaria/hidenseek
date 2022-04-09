@@ -18,7 +18,7 @@ export class DBService {
   };
 
   getById = async (id) => {
-    return await this.database.findById(id);
+    return await this.database.findOne({ _id: new mongodb.ObjectID(id) });
   };
 
   getAll = async () => {
@@ -26,13 +26,22 @@ export class DBService {
   };
 
   create = async (data) => {
-    return await this.database.insert(data);
+    return (await this.database.insertOne(data)).ops[0];
   };
 
   update = async (uniqParam, newData, unsetParams = {}) => {
-    return await this.database.updateOne(uniqParam, {
-      $set: newData,
-      $unset: unsetParams,
-    });
+    if (uniqParam._id) {
+      uniqParam._id = new mongodb.ObjectID(uniqParam._id);
+    }
+    return (
+      await this.database.findOneAndUpdate(
+        uniqParam,
+        {
+          $set: newData,
+          $unset: unsetParams,
+        },
+        { returnDocument: 'after' },
+      )
+    ).value;
   };
 }

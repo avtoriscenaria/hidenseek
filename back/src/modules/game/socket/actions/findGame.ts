@@ -56,7 +56,10 @@ export const findGame = async function (client: Socket, player, gameKey) {
           players: [...game.players, gamePlayer],
         };
 
-        await this.gameModel.update({ _id: game._id }, gameData);
+        const updatedGame = await this.gameModel.update(
+          { _id: game._id },
+          gameData,
+        );
 
         await this.playerModel.update(
           { _id: player._id },
@@ -67,7 +70,7 @@ export const findGame = async function (client: Socket, player, gameKey) {
 
         client.handshake.query.room = game._id.toString();
 
-        this.server.in(game._id).emit('update_game', { game });
+        this.server.in(game._id).emit('update_game', { game: updatedGame });
       } else {
         client.emit('warning_message', {
           warningMessage: 'GAME_IN_PROGRESS',

@@ -9,8 +9,11 @@ export const setHunter = async function ({ selectedPlayer, game_id: room }) {
 
     const gameData = { players: updatedPlayers };
 
-    await this.gameModel.update({ _id: game._id }, gameData);
+    const updatedGame = await this.gameModel.update(
+      { _id: game._id },
+      gameData,
+    );
 
-    this.server.in(room).emit('update_game', { game });
+    this.server.in(room).emit('update_game', { game: updatedGame });
   }
 };

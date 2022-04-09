@@ -30,11 +30,14 @@ export const connection = async function (client: Socket) {
             ),
           };
 
-          await this.gameModel.update({ _id: room }, newData);
+          const updatedGame = await this.gameModel.update(
+            { _id: room },
+            newData,
+          );
 
           client.join(room);
 
-          if (game.status === GAME_STATUSES.in_process) {
+          if (updatedGame.status === GAME_STATUSES.in_process) {
             if (Boolean(this.TIMER_RUN[room])) {
               const startTime = Math.round(
                 (new Date().getTime() - this.TIMER_RUN[room]) / 1000,
@@ -49,14 +52,16 @@ export const connection = async function (client: Socket) {
               this.changeTurnOrder(room, 20000);
             }
           }
-        }
 
-        this.server.in(room).emit('update_game', { game, isLoaded: true });
+          this.server
+            .in(room)
+            .emit('update_game', { game: updatedGame, isLoaded: true });
+        }
       } else {
         const player = await this.playerModel.getById(player_id);
 
         const newData = {
-          games_played: [...player.games_played, player.game_id],
+          games_played: [...(player.games_played || []), player.game_id],
         };
 
         const removeData = {

@@ -1,9 +1,7 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 
-import { AuthModule } from './modules/auth/auth.module';
-import { GameModule } from './modules/game/game.module';
+import { AuthModule, GameModule } from './modules';
 
 @Module({
   imports: [
@@ -11,9 +9,8 @@ import { GameModule } from './modules/game/game.module';
       envFilePath: '.env',
       isGlobal: true,
     }),
-    //MongooseModule.forRoot(process.env.MONGO_URI),
     AuthModule,
-    //GameModule,
+    GameModule,
   ],
   controllers: [],
   providers: [],
