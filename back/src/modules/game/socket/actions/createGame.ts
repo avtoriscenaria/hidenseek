@@ -10,7 +10,7 @@ export const createGame = async function (client: Socket, player) {
   const position = getPlayerStartPlace();
   const color = getPlayerColor();
 
-  const newGame = new this.gameModel({
+  const newGameData = {
     status: GAME_STATUSES.start,
     hide: true,
     players: [
@@ -25,11 +25,15 @@ export const createGame = async function (client: Socket, player) {
     ],
     gameKey: uuidv4(),
     settings: { hunterStep: 3, preyStep: 2 },
-  });
-  await newGame.save();
+  };
 
-  player.game_id = newGame._id;
-  await player.save();
+  const newGame = await this.gameModel.create(newGameData);
+
+  const playerData = {
+    game_id: newGame._id,
+  };
+
+  await this.playerModel.update({ _id: player._id }, newGameData);
 
   client.join(newGame._id);
 

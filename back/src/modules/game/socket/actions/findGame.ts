@@ -12,9 +12,9 @@ export const findGame = async function (client: Socket, player, gameKey) {
   } else {
     let game;
     if (Boolean(gameKey)) {
-      game = (await this.gameModel.find({ gameKey }).exec())[0];
+      game = await this.gameModel.get({ gameKey });
     } else {
-      const games = await this.gameModel.find().exec();
+      const games = await this.gameModel.getAll();
       game = games.find(
         (g) => g.status === GAME_STATUSES.start && g.players.length < 6,
       );
@@ -26,8 +26,10 @@ export const findGame = async function (client: Socket, player, gameKey) {
       );
 
       if (Boolean(exitPlayer)) {
-        player.game_id = game._id;
-        await player.save();
+        await this.playerModel.update(
+          { _id: player._id },
+          { game_id: game._id },
+        );
       } else if (game.players.length >= 6) {
         client.emit('warning_message', {
           warningMessage: 'GAME_PlAYERS_SIZE_OVERATE',
@@ -50,11 +52,16 @@ export const findGame = async function (client: Socket, player, gameKey) {
           online: true,
         };
 
-        game.players = [...game.players, gamePlayer];
-        await game.save();
+        const gameData = {
+          players: [...game.players, gamePlayer],
+        };
 
-        player.game_id = game._id;
-        await player.save();
+        await this.gameModel.update({ _id: game._id }, gameData);
+
+        await this.playerModel.update(
+          { _id: player._id },
+          { game_id: game._id },
+        );
 
         client.join(game._id);
 

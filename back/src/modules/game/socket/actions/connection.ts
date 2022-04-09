@@ -53,7 +53,7 @@ export const connection = async function (client: Socket) {
 
         this.server.in(room).emit('update_game', { game, isLoaded: true });
       } else {
-        const player = await this.playerModal.getById(player_id);
+        const player = await this.playerModel.getById(player_id);
 
         const newData = {
           games_played: [...player.games_played, player.game_id],
@@ -63,7 +63,7 @@ export const connection = async function (client: Socket) {
           game_id: undefined,
         };
 
-        await this.playerModal.update({ _id: player_id }, newData, removeData);
+        await this.playerModel.update({ _id: player_id }, newData, removeData);
 
         client.leave(room);
       }

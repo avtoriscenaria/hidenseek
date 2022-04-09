@@ -12,7 +12,7 @@ export const startGame = async function (
     return;
   }
 
-  const game = await this.gameModel.findById(room);
+  const game = await this.gameModel.getById(room);
 
   if (Boolean(game) && game.status === GAME_STATUSES.start) {
     const player = game.players.find(
@@ -20,13 +20,15 @@ export const startGame = async function (
     );
 
     if (Boolean(player) && player.creator) {
-      game.status = GAME_STATUSES.in_process;
-      game.hide = true;
-      game.players = game.players.map((p) =>
-        Boolean(p.hunter) ? p : { ...p, step: 10 },
-      );
+      const gameData = {
+        status: GAME_STATUSES.in_process,
+        hide: true,
+        players: game.players.map((p) =>
+          Boolean(p.hunter) ? p : { ...p, step: 10 },
+        ),
+      };
 
-      await game.save();
+      await this.gameModel.update({ _id: game._id }, gameData);
 
       this.server.in(room).emit('update_game', { game });
       this.server.in(room).emit('start_game');

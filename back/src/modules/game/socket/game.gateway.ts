@@ -12,7 +12,7 @@ export class GameGateway {
   constructor(
     public jwt: JWT,
     public gameModel: GameDBService,
-    public playerModal: PlayerDBService,
+    public playerModel: PlayerDBService,
   ) {}
 
   @WebSocketServer()

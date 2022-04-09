@@ -21,6 +21,10 @@ export class DBService {
     return await this.database.findById(id);
   };
 
+  getAll = async () => {
+    return await this.database.find({}).toArray();
+  };
+
   create = async (data) => {
     return await this.database.insert(data);
   };

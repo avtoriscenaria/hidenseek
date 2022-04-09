@@ -3,7 +3,7 @@ import { Model } from 'mongoose';
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
-import { DataBase, JWT, Response } from 'src/common/services';
+import { JWT, Response } from 'src/common/services';
 import messages, { DATABASE_CONNECTION, STATUSES } from 'src/constants';
 
 import { SignUpPlayerDto, LoginPlayerDto } from './dto';
@@ -45,9 +45,6 @@ export class AuthService {
 
   async loginPlayer(playerDto: LoginPlayerDto) {
     const { nickname, password } = playerDto;
-
-    // await this.playerModel.update({ nickname }, { nickname: 'C' });
-    // return {};
 
     const player = await this.playerModel.get({ nickname });
     if (player !== undefined) {

@@ -10,35 +10,38 @@ export const endTurn = async function (
     return;
   }
 
-  const game = await this.gameModel.findById(room);
+  const game = await this.gameModel.getById(room);
   const gamePlayers = game.players.map((p) => ({
     ...p,
     step: p._id.toString() === player_id.toString() ? 0 : p.step,
   }));
-  game.players = gamePlayers;
+
+  const gameData = {
+    players: gamePlayers,
+    hide: game.hide,
+  };
 
   if (
-    !game.players.some(
+    !gameData.players.some(
       (p) =>
-        Boolean(p.hunter) !== Boolean(game.hide) &&
+        Boolean(p.hunter) !== Boolean(gameData.hide) &&
         p.step > 0 &&
         !Boolean(p.caught) &&
         !Boolean(p.leave),
     )
   ) {
-    game.hide = !game.hide;
-    game.players = game.players.map((p) => ({
+    gameData.hide = !game.hide;
+    gameData.players = gameData.players.map((p) => ({
       ...p,
       step:
-        Boolean(p.hunter) && !game.hide
+        Boolean(p.hunter) && !gameData.hide
           ? game.settings.hunterStep
-          : !Boolean(p.hunter) && game.hide
+          : !Boolean(p.hunter) && gameData.hide
           ? game.settings.preyStep
           : 0,
     }));
 
-    await game.save();
-
+    await this.gameModel.update({ _id: game._id }, gameData);
     clearInterval(this.TIME_INTERVAL[room]);
     this.TIMER_RUN[room] = new Date().getTime();
     this.TIME_INTERVAL[room] = undefined;
@@ -48,7 +51,7 @@ export const endTurn = async function (
 
     this.changeTurnOrder(room, timeStep);
   } else {
-    await game.save();
+    await this.gameModel.update({ _id: game._id }, gameData);
 
     this.server.in(room).emit('update_game', { game });
   }

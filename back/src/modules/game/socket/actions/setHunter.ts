@@ -1,5 +1,5 @@
 export const setHunter = async function ({ selectedPlayer, game_id: room }) {
-  const game = await this.gameModel.findById(room);
+  const game = await this.gameModel.getById(room);
 
   if (Boolean(game)) {
     const updatedPlayers = game.players.map((p) => ({
@@ -7,9 +7,9 @@ export const setHunter = async function ({ selectedPlayer, game_id: room }) {
       hunter: p._id.toString() === selectedPlayer.toString() || undefined,
     }));
 
-    game.players = updatedPlayers;
+    const gameData = { players: updatedPlayers };
 
-    await game.save();
+    await this.gameModel.update({ _id: game._id }, gameData);
 
     this.server.in(room).emit('update_game', { game });
   }

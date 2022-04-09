@@ -10,7 +10,7 @@ export const move = async function (client: Socket, payload) {
     return;
   }
 
-  const game = await this.gameModel.findById(room);
+  const game = await this.gameModel.getById(room);
 
   if (game) {
     const gamePlayer = game.players.find(
@@ -29,7 +29,12 @@ export const move = async function (client: Socket, payload) {
       );
 
       if (!isPlayerOnPosition || gamePlayer.hunter) {
-        game.players = game.players.map((p) =>
+        const gameData = {
+          players: game.players,
+          status: game.status,
+        };
+
+        gameData.players = gameData.players.map((p) =>
           p._id.toString() === player_id.toString()
             ? {
                 ...p,
@@ -45,16 +50,16 @@ export const move = async function (client: Socket, payload) {
 
         if (
           gamePlayer.hunter &&
-          !game.players.some(
+          !gameData.players.some(
             (p) =>
               !Boolean(p.hunter) && !Boolean(p.caught) && !Boolean(p.leave),
           )
         ) {
-          game.players = game.players.map((p) =>
+          gameData.players = gameData.players.map((p) =>
             p.hunter ? { ...p, won: true } : p,
           );
 
-          game.status = GAME_STATUSES.finished;
+          gameData.status = GAME_STATUSES.finished;
 
           clearInterval(this.TIME_INTERVAL[room]);
 
@@ -63,7 +68,7 @@ export const move = async function (client: Socket, payload) {
           this.TIME_INTERVAL[room] = undefined;
         }
 
-        await game.save();
+        await this.gameModel({ _id: game._id }, gameData);
 
         this.server.in(room).emit('update_game', { game });
       }

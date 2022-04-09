@@ -1,5 +1,3 @@
-export const playerLeaveGame = async function (playerModal, player_id) {
-  const player = await playerModal.findById(player_id);
-  player.game_id = undefined;
-  await player.save();
+export const playerLeaveGame = async function (playerModel, player_id) {
+  await this.playerModel.update({ _id: player_id }, {}, { game_id: undefined });
 };

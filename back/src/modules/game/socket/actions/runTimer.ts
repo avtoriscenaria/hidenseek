@@ -9,7 +9,7 @@ export const runTimer = async function (client: Socket, timeStep) {
     return;
   }
 
-  const game = await this.gameModel.findById(room);
+  const game = await this.gameModel.getById(room);
 
   const dontRunTimer =
     !Boolean(game) ||
