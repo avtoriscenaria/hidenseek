@@ -26,6 +26,7 @@ const translations = {
     reloadToUpdate:
       "*пока обновите страницу вручную, чтоб проверить подключенных игроков",
     createGameTitle: "Создать игру",
+    successCopy: "Ключ успешно скопирован",
     create: "Создать",
     update: "Обновить",
     createGameDescription:

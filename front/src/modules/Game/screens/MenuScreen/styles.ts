@@ -7,7 +7,7 @@ const styles = () => ({
   },
   wrapper: {
     width: "100%",
-    maxWidth: 700,
+    maxWidth: 760,
     padding: 24,
   },
   title: {

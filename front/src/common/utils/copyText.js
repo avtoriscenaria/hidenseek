@@ -1,11 +1,12 @@
 const copyText = async (elementId) => {
-  // console.log("KEY", elementId);
-  // const copyText = await document.getElementById(elementId);
-  // if (copyText !== null) {
-  //   await copyText.select();
-  //   document.execCommand("copy");
-  //   console.log("COPY");
-  // }
+  const el = document.getElementById(elementId);
+  const text = el.innerText;
+  var textField = document.createElement("textarea");
+  textField.innerText = text;
+  document.body.appendChild(textField);
+  textField.select();
+  document.execCommand("copy");
+  textField.remove();
 };
 
 export default copyText;

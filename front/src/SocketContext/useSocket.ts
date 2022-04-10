@@ -71,7 +71,7 @@ const useSocket = () => {
           ({ warningMessage }: { warningMessage: string }) => {
             dispatch(
               setOption({
-                warningMessage,
+                message: { text: warningMessage, type: "warning" },
               })
             );
           }

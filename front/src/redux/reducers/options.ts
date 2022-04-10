@@ -7,7 +7,10 @@ interface IOptionsState {
   gameStatus: string;
   timer?: number;
   timerUpdater?: number;
-  warningMessage?: string;
+  message?: {
+    text: string;
+    type: string;
+  };
 }
 
 const initialState: IOptionsState = {

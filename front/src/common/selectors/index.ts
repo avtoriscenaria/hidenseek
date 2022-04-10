@@ -10,4 +10,4 @@ export const getGameId = (state: any) => state.options.game_id;
 export const getPlayerId = (state: any) => state.player;
 export const getPlayer = (state: any) => state.player.player || {};
 export const getGame = (state: any) => state.game.game;
-export const getWarningMessage = (state: any) => state.options.warningMessage;
+export const getMessage = (state: any) => state.options.message;

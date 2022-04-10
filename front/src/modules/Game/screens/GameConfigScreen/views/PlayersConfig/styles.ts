@@ -10,6 +10,7 @@ const styles = () => ({
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 24,
+    cursor: "pointer",
   },
   gameKeyLabel: {
     fontFamily: "NotoSans-Bold",
@@ -18,6 +19,12 @@ const styles = () => ({
   gameKey: {
     fontFamily: "NotoSans-Italic",
     fontSize: 10,
+  },
+  gameKeyIcon: {
+    flex: 1,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
   header: {
     display: "flex",
